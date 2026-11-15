@@ -193,21 +193,29 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
         f"Part: {PART_NAMES[part]}\nQuestion: {question}\n\nEvaluate the candidate's audio answer.",
         gtypes.Part.from_bytes(data=audio, mime_type=mime),
     ]
+    transient = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED", "500", "INTERNAL", "overloaded", "high demand")
     last_err: Exception | None = None
-    for model in GEMINI_MODELS:
-        try:
-            resp = await gemini.aio.models.generate_content(
-                model=model,
-                contents=contents,
-                config=gtypes.GenerateContentConfig(
-                    system_instruction=system,
-                    response_mime_type="application/json",
-                    temperature=0.2,
-                ),
-            )
-            return _parse_json(resp.text)
-        except Exception as e:  # noqa: BLE001
-            last_err = e
+    for attempt in range(4):  # band bo'lsa 4 marta urinadi: 0, 3, 6, 10 soniya kutish bilan
+        retry = False
+        for model in GEMINI_MODELS:
+            try:
+                resp = await gemini.aio.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=gtypes.GenerateContentConfig(
+                        system_instruction=system,
+                        response_mime_type="application/json",
+                        temperature=0.2,
+                    ),
+                )
+                return _parse_json(resp.text)
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                if any(t in str(e) for t in transient):
+                    retry = True
+        if not retry or attempt == 3:
+            break
+        await asyncio.sleep((3, 3, 4)[attempt])
     raise last_err or RuntimeError("Gemini javob bermadi")
 
 
@@ -413,3 +421,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+    
