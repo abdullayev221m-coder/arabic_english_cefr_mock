@@ -33,24 +33,39 @@ PART_NAMES = {"p1": "Part 1", "p2": "Part 2", "p3": "Part 3"}
 PART_TIME = {"p1": 30, "p2": 120, "p3": 120}
 LET = "ABCDEF"
 
-SYSTEM_PROMPT = """You are a certified {language} speaking examiner using the CEFR scale (A2-C1 range).
-Score on a 0-75 scale. You receive an AUDIO recording of a candidate answering a speaking question in {language}.
-First transcribe exactly what the candidate said (verbatim, in {language}), then evaluate strictly and fairly on:
-fluency & coherence, lexical resource, grammatical range & accuracy (for Arabic include word forms, agreement and
-case endings where audible), pronunciation & intonation (you can hear the audio), and task achievement.
+SYSTEM_PROMPT = """You are a strict, certified {language} speaking examiner for the CEFR multi-level exam, scored on the national 0-75 scale.
+You receive an AUDIO recording of a candidate answering a speaking question in {language}.
+First transcribe exactly what the candidate said (verbatim, in {language}).
+
+Score EACH criterion on the 0-75 scale (NOT 0-9, NOT 0-100):
+- fluency: speed, pauses, hesitations, fillers, coherence and linking of ideas
+- vocabulary: range, precision, collocations, repetition of the same words
+- grammar: range and accuracy of structures (for Arabic: verb forms, gender and number agreement, idafa,
+  particles, case endings where audible)
+- pronunciation: clarity, stress, intonation, unclear or wrong sounds you can hear in the audio
+- task: does the answer fully address the question, develop ideas with reasons and examples, appropriate length
+Scale guide: 0-37 = below B1 (A2 or lower); 38-50 = B1; 51-64 = B2; 65-75 = C1.
+Be strict and realistic. Do not give 65 or more unless the answer is clearly C1 level.
+
+ERROR ANALYSIS IS MANDATORY. List every distinct language error you find (up to 8), most important first.
+For each: the exact words the candidate said ('said'), the corrected version ('correct'),
+the error type ('type': grammar | vocabulary | pronunciation | fluency | other) and a short explanation
+in Uzbek ('why'). If there are fewer than 3 errors, still list them and add minor improvements.
+Also give 'corrected_transcript': the whole answer rewritten correctly.
+
 Answer ONLY with JSON:
 {
- "transcript": "verbatim transcript of the answer",
- "score": <0-75 integer>,
- "level": "<A2|B1|B2|C1>",
- "fluency": <0-9 number>, "vocabulary": <0-9>, "grammar": <0-9>, "pronunciation": <0-9>, "task": <0-9>,
+ "transcript": "verbatim transcript",
+ "fluency": <0-75>, "vocabulary": <0-75>, "grammar": <0-75>, "pronunciation": <0-75>, "task": <0-75>,
  "strengths": ["...", "..."],
- "mistakes": [{"said": "...", "correct": "...", "why": "..."}],
- "advice": ["...", "..."],
- "improved_answer": "a short model answer at the candidate's target level"
+ "mistakes": [{"said": "...", "correct": "...", "type": "grammar", "why": "..."}],
+ "corrected_transcript": "...",
+ "advice": ["...", "...", "..."],
+ "improved_answer": "a model answer at the next higher level"
 }
-Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct' and
-'improved_answer' in {language}. Be concise. If the audio is silent, unclear or very short, give a low score and say so."""
+Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct',
+'corrected_transcript' and 'improved_answer' in {language}. If the audio is silent, unclear or very short,
+give very low scores and say so in 'advice'."""
 
 
 class Exam(StatesGroup):
@@ -219,20 +234,55 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
     raise last_err or RuntimeError("Gemini javob bermadi")
 
 
+CRITERIA = ["fluency", "vocabulary", "grammar", "pronunciation", "task"]
+
+
+def level_from_score(score: int) -> str:
+    if score >= 65:
+        return "C1"
+    if score >= 51:
+        return "B2"
+    if score >= 38:
+        return "B1"
+    return "A2 yoki past (B1 dan quyi)"
+
+
+def finalize(ev: dict) -> dict:
+    """Mezon ballari 0-75 ga keltiriladi, umumiy ball va daraja kod bilan hisoblanadi."""
+    vals = []
+    for k in CRITERIA:
+        try:
+            v = float(ev.get(k, 0))
+        except (TypeError, ValueError):
+            v = 0.0
+        vals.append(max(0.0, v))
+    if vals and max(vals) <= 9:  # model 0-9 shkalada yozib yuborgan bo'lsa
+        vals = [v * 75 / 9 for v in vals]
+    vals = [min(75.0, v) for v in vals]
+    for k, v in zip(CRITERIA, vals):
+        ev[k] = round(v)
+    ev["score"] = round(sum(vals) / len(vals))
+    ev["level"] = level_from_score(ev["score"])
+    return ev
+
+
 def format_result(ev: dict) -> str:
-    mistakes = "\n".join(
-        f"• ❌ {esc(m.get('said', ''))}\n  ✅ {esc(m.get('correct', ''))}\n  💡 {esc(m.get('why', ''))}"
-        for m in ev.get("mistakes", [])[:5]
+    mistakes = "\n\n".join(
+        f"{i}. [{esc(m.get('type', ''))}]\n❌ {esc(m.get('said', ''))}\n✅ {esc(m.get('correct', ''))}\n💡 {esc(m.get('why', ''))}"
+        for i, m in enumerate(ev.get("mistakes", [])[:8], 1)
     ) or "—"
     strengths = "\n".join(f"• {esc(s)}" for s in ev.get("strengths", []))
     advice = "\n".join(f"• {esc(a)}" for a in ev.get("advice", []))
     return (
-        f"📊 <b>Natija: {esc(ev.get('score', '?'))}/75 ({esc(ev.get('level', '?'))})</b>\n"
-        f"Fluency {esc(ev.get('fluency', '?'))} · Vocabulary {esc(ev.get('vocabulary', '?'))} · "
-        f"Grammar {esc(ev.get('grammar', '?'))} · Pronunciation {esc(ev.get('pronunciation', '?'))} · "
-        f"Task {esc(ev.get('task', '?'))}\n\n"
+        f"📊 <b>Natija: {ev['score']}/75 — {esc(ev['level'])}</b>\n\n"
+        f"• Fluency (ravonlik): {ev['fluency']}/75\n"
+        f"• Vocabulary (lug'at): {ev['vocabulary']}/75\n"
+        f"• Grammar (grammatika): {ev['grammar']}/75\n"
+        f"• Pronunciation (talaffuz): {ev['pronunciation']}/75\n"
+        f"• Task (vazifa): {ev['task']}/75\n\n"
         f"👍 <b>Kuchli tomonlar</b>\n{strengths}\n\n"
-        f"🛠 <b>Xatolar</b>\n{mistakes}\n\n"
+        f"🛠 <b>Xatolar tahlili</b>\n{mistakes}\n\n"
+        f"✏️ <b>To'g'rilangan variant</b>\n{esc(ev.get('corrected_transcript', ''))}\n\n"
         f"📈 <b>Maslahat</b>\n{advice}\n\n"
         f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}"
     )
@@ -250,7 +300,7 @@ async def got_voice(message: types.Message, state: FSMContext):
     try:
         buf = io.BytesIO()
         await bot.download(file_obj, destination=buf)
-        ev = await evaluate_audio(lang, part, question, buf.getvalue(), mime)
+        ev = finalize(await evaluate_audio(lang, part, question, buf.getvalue(), mime))
     except Exception as e:  # noqa: BLE001
         await note.edit_text(f"❌ Xatolik: {esc(e)}\nBiroz kutib, qayta yuborib ko'ring.")
         return
@@ -258,7 +308,7 @@ async def got_voice(message: types.Message, state: FSMContext):
     await note.delete()
     await message.answer(f"📝 <b>Siz aytganingiz:</b>\n<i>{esc(ev.get('transcript', ''))}</i>")
     await send_long(message.chat.id, format_result(ev))
-    results.append(ev.get("score", 0))
+    results.append(ev["score"])
 
     if queue:
         await state.update_data(results=results)
