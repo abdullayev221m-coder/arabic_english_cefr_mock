@@ -1,0 +1,175 @@
+{
+  "en": {
+    "speaking": {
+      "p1": [
+        "Describe your hometown. What do you like most about it?",
+        "What do you usually do on weekends?",
+        "Tell me about your favourite food and why you like it.",
+        "How do you usually travel to school or work?",
+        "Do you prefer studying alone or with friends? Why?"
+      ],
+      "p2": [
+        "Some people prefer to live in a big city, others in a small town. Which do you prefer and why? Give reasons and examples.",
+        "Describe a person who has influenced you. Explain how and why.",
+        "Talk about a book or film you recently enjoyed and say why you recommend it."
+      ],
+      "p3": [
+        "Technology makes students lazy. Do you agree or disagree? Discuss advantages and disadvantages and give your opinion.",
+        "Should schools make learning a foreign language compulsory? Present arguments for and against."
+      ]
+    },
+    "reading": [
+      {
+        "title": "The Four-Day Week",
+        "text": "Several companies around the world have recently tested a four-day working week. Under this system, employees work for thirty-two hours instead of forty but receive the same salary. Supporters argue that people become more productive when they have more time to rest. In one trial involving sixty companies, most managers reported that output stayed the same or even improved, and workers said they felt less stressed.\n\nHowever, critics point out that the idea may not suit every job. Hospitals, restaurants and schools, for example, need staff to be present on all five days, so shorter weeks could mean hiring more people, which raises costs. Some economists also worry that employees might simply work faster and become more exhausted.\n\nDespite these concerns, many workers say they would not return to a five-day week, and several governments are now considering similar experiments.",
+        "questions": [
+          {
+            "q": "How many hours do employees work in the four-day system?",
+            "options": ["24", "32", "36", "40"],
+            "answer": 1
+          },
+          {
+            "q": "According to supporters, why is the shorter week beneficial?",
+            "options": ["It reduces salaries", "It creates more jobs in hospitals", "People are more productive when they rest", "Companies sell more products"],
+            "answer": 2,
+            "explain": "The text says people become more productive when they have more time to rest."
+          },
+          {
+            "q": "What did most managers report in the trial?",
+            "options": ["Output stayed the same or improved", "Output fell sharply", "Costs fell by half", "Workers asked for longer hours"],
+            "answer": 0
+          },
+          {
+            "q": "Why might a four-day week be difficult for hospitals?",
+            "options": ["They have too many workers", "Doctors prefer long hours", "Patients dislike change", "They need staff present on all five days"],
+            "answer": 3
+          },
+          {
+            "q": "What is the writer's overall attitude?",
+            "options": ["Strongly in favour", "Balanced, giving advantages and concerns", "Strongly opposed", "Uninterested"],
+            "answer": 1
+          }
+        ]
+      }
+    ],
+    "listening": [
+      {
+        "title": "Museum Announcement",
+        "script": "Good morning, everyone, and welcome to the City Science Museum. Before we begin, a few reminders. The guided tour starts at ten thirty at the main entrance, not at ten, as printed on your tickets. Because of repair work, the space gallery on the second floor is closed today, but the robotics exhibition on the ground floor is open until six o'clock. Photography is allowed, though you must switch off your flash. Lunch is available in the cafe next to the gift shop, and groups of more than ten can book a table at the information desk. Finally, please keep your tickets with you, as you will need them to re-enter after lunch. Enjoy your visit!",
+        "questions": [
+          {
+            "q": "What time does the guided tour start?",
+            "options": ["10:00", "9:30", "10:30", "11:00"],
+            "answer": 2
+          },
+          {
+            "q": "Why is the space gallery closed?",
+            "options": ["Because of repair work", "Because of a school visit", "Because it is too crowded", "Because of a power cut"],
+            "answer": 0
+          },
+          {
+            "q": "What must visitors do when taking photographs?",
+            "options": ["Ask a guide first", "Switch off the flash", "Stand behind a line", "Pay a small fee"],
+            "answer": 1
+          },
+          {
+            "q": "Where can large groups book a table for lunch?",
+            "options": ["At the cafe door", "At the main entrance", "At the gift shop", "At the information desk"],
+            "answer": 3
+          },
+          {
+            "q": "Why should visitors keep their tickets?",
+            "options": ["To get a discount in the cafe", "To enter the robotics exhibition", "To re-enter after lunch", "To collect a free gift"],
+            "answer": 2
+          }
+        ]
+      }
+    ]
+  },
+  "ar": {
+    "speaking": {
+      "p1": [
+        "تحدّث عن مدينتك. ماذا تحب فيها أكثر؟",
+        "ماذا تفعل عادةً في عطلة نهاية الأسبوع؟",
+        "حدّثني عن طعامك المفضل ولماذا تحبه.",
+        "كيف تذهب عادةً إلى المدرسة أو العمل؟",
+        "هل تفضّل الدراسة وحدك أم مع الأصدقاء؟ لماذا؟"
+      ],
+      "p2": [
+        "بعض الناس يفضّلون العيش في مدينة كبيرة وآخرون في بلدة صغيرة. أيهما تفضّل ولماذا؟ اذكر أسبابًا وأمثلة.",
+        "صِف شخصًا أثّر في حياتك. اشرح كيف أثّر فيك ولماذا.",
+        "تحدّث عن كتاب أو فيلم أعجبك مؤخرًا ولماذا تنصح به."
+      ],
+      "p3": [
+        "هل تجعل التكنولوجيا الطلاب كسالى؟ ناقش المزايا والعيوب وأعطِ رأيك.",
+        "هل يجب أن يكون تعلّم لغة أجنبية إلزاميًا في المدارس؟ اعرض الحجج المؤيدة والمعارضة."
+      ]
+    },
+    "reading": [
+      {
+        "title": "المكتبة العامة",
+        "text": "في مدينتي مكتبة عامة كبيرة تفتح أبوابها كل يوم من الساعة الثامنة صباحًا حتى الثامنة مساءً، ما عدا يوم الجمعة حيث تفتح بعد الظهر. تضم المكتبة أكثر من خمسين ألف كتاب باللغتين العربية والإنجليزية، وفيها قسم خاص بالأطفال وقاعة هادئة للدراسة.\n\nيستطيع الطلاب استعارة ثلاثة كتب لمدة أسبوعين مجانًا، وإذا تأخّروا في إعادة الكتاب يدفعون غرامة صغيرة. في الأسبوع الماضي زرتُ المكتبة مع صديقي أحمد، واستعرنا كتبًا عن التاريخ، وتعلّمنا كيف نبحث عن المعلومات في الحاسوب. أحببتُ المكان لأنه هادئ، وأنوي زيارته كل أسبوع.",
+        "questions": [
+          {
+            "q": "متى تفتح المكتبة أبوابها في الأيام العادية؟",
+            "options": ["من السادسة صباحًا إلى السادسة مساءً", "من الثامنة صباحًا إلى الثامنة مساءً", "من العاشرة صباحًا إلى العاشرة مساءً", "من الثامنة صباحًا إلى الرابعة عصرًا"],
+            "answer": 1
+          },
+          {
+            "q": "كم كتابًا يستطيع الطالب أن يستعير؟",
+            "options": ["كتابًا واحدًا", "ثلاثة كتب", "خمسة كتب", "عشرة كتب"],
+            "answer": 1
+          },
+          {
+            "q": "ماذا يحدث إذا تأخّر الطالب في إعادة الكتاب؟",
+            "options": ["لا يستطيع دخول المكتبة", "يعيد كتابين", "يدفع غرامة صغيرة", "يكتب رسالة اعتذار"],
+            "answer": 2
+          },
+          {
+            "q": "مع من زار الكاتب المكتبة؟",
+            "options": ["مع أخيه", "مع صديقه أحمد", "مع معلّمه", "وحده"],
+            "answer": 1
+          },
+          {
+            "q": "لماذا أحبّ الكاتب المكتبة؟",
+            "options": ["لأنها هادئة", "لأنها قريبة من بيته", "لأن فيها مقهى", "لأن فيها ألعابًا"],
+            "answer": 0
+          }
+        ]
+      }
+    ],
+    "listening": [
+      {
+        "title": "رسالة صوتية من خالد",
+        "script": "مرحبًا يا سارة، أنا خالد. أتصل بك لأخبرك عن رحلة المدرسة يوم الخميس. ستتحرك الحافلة من أمام المدرسة في الساعة السابعة والنصف صباحًا، ولن ننتظر أحدًا يتأخر. سنزور المتحف الوطني، ثم نتناول الغداء في الحديقة القريبة منه. أحضري معك زجاجة ماء وكاميرا، ولا تنسَي أن تلبسي حذاءً مريحًا لأننا سنمشي كثيرًا. سنعود إلى المدرسة في الساعة الرابعة عصرًا. أراكِ قريبًا!",
+        "questions": [
+          {
+            "q": "متى ستتحرك الحافلة؟",
+            "options": ["الساعة السابعة", "الساعة السابعة والنصف", "الساعة الثامنة والنصف", "الساعة الرابعة"],
+            "answer": 1
+          },
+          {
+            "q": "إلى أين ستذهب الرحلة؟",
+            "options": ["إلى المتحف الوطني", "إلى حديقة الحيوان", "إلى المكتبة العامة", "إلى السوق"],
+            "answer": 0
+          },
+          {
+            "q": "أين سيتناولون الغداء؟",
+            "options": ["في المطعم", "في الحديقة القريبة من المتحف", "في المدرسة", "في الحافلة"],
+            "answer": 1
+          },
+          {
+            "q": "ماذا يجب أن تحضر سارة؟",
+            "options": ["كتابًا وقلمًا", "طعامًا فقط", "زجاجة ماء وكاميرا", "حقيبة سفر"],
+            "answer": 2
+          },
+          {
+            "q": "متى سيعودون إلى المدرسة؟",
+            "options": ["الثانية ظهرًا", "الثالثة عصرًا", "الخامسة مساءً", "الرابعة عصرًا"],
+            "answer": 3
+          }
+        ]
+      }
+    ]
+  }
+}
