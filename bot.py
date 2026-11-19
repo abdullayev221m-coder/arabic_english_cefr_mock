@@ -1,657 +1,474 @@
-"""
-CEFR Mock Bot (English + Arabic)
-
-Bo'limlar:
-  * Reading   - matn + test savollar (tugmalar bilan)
-  * Listening - matn avtomatik ovozga aylantiriladi (gTTS) + test savollar
-  * Speaking  - 3 qism, ovozli (yoki matnli) javob; GEMINI_API_KEY bo'lsa AI baholaydi
-
-Ma'lumot: shu papkadagi cefr_mocks.json
-Railway Variables:
-  BOT_TOKEN        (majburiy)
-  GEMINI_API_KEY   (ixtiyoriy - Speaking AI baholash uchun)
-  GEMINI_MODEL     (ixtiyoriy, standart: gemini-2.5-flash)
-  FEEDBACK_LANG    (ixtiyoriy, standart: Uzbek)
-"""
-
 import asyncio
-import base64
 import html
 import io
 import json
-import logging
 import os
-import re
+import random
 from pathlib import Path
 
-import httpx
+from aiogram import Bot, Dispatcher, F, types
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from aiogram.filters import Command, CommandStart
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import BufferedInputFile, InlineKeyboardButton, InlineKeyboardMarkup
+from google import genai
+from google.genai import types as gtypes
 from gtts import gTTS
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ParseMode
-from telegram.error import BadRequest
-from telegram.ext import (
-    Application,
-    CallbackQueryHandler,
-    CommandHandler,
-    ContextTypes,
-    MessageHandler,
-    filters,
-)
 
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s", level=logging.INFO
-)
-logging.getLogger("httpx").setLevel(logging.WARNING)
-log = logging.getLogger("cefr-bot")
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+gemini = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+# Bir nechta model vergul bilan yozilishi mumkin: biri xato bersa yoki limiti tugasa, keyingisi sinaladi.
+GEMINI_MODELS = [m.strip() for m in os.environ.get("GEMINI_MODEL", "gemini-3.8-flash").split(",") if m.strip()]
 
-# --------------------------------------------------------------------------
-# Sozlamalar
-# --------------------------------------------------------------------------
+CONTENT = json.loads((Path(__file__).parent / "content.json").read_text(encoding="utf-8"))
 
-BASE_DIR = Path(__file__).resolve().parent
-DATA_FILE = BASE_DIR / "cefr_mocks.json"
-
-TOKEN_NAMES = (
-    "BOT_TOKEN",
-    "TELEGRAM_BOT_TOKEN",
-    "TELEGRAM_TOKEN",
-    "API_TOKEN",
-    "TOKEN",
-)
-
-
-def env_first(*names):
-    for name in names:
-        value = os.getenv(name)
-        if value and value.strip():
-            return value.strip()
-    return None
-
-
-BOT_TOKEN = env_first(*TOKEN_NAMES)
-GEMINI_KEY = env_first("GEMINI_API_KEY", "GOOGLE_API_KEY")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
-FEEDBACK_LANG = os.getenv("FEEDBACK_LANG", "Uzbek").strip()
-
-MAX_VOICE_SECONDS = 300
-MAX_FILE_BYTES = 15 * 1024 * 1024
-HTML = ParseMode.HTML
-
-LANG_LABELS = {"english": "🇬🇧 English", "arabic": "🇸🇦 العربية"}
-SECTION_LABELS = {
-    "reading": "📖 Reading",
-    "listening": "🎧 Listening",
-    "speaking": "🎤 Speaking",
+LANGS = {
+    "en": {"label": "🇬🇧 English", "exam": "English", "tts": "en"},
+    "ar": {"label": "🇸🇦 العربية", "exam": "Arabic", "tts": "ar"},
 }
+PART_NAMES = {"p1": "Part 1", "p2": "Part 2", "p3": "Part 3"}
+PART_TIME = {"p1": 30, "p2": 120, "p3": 120}
+LET = "ABCDEF"
+
+SYSTEM_PROMPT = """You are a strict, certified {language} speaking examiner for the CEFR multi-level exam, scored on the national 0-75 scale.
+You receive an AUDIO recording of a candidate answering a speaking question in {language}.
+First transcribe exactly what the candidate said (verbatim, in {language}).
+
+Score EACH criterion on the 0-75 scale (NOT 0-9, NOT 0-100):
+- fluency: speed, pauses, hesitations, fillers, coherence and linking of ideas
+- vocabulary: range, precision, collocations, repetition of the same words
+- grammar: range and accuracy of structures (for Arabic: verb forms, gender and number agreement, idafa,
+  particles, case endings where audible)
+- pronunciation: clarity, stress, intonation, unclear or wrong sounds you can hear in the audio
+- task: does the answer fully address the question, develop ideas with reasons and examples, appropriate length
+Scale guide: 0-37 = below B1 (A2 or lower); 38-50 = B1; 51-64 = B2; 65-75 = C1.
+Be strict and realistic. Do not give 65 or more unless the answer is clearly C1 level.
+
+ERROR ANALYSIS IS MANDATORY. List every distinct language error you find (up to 8), most important first.
+For each: the exact words the candidate said ('said'), the corrected version ('correct'),
+the error type ('type': grammar | vocabulary | pronunciation | fluency | other) and a short explanation
+in Uzbek ('why'). If there are fewer than 3 errors, still list them and add minor improvements.
+Also give 'corrected_transcript': the whole answer rewritten correctly.
+
+Answer ONLY with JSON:
+{
+ "transcript": "verbatim transcript",
+ "fluency": <0-75>, "vocabulary": <0-75>, "grammar": <0-75>, "pronunciation": <0-75>, "task": <0-75>,
+ "strengths": ["...", "..."],
+ "mistakes": [{"said": "...", "correct": "...", "type": "grammar", "why": "..."}],
+ "corrected_transcript": "...",
+ "advice": ["...", "...", "..."],
+ "improved_answer": "a model answer at the next higher level"
+}
+Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct',
+'corrected_transcript' and 'improved_answer' in {language}. If the audio is silent, unclear or very short,
+give very low scores and say so in 'advice'."""
 
 
-def load_data():
-    if not DATA_FILE.exists():
-        raise SystemExit("cefr_mocks.json topilmadi. Uni bot.py bilan bir papkaga yuklang.")
-    try:
-        with open(DATA_FILE, encoding="utf-8") as f:
-            data = json.load(f)
-    except json.JSONDecodeError as exc:
-        raise SystemExit(
-            f"cefr_mocks.json to'liq emas yoki buzilgan ({exc}). "
-            "Uni nusxalamang: GitHub'da 'Upload files' orqali fayl sifatida qayta yuklang."
-        )
-    if "languages" not in data or not data["languages"]:
-        raise SystemExit("cefr_mocks.json ichida 'languages' topilmadi")
-    return data
+class Exam(StatesGroup):
+    waiting_voice = State()
+    quiz = State()
 
 
-DATA = load_data()
-LANGS = DATA["languages"]
+bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+dp = Dispatcher(storage=MemoryStorage())
 
-# --------------------------------------------------------------------------
-# Yordamchi funksiyalar
-# --------------------------------------------------------------------------
-
-
-def esc(text):
-    return html.escape(str(text), quote=False)
+USER_LANG: dict[int, str] = {}
+AUDIO_CACHE: dict[tuple[str, int], str] = {}
 
 
-def letter(lang, index):
-    letters = "أبجد" if lang == "arabic" else "ABCD"
-    return letters[index] if index < len(letters) else str(index + 1)
+def lang_of(chat_id: int) -> str:
+    return USER_LANG.get(chat_id, "en")
 
 
-def kb(rows):
-    return InlineKeyboardMarkup(
-        [[InlineKeyboardButton(text, callback_data=data) for text, data in row] for row in rows]
+def esc(s) -> str:
+    return html.escape(str(s))
+
+
+async def send_long(chat_id: int, text: str, **kw):
+    while text:
+        if len(text) <= 4000:
+            chunk, text = text, ""
+        else:
+            cut = text.rfind("\n", 0, 4000)
+            cut = cut if cut > 0 else 4000
+            chunk, text = text[:cut], text[cut:].lstrip("\n")
+        await bot.send_message(chat_id, chunk, **kw)
+
+
+# ---------------- Klaviaturalar ----------------
+def lang_kb() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text=LANGS["en"]["label"], callback_data="lang:en"),
+        InlineKeyboardButton(text=LANGS["ar"]["label"], callback_data="lang:ar"),
+    ]])
+
+
+def menu_kb() -> InlineKeyboardMarkup:
+    b = InlineKeyboardButton
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [b(text="🎤 Speaking Part 1", callback_data="part:p1"),
+         b(text="🎤 Part 2", callback_data="part:p2")],
+        [b(text="🎤 Part 3", callback_data="part:p3"),
+         b(text="📝 To'liq speaking mock", callback_data="mock")],
+        [b(text="📖 Reading", callback_data="list:reading"),
+         b(text="🎧 Listening", callback_data="list:listening")],
+        [b(text="🌐 Tilni o'zgartirish", callback_data="chlang")],
+    ])
+
+
+def items_kb(lang: str, kind: str) -> InlineKeyboardMarkup:
+    rows = [[InlineKeyboardButton(text=f"{i + 1}. {it['title']}", callback_data=f"item:{kind}:{i}")]
+            for i, it in enumerate(CONTENT[lang][kind])]
+    rows.append([InlineKeyboardButton(text="⬅️ Menyu", callback_data="menu")])
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+# ---------------- Boshlash va menyu ----------------
+@dp.message(CommandStart())
+async def start(message: types.Message, state: FSMContext):
+    await state.clear()
+    await message.answer(
+        "Salom! Men CEFR mock botiman 🎙📖🎧\n\n"
+        "Speaking (ovozli javob), Reading va Listening mashqlari bor.\n\nTilni tanlang:",
+        reply_markup=lang_kb(),
     )
 
 
-def get_test(lang, ti):
-    return LANGS[lang]["tests"][ti]
+@dp.message(Command("menu"))
+async def menu_cmd(message: types.Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Bo'limni tanlang:", reply_markup=menu_kb())
 
 
-def clear_state(context):
-    context.user_data.pop("quiz", None)
-    context.user_data.pop("speak", None)
+@dp.callback_query(F.data == "menu")
+async def menu_cb(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    await cb.message.answer("Bo'limni tanlang:", reply_markup=menu_kb())
 
 
-async def show(update, context, text, markup=None):
-    """Callback bo'lsa xabarni tahrirlaydi, aks holda yangi xabar yuboradi."""
-    query = update.callback_query
-    chat_id = update.effective_chat.id
-    if query is not None:
+@dp.callback_query(F.data == "chlang")
+async def change_lang(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    await cb.message.answer("Tilni tanlang:", reply_markup=lang_kb())
+
+
+@dp.callback_query(F.data.startswith("lang:"))
+async def set_lang(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    lang = cb.data.split(":")[1]
+    USER_LANG[cb.message.chat.id] = lang
+    await cb.message.answer(f"Til: {LANGS[lang]['label']}\nBo'limni tanlang:", reply_markup=menu_kb())
+
+
+# ---------------- SPEAKING ----------------
+async def ask_question(chat_id: int, state: FSMContext, part: str, queue: list[str]):
+    lang = lang_of(chat_id)
+    q = random.choice(CONTENT[lang]["speaking"][part])
+    prev = (await state.get_data()).get("results", [])
+    await state.set_state(Exam.waiting_voice)
+    await state.update_data(part=part, question=q, queue=queue, results=prev, lang=lang)
+    await bot.send_message(
+        chat_id,
+        f"<b>{PART_NAMES[part]}</b> ({LANGS[lang]['label']})\n\n{esc(q)}\n\n"
+        f"⏱ Tavsiya: ~{PART_TIME[part]} soniya. Javobni <b>ovozli xabar</b> qilib yuboring.",
+    )
+
+
+@dp.callback_query(F.data.startswith("part:"))
+async def pick_part(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    await ask_question(cb.message.chat.id, state, cb.data.split(":")[1], [])
+
+
+@dp.callback_query(F.data == "mock")
+async def pick_mock(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    await ask_question(cb.message.chat.id, state, "p1", ["p2", "p3"])
+
+
+def _parse_json(text: str) -> dict:
+    text = (text or "").strip()
+    text = text[text.find("{"): text.rfind("}") + 1]
+    return json.loads(text)
+
+
+async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime: str) -> dict:
+    """Ovozni Gemini'ga yuboradi: transkript + baho bitta so'rovda. Modellar ketma-ket sinaladi."""
+    system = SYSTEM_PROMPT.replace("{language}", LANGS[lang]["exam"])
+    contents = [
+        f"Part: {PART_NAMES[part]}\nQuestion: {question}\n\nEvaluate the candidate's audio answer.",
+        gtypes.Part.from_bytes(data=audio, mime_type=mime),
+    ]
+    transient = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED", "500", "INTERNAL", "overloaded", "high demand")
+    last_err: Exception | None = None
+    for attempt in range(4):  # band bo'lsa 4 marta urinadi: 0, 3, 6, 10 soniya kutish bilan
+        retry = False
+        for model in GEMINI_MODELS:
+            try:
+                resp = await gemini.aio.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=gtypes.GenerateContentConfig(
+                        system_instruction=system,
+                        response_mime_type="application/json",
+                        temperature=0.2,
+                    ),
+                )
+                return _parse_json(resp.text)
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                if any(t in str(e) for t in transient):
+                    retry = True
+        if not retry or attempt == 3:
+            break
+        await asyncio.sleep((3, 3, 4)[attempt])
+    raise last_err or RuntimeError("Gemini javob bermadi")
+
+
+CRITERIA = ["fluency", "vocabulary", "grammar", "pronunciation", "task"]
+
+
+def level_from_score(score: int) -> str:
+    if score >= 65:
+        return "C1"
+    if score >= 51:
+        return "B2"
+    if score >= 38:
+        return "B1"
+    return "A2 yoki past (B1 dan quyi)"
+
+
+def finalize(ev: dict) -> dict:
+    """Mezon ballari 0-75 ga keltiriladi, umumiy ball va daraja kod bilan hisoblanadi."""
+    vals = []
+    for k in CRITERIA:
         try:
-            await query.edit_message_text(text, parse_mode=HTML, reply_markup=markup)
-            return
-        except BadRequest as exc:
-            if "not modified" in str(exc).lower():
-                return
-            log.info("edit failed, sending new message: %s", exc)
-    await context.bot.send_message(chat_id, text, parse_mode=HTML, reply_markup=markup)
+            v = float(ev.get(k, 0))
+        except (TypeError, ValueError):
+            v = 0.0
+        vals.append(max(0.0, v))
+    if vals and max(vals) <= 9:  # model 0-9 shkalada yozib yuborgan bo'lsa
+        vals = [v * 75 / 9 for v in vals]
+    vals = [min(75.0, v) for v in vals]
+    for k, v in zip(CRITERIA, vals):
+        ev[k] = round(v)
+    ev["score"] = round(sum(vals) / len(vals))
+    ev["level"] = level_from_score(ev["score"])
+    return ev
 
 
-# --------------------------------------------------------------------------
-# Menyular
-# --------------------------------------------------------------------------
-
-
-def home_markup():
-    rows = [[(LANG_LABELS.get(key, key.title()), f"L:{key}")] for key in LANGS]
-    return kb(rows)
-
-
-HOME_TEXT = (
-    "👋 <b>CEFR Mock Test</b>\n\n"
-    "Reading, Listening va Speaking bo'yicha mashq qiling.\n"
-    "Tilni tanlang:"
-)
-
-
-async def show_home(update, context):
-    clear_state(context)
-    await show(update, context, HOME_TEXT, home_markup())
-
-
-async def show_levels(update, context, lang):
-    tests = LANGS[lang]["tests"]
-    buttons = [(f"{t['level']} · Mock {i + 1}", f"T:{lang}:{i}") for i, t in enumerate(tests)]
-    rows = [buttons[i : i + 2] for i in range(0, len(buttons), 2)]
-    rows.append([("⬅️ Orqaga", "H")])
-    label = LANG_LABELS.get(lang, lang.title())
-    await show(update, context, f"{label}\n\nDarajani tanlang:", kb(rows))
-
-
-async def show_sections(update, context, lang, ti):
-    test = get_test(lang, ti)
-    text = f"📘 <b>{esc(test['title'])}</b>\nDaraja: <b>{esc(test['level'])}</b>\n\nBo'limni tanlang:"
-    rows = [[(label, f"S:{lang}:{ti}:{sec}")] for sec, label in SECTION_LABELS.items() if sec in test]
-    rows.append([("⬅️ Orqaga", f"L:{lang}")])
-    await show(update, context, text, kb(rows))
-
-
-def after_markup(lang, ti, sec):
-    return kb(
-        [
-            [("🔁 Qayta urinish", f"S:{lang}:{ti}:{sec}")],
-            [("📋 Boshqa bo'lim", f"T:{lang}:{ti}")],
-            [("🏠 Bosh menyu", "H")],
-        ]
+def format_result(ev: dict) -> str:
+    mistakes = "\n\n".join(
+        f"{i}. [{esc(m.get('type', ''))}]\n❌ {esc(m.get('said', ''))}\n✅ {esc(m.get('correct', ''))}\n💡 {esc(m.get('why', ''))}"
+        for i, m in enumerate(ev.get("mistakes", [])[:8], 1)
+    ) or "—"
+    strengths = "\n".join(f"• {esc(s)}" for s in ev.get("strengths", []))
+    advice = "\n".join(f"• {esc(a)}" for a in ev.get("advice", []))
+    return (
+        f"📊 <b>Natija: {ev['score']}/75 — {esc(ev['level'])}</b>\n\n"
+        f"• Fluency (ravonlik): {ev['fluency']}/75\n"
+        f"• Vocabulary (lug'at): {ev['vocabulary']}/75\n"
+        f"• Grammar (grammatika): {ev['grammar']}/75\n"
+        f"• Pronunciation (talaffuz): {ev['pronunciation']}/75\n"
+        f"• Task (vazifa): {ev['task']}/75\n\n"
+        f"👍 <b>Kuchli tomonlar</b>\n{strengths}\n\n"
+        f"🛠 <b>Xatolar tahlili</b>\n{mistakes}\n\n"
+        f"✏️ <b>To'g'rilangan variant</b>\n{esc(ev.get('corrected_transcript', ''))}\n\n"
+        f"📈 <b>Maslahat</b>\n{advice}\n\n"
+        f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}"
     )
 
 
-# --------------------------------------------------------------------------
-# Reading / Listening (test savollar)
-# --------------------------------------------------------------------------
+@dp.message(Exam.waiting_voice, F.voice | F.audio)
+async def got_voice(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    part, question, lang = data["part"], data["question"], data.get("lang", "en")
+    queue, results = data.get("queue", []), data.get("results", [])
 
-_audio_cache = {}
+    note = await message.answer("⏳ Javobingiz tahlil qilinmoqda...")
+    file_obj = message.voice or message.audio
+    mime = getattr(file_obj, "mime_type", None) or "audio/ogg"
+    try:
+        buf = io.BytesIO()
+        await bot.download(file_obj, destination=buf)
+        ev = finalize(await evaluate_audio(lang, part, question, buf.getvalue(), mime))
+    except Exception as e:  # noqa: BLE001
+        await note.edit_text(f"❌ Xatolik: {esc(e)}\nBiroz kutib, qayta yuborib ko'ring.")
+        return
+
+    await note.delete()
+    await message.answer(f"📝 <b>Siz aytganingiz:</b>\n<i>{esc(ev.get('transcript', ''))}</i>")
+    await send_long(message.chat.id, format_result(ev))
+    results.append(ev["score"])
+
+    if queue:
+        await state.update_data(results=results)
+        await ask_question(message.chat.id, state, queue[0], queue[1:])
+    else:
+        if len(results) > 1:
+            avg = round(sum(results) / len(results))
+            await message.answer(f"🏁 <b>Mock yakuni: o'rtacha {avg}/75</b>")
+        await state.clear()
+        await message.answer("Yana mashq qilamizmi?", reply_markup=menu_kb())
 
 
-def _synthesize(text, code, slow):
+@dp.message(Exam.waiting_voice)
+async def need_voice(message: types.Message):
+    await message.answer("Iltimos, javobni <b>ovozli xabar</b> ko'rinishida yuboring 🎤")
+
+
+# ---------------- READING / LISTENING ----------------
+@dp.callback_query(F.data.startswith("list:"))
+async def list_items(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    kind = cb.data.split(":")[1]
+    lang = lang_of(cb.message.chat.id)
+    if not CONTENT[lang].get(kind):
+        await cb.message.answer("Bu til uchun hozircha mashq yo'q.", reply_markup=menu_kb())
+        return
+    title = "📖 Reading" if kind == "reading" else "🎧 Listening"
+    await cb.message.answer(f"{title} ({LANGS[lang]['label']}). Mashqni tanlang:", reply_markup=items_kb(lang, kind))
+
+
+def _tts_bytes(text: str, lang_code: str) -> bytes:
     buf = io.BytesIO()
-    gTTS(text=text, lang=code, slow=slow).write_to_fp(buf)
+    gTTS(text=text, lang=lang_code).write_to_fp(buf)
     return buf.getvalue()
 
 
-async def get_audio(lang, test):
-    key = test["id"]
-    if key in _audio_cache:
-        return _audio_cache[key]
-    code = LANGS[lang].get("tts_lang", "en-US").split("-")[0]
-    slow = test.get("level") == "A1"
-    last_error = None
-    for _ in range(2):
-        try:
-            data = await asyncio.to_thread(_synthesize, test["listening"]["script"], code, slow)
-            _audio_cache[key] = data
-            return data
-        except Exception as exc:  # tarmoq xatolari
-            last_error = exc
-            await asyncio.sleep(1)
-    raise last_error
-
-
-async def send_question(bot, chat_id, quiz):
-    item = quiz["qs"][quiz["i"]]
-    quiz["n"] += 1
-    lines = [f"❓ <b>{quiz['i'] + 1}/{len(quiz['qs'])}</b>", "", esc(item["q"]), ""]
-    buttons = []
-    for j, option in enumerate(item["options"]):
-        lines.append(f"{letter(quiz['lang'], j)}) {esc(option)}")
-        buttons.append((letter(quiz["lang"], j), f"a:{quiz['n']}:{j}"))
-    quiz["last_text"] = "\n".join(lines)
-    await bot.send_message(chat_id, quiz["last_text"], parse_mode=HTML, reply_markup=kb([buttons]))
-
-
-async def start_quiz(update, context, lang, ti, sec):
-    chat_id = update.effective_chat.id
-    test = get_test(lang, ti)
-    section = test[sec]
-    clear_state(context)
-
-    if sec == "reading":
-        text = f"📖 <b>{esc(section['title'])}</b>\n\n{esc(section['text'])}"
-        await context.bot.send_message(chat_id, text, parse_mode=HTML)
-        await context.bot.send_message(chat_id, "Matnni o'qib, savollarga javob bering 👇")
+async def send_listening_audio(chat_id: int, lang: str, idx: int, item: dict):
+    key = (lang, idx)
+    if key in AUDIO_CACHE:
+        await bot.send_audio(chat_id, AUDIO_CACHE[key], title=item["title"])
+        return
+    audio_path = item.get("audio_file")
+    if audio_path and (Path(__file__).parent / audio_path).exists():
+        data = (Path(__file__).parent / audio_path).read_bytes()
     else:
-        status = await context.bot.send_message(chat_id, "🎧 Audio tayyorlanmoqda, biroz kuting...")
-        try:
-            audio = await get_audio(lang, test)
-        except Exception:
-            log.exception("TTS xatosi")
-            await status.edit_text("⚠️ Audio yaratib bo'lmadi. Birozdan keyin qayta urinib ko'ring.")
-            await context.bot.send_message(
-                chat_id, "Bo'lim tanlang:", reply_markup=after_markup(lang, ti, sec)
-            )
-            return
-        try:
-            await status.delete()
-        except BadRequest:
-            pass
-        await context.bot.send_audio(
-            chat_id,
-            audio=io.BytesIO(audio),
-            filename=f"{test['id']}.mp3",
-            title=section["title"],
-        )
-        await context.bot.send_message(
-            chat_id, "🎧 Audioni diqqat bilan tinglang (xohlagancha qayta eshitishingiz mumkin), so'ng savollarga javob bering 👇"
-        )
-
-    quiz = {
-        "lang": lang,
-        "ti": ti,
-        "sec": sec,
-        "qs": section["questions"],
-        "i": 0,
-        "score": 0,
-        "n": 0,
-        "done_n": None,
-        "last_text": "",
-    }
-    context.user_data["quiz"] = quiz
-    await send_question(context.bot, chat_id, quiz)
+        data = await asyncio.to_thread(_tts_bytes, item["script"], LANGS[lang]["tts"])
+    msg = await bot.send_audio(
+        chat_id, BufferedInputFile(data, filename="listening.mp3"), title=item["title"]
+    )
+    AUDIO_CACHE[key] = msg.audio.file_id
 
 
-async def handle_answer(update, context, data):
-    query = update.callback_query
-    chat_id = update.effective_chat.id
-    quiz = context.user_data.get("quiz")
-    try:
-        _, n_text, j_text = data.split(":")
-        n, j = int(n_text), int(j_text)
-    except ValueError:
-        await query.answer()
-        return
+@dp.callback_query(F.data.startswith("item:"))
+async def pick_item(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    _, kind, idx = cb.data.split(":")
+    idx = int(idx)
+    chat_id = cb.message.chat.id
+    lang = lang_of(chat_id)
+    item = CONTENT[lang][kind][idx]
 
-    if not quiz or quiz["n"] != n or quiz["done_n"] == n:
-        await query.answer("Bu savol yopilgan.")
-        return
-    quiz["done_n"] = n
-    await query.answer()
-
-    item = quiz["qs"][quiz["i"]]
-    correct = item["answer"]
-    ok = j == correct
-    if ok:
-        quiz["score"] += 1
-        result = "✅ <b>To'g'ri!</b>"
+    if kind == "reading":
+        await send_long(chat_id, f"<b>{esc(item['title'])}</b>\n\n{esc(item['text'])}")
     else:
-        right = f"{letter(quiz['lang'], correct)}) {item['options'][correct]}"
-        result = f"❌ <b>Noto'g'ri.</b>\nTo'g'ri javob: {esc(right)}"
-    try:
-        await query.edit_message_text(quiz["last_text"] + "\n\n" + result, parse_mode=HTML)
-    except BadRequest as exc:
-        log.info("edit skipped: %s", exc)
-
-    quiz["i"] += 1
-    if quiz["i"] < len(quiz["qs"]):
-        await send_question(context.bot, chat_id, quiz)
-        return
-
-    await finish_quiz(context, chat_id, quiz)
-
-
-async def finish_quiz(context, chat_id, quiz):
-    context.user_data.pop("quiz", None)
-    total = len(quiz["qs"])
-    score = quiz["score"]
-    pct = round(100 * score / total)
-    mood = "🎉" if pct >= 80 else "👍" if pct >= 60 else "💪"
-    label = SECTION_LABELS[quiz["sec"]]
-    text = f"🏁 <b>{label}</b>\n\nNatija: <b>{score}/{total}</b> ({pct}%) {mood}"
-    if quiz["sec"] == "listening":
-        script = get_test(quiz["lang"], quiz["ti"])["listening"]["script"]
-        text += f"\n\n📝 Audio matni (ochish uchun bosing):\n<tg-spoiler>{esc(script)}</tg-spoiler>"
-    await context.bot.send_message(
-        chat_id, text, parse_mode=HTML, reply_markup=after_markup(quiz["lang"], quiz["ti"], quiz["sec"])
-    )
-
-
-# --------------------------------------------------------------------------
-# Speaking
-# --------------------------------------------------------------------------
-
-
-def speaking_prompt(test, part):
-    sp = test["speaking"]
-    if part == 1:
-        qs = "\n".join(f"{i}. {esc(q)}" for i, q in enumerate(sp["part1"], 1))
-        return (
-            "🎤 <b>Speaking · Part 1</b>\n\n"
-            f"{qs}\n\n"
-            "Har bir savolga 2–3 gapdan javob bering. "
-            "Hammasiga <b>bitta ovozli xabar</b> yuboring (taxminan 1 daqiqa)."
-        )
-    if part == 2:
-        p2 = sp["part2"]
-        points = "\n".join(f"• {esc(p)}" for p in p2["points"])
-        return (
-            "🎤 <b>Speaking · Part 2</b>\n\n"
-            f"📌 <b>{esc(p2['topic'])}</b>\n{points}\n\n"
-            f"⏱ Tayyorlanish: {p2['prep_seconds']} soniya · Gapirish: {p2['speak_seconds']} soniyagacha\n\n"
-            "Tayyor bo'lgach, <b>ovozli xabar</b> yuboring."
-        )
-    qs = "\n".join(f"{i}. {esc(q)}" for i, q in enumerate(sp["part3"], 1))
-    return (
-        "🎤 <b>Speaking · Part 3</b>\n\n"
-        f"{qs}\n\n"
-        "Sabab va misollar bilan javob bering (har bir savolga 45–60 soniya). "
-        "Hammasiga <b>bitta ovozli xabar</b> yuboring."
-    )
-
-
-CANCEL_MARKUP = kb([[("❌ Bekor qilish", "C")]])
-
-
-async def start_speaking(update, context, lang, ti):
-    clear_state(context)
-    context.user_data["speak"] = {"lang": lang, "ti": ti, "part": 1, "items": []}
-    test = get_test(lang, ti)
-    await context.bot.send_message(
-        update.effective_chat.id,
-        speaking_prompt(test, 1),
-        parse_mode=HTML,
-        reply_markup=CANCEL_MARKUP,
-    )
-
-
-async def on_user_message(update, context):
-    message = update.effective_message
-    speak = context.user_data.get("speak")
-    if not speak:
-        await message.reply_text("Menyuni ochish uchun /start ni bosing.")
-        return
-
-    media = message.voice or message.audio
-    if media is not None:
-        if media.duration and media.duration > MAX_VOICE_SECONDS:
-            await message.reply_text("Ovozli xabar juda uzun. 5 daqiqadan qisqaroq yuboring.")
+        note = await bot.send_message(chat_id, "🎧 Audio tayyorlanmoqda...")
+        try:
+            await send_listening_audio(chat_id, lang, idx, item)
+        except Exception as e:  # noqa: BLE001
+            await note.edit_text(f"❌ Audio xatosi: {esc(e)}")
             return
-        if media.file_size and media.file_size > MAX_FILE_BYTES:
-            await message.reply_text("Fayl hajmi katta. Qisqaroq ovoz yuboring.")
-            return
-        tg_file = await media.get_file()
-        audio_bytes = bytes(await tg_file.download_as_bytearray())
-        item = {
-            "part": speak["part"],
-            "kind": "audio",
-            "data": audio_bytes,
-            "mime": getattr(media, "mime_type", None) or "audio/ogg",
-        }
-    elif message.text:
-        text = message.text.strip()
-        if len(text) < 15:
-            await message.reply_text("Javob juda qisqa. Ovozli xabar yuboring yoki batafsilroq yozing.")
-            return
-        item = {"part": speak["part"], "kind": "text", "text": text}
-    else:
-        return
+        await note.delete()
+        await bot.send_message(chat_id, "Audioni tinglang (qayta tinglash mumkin), so'ng savollarga javob bering.")
 
-    speak["items"].append(item)
-    lang, ti = speak["lang"], speak["ti"]
-    chat_id = update.effective_chat.id
-
-    if speak["part"] < 3:
-        speak["part"] += 1
-        await message.reply_text("✅ Qabul qilindi.")
-        await context.bot.send_message(
-            chat_id,
-            speaking_prompt(get_test(lang, ti), speak["part"]),
-            parse_mode=HTML,
-            reply_markup=CANCEL_MARKUP,
-        )
-        return
-
-    context.user_data.pop("speak", None)
-    await finish_speaking(context, chat_id, lang, ti, speak["items"])
+    await state.set_state(Exam.quiz)
+    await state.update_data(lang=lang, kind=kind, idx=idx, qi=0, score=0)
+    await send_question(chat_id, state)
 
 
-def build_scoring_prompt(lang, test):
-    sp = test["speaking"]
-    p2 = sp["part2"]
-    lang_name = LANGS[lang]["language_name"]
-    tasks = (
-        f"Part 1 questions: {' | '.join(sp['part1'])}\n"
-        f"Part 2 topic: {p2['topic']} Points: {' | '.join(p2['points'])}\n"
-        f"Part 3 questions: {' | '.join(sp['part3'])}"
-    )
-    return (
-        f"You are an experienced CEFR speaking examiner for {lang_name}. "
-        f"The candidate is practising at level {test['level']}. "
-        "Below are the tasks, followed by the candidate's answers in order (audio or text).\n\n"
-        f"TASKS:\n{tasks}\n\n"
-        "Score each criterion as an integer from 0 to 5: fluency, vocabulary, grammar, "
-        "pronunciation, task (task achievement). If all answers are text, set pronunciation to null.\n"
-        "Return ONLY valid JSON in this exact shape:\n"
-        '{"scores":{"fluency":0,"vocabulary":0,"grammar":0,"pronunciation":0,"task":0},'
-        '"cefr":"B1","strengths":"...","improvements":"...","corrections":["..."]}\n'
-        f"Write strengths and improvements in {FEEDBACK_LANG} (2-3 short sentences each). "
-        f"In corrections give up to 3 short examples: the candidate's mistake and the correct {lang_name} version."
-    )
+async def send_question(chat_id: int, state: FSMContext):
+    d = await state.get_data()
+    item = CONTENT[d["lang"]][d["kind"]][d["idx"]]
+    qs = item["questions"]
+    qi = d["qi"]
+    q = qs[qi]
+    lines = [f"<b>Savol {qi + 1}/{len(qs)}</b>", esc(q["q"]), ""]
+    for i, o in enumerate(q["options"]):
+        lines.append(f"{LET[i]}) {esc(o)}")
+    kb = InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text=LET[i], callback_data=f"ans:{i}") for i in range(len(q["options"]))
+    ]])
+    await bot.send_message(chat_id, "\n".join(lines), reply_markup=kb)
 
 
-def parse_json_reply(raw):
-    cleaned = raw.strip()
-    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", cleaned, flags=re.IGNORECASE)
-    start, end = cleaned.find("{"), cleaned.rfind("}")
-    if start == -1 or end == -1:
-        raise ValueError("JSON topilmadi")
-    return json.loads(cleaned[start : end + 1])
+def level_from_pct(pct: int) -> str:
+    if pct >= 85:
+        return "C1"
+    if pct >= 70:
+        return "B2"
+    if pct >= 50:
+        return "B1"
+    if pct >= 30:
+        return "A2"
+    return "A1"
 
 
-async def score_speaking(lang, test, items):
-    parts = [{"text": build_scoring_prompt(lang, test)}]
-    for item in items:
-        parts.append({"text": f"Candidate answer for Part {item['part']}:"})
-        if item["kind"] == "audio":
-            parts.append(
-                {
-                    "inline_data": {
-                        "mime_type": item["mime"],
-                        "data": base64.b64encode(item["data"]).decode("ascii"),
-                    }
-                }
-            )
-        else:
-            parts.append({"text": item["text"]})
-
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
-    body = {
-        "contents": [{"role": "user", "parts": parts}],
-        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
-    }
-    async with httpx.AsyncClient(timeout=150) as client:
-        response = await client.post(url, headers={"x-goog-api-key": GEMINI_KEY}, json=body)
-        response.raise_for_status()
-        payload = response.json()
-    reply_parts = payload["candidates"][0]["content"]["parts"]
-    raw = "".join(p.get("text", "") for p in reply_parts)
-    return parse_json_reply(raw)
-
-
-def clamp_score(value):
+@dp.callback_query(Exam.quiz, F.data.startswith("ans:"))
+async def on_answer(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    d = await state.get_data()
+    chat_id = cb.message.chat.id
     try:
-        return max(0, min(5, int(round(float(value)))))
-    except (TypeError, ValueError):
-        return None
-
-
-def format_scoring(result):
-    names = [
-        ("fluency", "Fluency"),
-        ("vocabulary", "Vocabulary"),
-        ("grammar", "Grammar"),
-        ("pronunciation", "Pronunciation"),
-        ("task", "Task achievement"),
-    ]
-    scores = result.get("scores", {}) or {}
-    lines = ["📊 <b>Speaking natijasi</b>", ""]
-    total, maximum = 0, 0
-    for key, label in names:
-        value = clamp_score(scores.get(key))
-        if value is None:
-            continue
-        total += value
-        maximum += 5
-        lines.append(f"• {label}: <b>{value}/5</b>")
-    if maximum:
-        lines.append(f"\nJami: <b>{total}/{maximum}</b>")
-    if result.get("cefr"):
-        lines.append(f"🎯 Taxminiy daraja: <b>{esc(result['cefr'])}</b>")
-    if result.get("strengths"):
-        lines.append(f"\n✅ <b>Kuchli tomonlar</b>\n{esc(result['strengths'])}")
-    if result.get("improvements"):
-        lines.append(f"\n📈 <b>Yaxshilash kerak</b>\n{esc(result['improvements'])}")
-    corrections = result.get("corrections") or []
-    if corrections:
-        lines.append("\n✏️ <b>Tuzatishlar</b>")
-        lines.extend(f"- {esc(c)}" for c in corrections[:3])
-    return "\n".join(lines)[:3900]
-
-
-async def finish_speaking(context, chat_id, lang, ti, items):
-    test = get_test(lang, ti)
-    markup = after_markup(lang, ti, "speaking")
-
-    if not GEMINI_KEY:
-        criteria = DATA.get("speaking_rubric", {}).get("criteria", [])
-        rubric = "\n".join(f"• {esc(c)} (0–5)" for c in criteria)
-        await context.bot.send_message(
-            chat_id,
-            "✅ Javoblaringiz qabul qilindi.\n\n"
-            "AI baholash hozir yoqilmagan. O'zingizni quyidagi mezonlar bo'yicha baholang:\n"
-            f"{rubric}",
-            parse_mode=HTML,
-            reply_markup=markup,
-        )
-        return
-
-    status = await context.bot.send_message(chat_id, "⏳ Javoblaringiz baholanmoqda (30–60 soniya)...")
-    try:
-        result = await score_speaking(lang, test, items)
-        text = format_scoring(result)
-    except Exception:
-        log.exception("Baholash xatosi")
-        text = "⚠️ Baholashda xatolik yuz berdi. Birozdan keyin qayta urinib ko'ring."
-    try:
-        await status.delete()
-    except BadRequest:
+        await cb.message.edit_reply_markup(reply_markup=None)
+    except Exception:  # noqa: BLE001
         pass
-    await context.bot.send_message(chat_id, text, parse_mode=HTML, reply_markup=markup)
 
+    item = CONTENT[d["lang"]][d["kind"]][d["idx"]]
+    q = item["questions"][d["qi"]]
+    choice = int(cb.data.split(":")[1])
+    correct = q["answer"]
+    ok = choice == correct
+    score = d["score"] + (1 if ok else 0)
 
-# --------------------------------------------------------------------------
-# Handlerlar
-# --------------------------------------------------------------------------
+    if ok:
+        fb = "✅ To'g'ri!"
+    else:
+        fb = f"❌ Noto'g'ri. To'g'ri javob: {LET[correct]}) {esc(q['options'][correct])}"
+    if q.get("explain"):
+        fb += f"\n💡 {esc(q['explain'])}"
+    await bot.send_message(chat_id, fb)
 
+    qi = d["qi"] + 1
+    await state.update_data(qi=qi, score=score)
+    if qi < len(item["questions"]):
+        await send_question(chat_id, state)
+        return
 
-async def cmd_start(update, context):
-    await show_home(update, context)
-
-
-async def cmd_cancel(update, context):
-    await show_home(update, context)
-
-
-async def on_callback(update, context):
-    query = update.callback_query
-    data = query.data or ""
-    try:
-        if data.startswith("a:"):
-            await handle_answer(update, context, data)
-            return
-
-        await query.answer()
-        parts = data.split(":")
-        action = parts[0]
-
-        if action in ("H", "C"):
-            await show_home(update, context)
-        elif action == "L" and len(parts) == 2 and parts[1] in LANGS:
-            clear_state(context)
-            await show_levels(update, context, parts[1])
-        elif action == "T" and len(parts) == 3 and parts[1] in LANGS:
-            clear_state(context)
-            await show_sections(update, context, parts[1], int(parts[2]))
-        elif action == "S" and len(parts) == 4 and parts[1] in LANGS:
-            lang, ti, sec = parts[1], int(parts[2]), parts[3]
-            if sec in ("reading", "listening"):
-                await start_quiz(update, context, lang, ti, sec)
-            elif sec == "speaking":
-                await start_speaking(update, context, lang, ti)
-        else:
-            await show_home(update, context)
-    except (IndexError, KeyError, ValueError):
-        log.exception("Noto'g'ri callback: %s", data)
-        await show_home(update, context)
-
-
-async def on_error(update, context):
-    log.error("Kutilmagan xato", exc_info=context.error)
-
-
-def main():
-    if not BOT_TOKEN:
-        raise SystemExit(
-            "Bot tokeni topilmadi. Railway > Variables ichida BOT_TOKEN ni kiriting "
-            f"(qabul qilinadigan nomlar: {', '.join(TOKEN_NAMES)})."
-        )
-    if not GEMINI_KEY:
-        log.warning("GEMINI_API_KEY yo'q: Speaking AI baholash o'chirilgan.")
-
-    app = Application.builder().token(BOT_TOKEN).concurrent_updates(True).build()
-    app.add_handler(CommandHandler(["start", "menu"], cmd_start))
-    app.add_handler(CommandHandler("cancel", cmd_cancel))
-    app.add_handler(CallbackQueryHandler(on_callback))
-    app.add_handler(
-        MessageHandler(filters.VOICE | filters.AUDIO | (filters.TEXT & ~filters.COMMAND), on_user_message)
+    total = len(item["questions"])
+    pct = round(100 * score / total)
+    text = (
+        f"🏁 <b>Natija: {score}/{total} ({pct}%)</b>\n"
+        f"Taxminiy daraja: <b>{level_from_pct(pct)}</b> (yo'naltiruvchi baho)"
     )
-    app.add_error_handler(on_error)
+    if d["kind"] == "listening" and item.get("script"):
+        text += f"\n\n📜 <b>Matn (transcript):</b>\n<tg-spoiler>{esc(item['script'])}</tg-spoiler>"
+    await send_long(chat_id, text)
+    await state.clear()
+    await bot.send_message(chat_id, "Yana mashq qilamizmi?", reply_markup=menu_kb())
 
-    log.info("Bot ishga tushdi: %s ta til", len(LANGS))
-    app.run_polling(drop_pending_updates=True)
+
+@dp.message()
+async def fallback(message: types.Message):
+    await message.answer("Boshlash uchun /start yoki /menu bosing.")
+
+
+async def main():
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    main()
-
-# ===== bot.py fayli oxiri (shu qator ko'rinsa, fayl to'liq) =====
-
+    asyncio.run(main())
+         
