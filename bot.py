@@ -475,5 +475,4 @@
                 ],
                 "answer": 1
               },
-              {
-                "q": "What does the speaker say about staying up all night before
+              {"q": "What does the speaker say about staying up all night before an exam?", "options": ["It is the best strategy", "It only works for short lists", "Research suggests it is not effective"], "answer": 2},
