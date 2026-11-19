@@ -86,10 +86,18 @@ SECTION_LABELS = {
 
 
 def load_data():
-    with open(DATA_FILE, encoding="utf-8") as f:
-        data = json.load(f)
+    if not DATA_FILE.exists():
+        raise SystemExit("cefr_mocks.json topilmadi. Uni bot.py bilan bir papkaga yuklang.")
+    try:
+        with open(DATA_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+    except json.JSONDecodeError as exc:
+        raise SystemExit(
+            f"cefr_mocks.json to'liq emas yoki buzilgan ({exc}). "
+            "Uni nusxalamang: GitHub'da 'Upload files' orqali fayl sifatida qayta yuklang."
+        )
     if "languages" not in data or not data["languages"]:
-        raise ValueError("cefr_mocks.json ichida 'languages' topilmadi")
+        raise SystemExit("cefr_mocks.json ichida 'languages' topilmadi")
     return data
 
 
@@ -599,4 +607,51 @@ async def on_callback(update, context):
             await show_home(update, context)
         elif action == "L" and len(parts) == 2 and parts[1] in LANGS:
             clear_state(context)
-            await sho
+            await show_levels(update, context, parts[1])
+        elif action == "T" and len(parts) == 3 and parts[1] in LANGS:
+            clear_state(context)
+            await show_sections(update, context, parts[1], int(parts[2]))
+        elif action == "S" and len(parts) == 4 and parts[1] in LANGS:
+            lang, ti, sec = parts[1], int(parts[2]), parts[3]
+            if sec in ("reading", "listening"):
+                await start_quiz(update, context, lang, ti, sec)
+            elif sec == "speaking":
+                await start_speaking(update, context, lang, ti)
+        else:
+            await show_home(update, context)
+    except (IndexError, KeyError, ValueError):
+        log.exception("Noto'g'ri callback: %s", data)
+        await show_home(update, context)
+
+
+async def on_error(update, context):
+    log.error("Kutilmagan xato", exc_info=context.error)
+
+
+def main():
+    if not BOT_TOKEN:
+        raise SystemExit(
+            "Bot tokeni topilmadi. Railway > Variables ichida BOT_TOKEN ni kiriting "
+            f"(qabul qilinadigan nomlar: {', '.join(TOKEN_NAMES)})."
+        )
+    if not GEMINI_KEY:
+        log.warning("GEMINI_API_KEY yo'q: Speaking AI baholash o'chirilgan.")
+
+    app = Application.builder().token(BOT_TOKEN).concurrent_updates(True).build()
+    app.add_handler(CommandHandler(["start", "menu"], cmd_start))
+    app.add_handler(CommandHandler("cancel", cmd_cancel))
+    app.add_handler(CallbackQueryHandler(on_callback))
+    app.add_handler(
+        MessageHandler(filters.VOICE | filters.AUDIO | (filters.TEXT & ~filters.COMMAND), on_user_message)
+    )
+    app.add_error_handler(on_error)
+
+    log.info("Bot ishga tushdi: %s ta til", len(LANGS))
+    app.run_polling(drop_pending_updates=True)
+
+
+if __name__ == "__main__":
+    main()
+
+# ===== bot.py fayli oxiri (shu qator ko'rinsa, fayl to'liq) =====
+
