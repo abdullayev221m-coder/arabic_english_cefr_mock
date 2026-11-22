@@ -272,6 +272,7 @@ def menu_kb() -> InlineKeyboardMarkup:
          b(text="🏆 Haftalik reyting", callback_data="top")],
         [b(text="🌐 Tilni o'zgartirish", callback_data="chlang")],
     ])
+    
     def items_kb(lang: str, kind: str) -> InlineKeyboardMarkup:
     rows = [[InlineKeyboardButton(text=f"{i + 1}. {it['title']}", callback_data=f"item:{kind}:{i}")]
             for i, it in enumerate(CONTENT[lang][kind])]
