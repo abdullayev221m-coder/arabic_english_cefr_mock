@@ -1,0 +1,296 @@
+{
+  "en": {
+    "speaking": {
+      "p1": [
+        "What do you usually do on weekends?",
+        "Tell me about your best friend.",
+        "What kind of food do you enjoy eating, and why?",
+        "Do you prefer living in a city or in the countryside? Why?",
+        "How do you usually get to work or school?",
+        "What is your favourite season of the year, and why?",
+        "Describe your daily morning routine.",
+        "What hobbies do you have in your free time?",
+        "Do you like reading books? What was the last book you read?",
+        "How often do you use social media, and what do you use it for?",
+        "Tell me about the town or village where you grew up.",
+        "Do you enjoy cooking? Why or why not?"
+      ],
+      "p2": [
+        "Describe a memorable trip you have taken.\nYou should say:\n- where you went\n- who you went with\n- what you did there\nand explain why it was memorable.",
+        "Describe a person who has had a big influence on your life.\nYou should say:\n- who the person is\n- how you know them\n- what they have done for you\nand explain why they are important to you.",
+        "Describe your favourite place to relax.\nYou should say:\n- where it is\n- how often you go there\n- what you do there\nand explain why it helps you relax.",
+        "Describe a skill you would like to learn.\nYou should say:\n- what the skill is\n- why you want to learn it\n- how you would learn it\nand explain how it could be useful in your life.",
+        "Describe a time when you helped someone.\nYou should say:\n- who you helped\n- what the problem was\n- how you helped\nand explain how you felt afterwards.",
+        "Describe a book or a film that made a strong impression on you.\nYou should say:\n- what it was\n- what it was about\n- when you read or watched it\nand explain why it made a strong impression on you.",
+        "Describe a celebration or festival in your country.\nYou should say:\n- what the celebration is\n- when it takes place\n- what people do during it\nand explain why it is important to people.",
+        "Describe a piece of technology you use every day.\nYou should say:\n- what it is\n- how long you have had it\n- what you use it for\nand explain how your life would change without it."
+      ],
+      "p3": [
+        "Some people think online learning is better than studying in a classroom. Others disagree. Discuss both views and give your own opinion.",
+        "Should children have smartphones? Discuss the advantages and disadvantages, and say what you think.",
+        "Some people prefer working from home, while others prefer working in an office. Discuss both sides and give your opinion.",
+        "Is it better to live in a big city or in a small town? Give arguments for both and explain your view.",
+        "Do people spend too much time on social media? Discuss the effects on young people and on society.",
+        "Should university education be free for everyone? Present arguments for and against.",
+        "Is it more important to save money for the future or to enjoy it now? Discuss both views and give your opinion.",
+        "Tourism can bring benefits and problems to local communities. Discuss both and say what you think."
+      ]
+    },
+    "reading": [
+      {
+        "title": "The Story of Coffee",
+        "text": "Coffee is one of the most popular drinks in the world today, but its story began in Ethiopia many centuries ago. According to a popular legend, a goat herder named Kaldi noticed that his goats became very energetic after eating berries from a certain tree. He shared his discovery with a monk, who made a drink from the berries and found that it helped him stay awake during long evening prayers.\n\nNews of the energising drink spread slowly across the Arabian Peninsula. By the 15th century, coffee was being grown in Yemen, and coffee houses began to appear in cities such as Mecca and Cairo. These places became centres of conversation, music and news. In the 17th century, traders brought coffee to Europe, where some people first opposed it, but it soon became fashionable. Today, millions of people drink coffee every day, and it is one of the most widely traded products on Earth.",
+        "questions": [
+          {
+            "q": "Where did the story of coffee begin?",
+            "options": ["In Yemen", "In Ethiopia", "In Egypt", "In Europe"],
+            "answer": 1,
+            "explain": "Matn boshida: hikoya Efiopiyada boshlangan."
+          },
+          {
+            "q": "What did Kaldi notice about his goats?",
+            "options": ["They slept more than usual", "They refused to eat the berries", "They became very energetic after eating berries", "They ran away from the tree"],
+            "answer": 2,
+            "explain": "Qo'ylar rezavorlarni yegach juda tetik bo'lib qolgan."
+          },
+          {
+            "q": "Why did the monk make a drink from the berries?",
+            "options": ["To stay awake during long evening prayers", "To sell it to travellers", "To feed his goats", "To make medicine"],
+            "answer": 0,
+            "explain": "Rohib uzoq kechki ibodatlarda uyg'oq turish uchun ichgan."
+          },
+          {
+            "q": "What were the coffee houses in Mecca and Cairo used for?",
+            "options": ["Growing coffee plants", "Storing goods for traders", "Teaching religious lessons", "Meeting places for conversation, music and news"],
+            "answer": 3,
+            "explain": "Qahvaxonalar suhbat, musiqa va yangiliklar markazi bo'lgan."
+          }
+        ]
+      },
+      {
+        "title": "Sleep and Learning",
+        "text": "Many students believe that studying late into the night is the best way to prepare for an exam. However, scientists say that sleep plays a key role in how our brains store information. During deep sleep, the brain organises what we learned during the day and moves it into long-term memory.\n\nResearchers at several universities found that students who slept for eight hours after studying remembered about 20 per cent more than those who stayed awake. Lack of sleep also makes it harder to concentrate and solve problems the next day. Experts recommend that teenagers sleep between eight and ten hours each night. They also suggest avoiding screens for an hour before bed, because the light from phones and tablets can make it harder to fall asleep.",
+        "questions": [
+          {
+            "q": "What do many students believe?",
+            "options": ["Studying late at night is the best preparation", "Sleeping is a waste of time", "Exams are not important", "Group study is the best method"],
+            "answer": 0,
+            "explain": "Birinchi gap: ko'p talabalar kechgacha o'qishni eng yaxshi usul deb hisoblaydi."
+          },
+          {
+            "q": "What happens during deep sleep?",
+            "options": ["The brain stops working", "The brain organises what we learned and stores it in long-term memory", "The brain forgets old information", "The body grows taller"],
+            "answer": 1,
+            "explain": "Chuqur uyquda miya bilimlarni uzoq muddatli xotiraga o'tkazadi."
+          },
+          {
+            "q": "Students who slept for eight hours after studying remembered...",
+            "options": ["about 10 per cent less", "the same amount", "about 20 per cent more", "about 80 per cent more"],
+            "answer": 2,
+            "explain": "8 soat uxlaganlar taxminan 20 foiz ko'proq eslab qolgan."
+          },
+          {
+            "q": "Why do experts advise avoiding screens before bed?",
+            "options": ["They use too much electricity", "Their light can make it harder to fall asleep", "They show unhealthy content", "They make the eyes red"],
+            "answer": 1,
+            "explain": "Telefon va planshet yorug'ligi uxlashni qiyinlashtiradi."
+          }
+        ]
+      }
+    ],
+    "listening": [
+      {
+        "title": "Library Announcement",
+        "script": "Good afternoon, everyone. This is an announcement from the city library. From next Monday, the library will open at eight in the morning instead of nine, and it will close at seven in the evening. On Saturdays, we will be open until five o'clock. We are also pleased to announce a new reading room on the second floor, which is only for students who need a quiet place to study. Please remember that you can now borrow up to six books at a time, and you can keep them for three weeks. If you want to renew a book, you can do it online or by calling the front desk. Thank you, and enjoy your reading.",
+        "questions": [
+          {
+            "q": "What time will the library open from next Monday?",
+            "options": ["7:00 a.m.", "9:00 a.m.", "10:00 a.m.", "8:00 a.m."],
+            "answer": 3,
+            "explain": "Ochilish vaqti to'qqizdan sakkizga o'zgaradi."
+          },
+          {
+            "q": "Until what time will the library be open on Saturdays?",
+            "options": ["Until 5 p.m.", "Until 7 p.m.", "Until 3 p.m.", "It will be closed"],
+            "answer": 0,
+            "explain": "Shanba kunlari soat beshgacha ochiq."
+          },
+          {
+            "q": "Where is the new reading room?",
+            "options": ["On the first floor", "On the second floor", "In the basement", "On the third floor"],
+            "answer": 1,
+            "explain": "Yangi o'qish xonasi ikkinchi qavatda."
+          },
+          {
+            "q": "How many books can you borrow at a time?",
+            "options": ["Three", "Four", "Six", "Ten"],
+            "answer": 2,
+            "explain": "Endi bir vaqtda oltita kitob olish mumkin."
+          }
+        ]
+      },
+      {
+        "title": "Weekend Weather Forecast",
+        "script": "Here is the weather forecast for the weekend. On Saturday morning, it will be cloudy with some light rain in the north of the country. In the afternoon, the rain will stop and the sun will come out, with temperatures reaching eighteen degrees. On Sunday, it will be much colder, with strong winds and temperatures of only nine degrees. There may also be snow in the mountains in the evening. If you are planning a picnic, Saturday afternoon will be the best time. Please take warm clothes if you travel on Sunday.",
+        "questions": [
+          {
+            "q": "What will the weather be like on Saturday morning?",
+            "options": ["Sunny and hot", "Cloudy with light rain in the north", "Snowy", "Windy and cold"],
+            "answer": 1,
+            "explain": "Shanba ertalab bulutli, shimolda yengil yomg'ir."
+          },
+          {
+            "q": "What will the temperature be on Saturday afternoon?",
+            "options": ["Nine degrees", "Twelve degrees", "Eighteen degrees", "Twenty-five degrees"],
+            "answer": 2,
+            "explain": "Tushdan keyin harorat 18 darajaga yetadi."
+          },
+          {
+            "q": "What will the weather be like on Sunday?",
+            "options": ["Much colder with strong winds", "Warm and sunny", "Rainy but warm", "Foggy"],
+            "answer": 0,
+            "explain": "Yakshanba ancha sovuq va kuchli shamolli bo'ladi."
+          },
+          {
+            "q": "When is the best time for a picnic?",
+            "options": ["Saturday morning", "Sunday morning", "Sunday evening", "Saturday afternoon"],
+            "answer": 3,
+            "explain": "Piknik uchun eng yaxshi vaqt shanba kuni tushdan keyin."
+          }
+        ]
+      }
+    ]
+  },
+  "ar": {
+    "speaking": {
+      "p1": [
+        "ماذا تفعل عادةً في عطلة نهاية الأسبوع؟",
+        "حدّثني عن أعزّ أصدقائك.",
+        "ما نوع الطعام الذي تحبّه، ولماذا؟",
+        "هل تفضّل العيش في المدينة أم في الريف؟ لماذا؟",
+        "كيف تذهب عادةً إلى العمل أو الجامعة؟",
+        "ما هو فصلك المفضّل من فصول السنة، ولماذا؟",
+        "صِف روتينك اليومي في الصباح.",
+        "ما هي هواياتك في أوقات الفراغ؟",
+        "هل تحبّ قراءة الكتب؟ ما آخر كتاب قرأته؟",
+        "كم مرّة تستخدم مواقع التواصل الاجتماعي، ولأيّ غرض؟",
+        "حدّثني عن المدينة أو القرية التي نشأتَ فيها.",
+        "هل تحبّ الطبخ؟ لماذا أو لماذا لا؟"
+      ],
+      "p2": [
+        "صِف رحلة لا تُنسى قمتَ بها.\nيجب أن تذكر:\n- إلى أين ذهبت\n- مع مَن ذهبت\n- ماذا فعلتَ هناك\nواشرح لماذا كانت لا تُنسى.",
+        "صِف شخصًا كان له تأثير كبير في حياتك.\nيجب أن تذكر:\n- مَن هو هذا الشخص\n- كيف تعرفه\n- ماذا فعل من أجلك\nواشرح لماذا هو مهم بالنسبة إليك.",
+        "صِف مكانك المفضّل للاسترخاء.\nيجب أن تذكر:\n- أين يقع\n- كم مرّة تذهب إليه\n- ماذا تفعل هناك\nواشرح لماذا يساعدك على الاسترخاء.",
+        "صِف مهارة تودّ أن تتعلّمها.\nيجب أن تذكر:\n- ما هذه المهارة\n- لماذا تريد تعلّمها\n- كيف ستتعلّمها\nواشرح كيف يمكن أن تفيدك في حياتك.",
+        "صِف موقفًا ساعدتَ فيه شخصًا ما.\nيجب أن تذكر:\n- مَن الذي ساعدته\n- ما المشكلة\n- كيف ساعدته\nواشرح بماذا شعرتَ بعد ذلك.",
+        "صِف كتابًا أو فيلمًا ترك فيك أثرًا كبيرًا.\nيجب أن تذكر:\n- ما هو\n- عن ماذا يتحدّث\n- متى قرأتَه أو شاهدتَه\nواشرح لماذا ترك فيك هذا الأثر.",
+        "صِف مناسبة أو عيدًا يُحتفل به في بلدك.\nيجب أن تذكر:\n- ما هذه المناسبة\n- متى تقام\n- ماذا يفعل الناس فيها\nواشرح لماذا هي مهمة للناس.",
+        "صِف جهازًا تقنيًا تستخدمه كل يوم.\nيجب أن تذكر:\n- ما هو\n- منذ متى تملكه\n- لأيّ غرض تستخدمه\nواشرح كيف ستتغيّر حياتك من دونه."
+      ],
+      "p3": [
+        "يرى بعض الناس أن التعلّم عبر الإنترنت أفضل من الدراسة في الصف، بينما يخالفهم آخرون. ناقش الرأيين ثم اذكر رأيك.",
+        "هل يجب أن يمتلك الأطفال هواتف ذكية؟ ناقش الإيجابيات والسلبيات واذكر رأيك.",
+        "يفضّل بعض الناس العمل من المنزل، ويفضّل آخرون العمل في المكتب. ناقش الجانبين واذكر رأيك.",
+        "هل العيش في مدينة كبيرة أفضل أم العيش في بلدة صغيرة؟ اذكر حججًا للطرفين واشرح وجهة نظرك.",
+        "هل يقضي الناس وقتًا طويلًا جدًا على مواقع التواصل الاجتماعي؟ ناقش تأثير ذلك في الشباب وفي المجتمع.",
+        "هل ينبغي أن يكون التعليم الجامعي مجانيًا للجميع؟ اعرض الحجج المؤيدة والمعارضة.",
+        "أيّهما أهمّ: ادّخار المال للمستقبل أم الاستمتاع به الآن؟ ناقش الرأيين واذكر رأيك.",
+        "قد تجلب السياحة فوائد ومشكلات للمجتمعات المحلية. ناقش الجانبين واذكر رأيك."
+      ]
+    },
+    "reading": [
+      {
+        "title": "قصة القهوة",
+        "text": "تُعدّ القهوة من أشهر المشروبات في العالم، وتبدأ قصتها في بلاد الحبشة (إثيوبيا) منذ قرون طويلة. تقول الأسطورة إن راعيًا يُدعى كالدي لاحظ أن أغنامه تصبح نشيطة جدًا بعد أكل ثمار شجرة معيّنة. أخبر الراعي أحد الرهبان بذلك، فصنع الراهب مشروبًا من تلك الثمار، ووجد أنه يساعده على البقاء مستيقظًا أثناء صلوات الليل الطويلة.\n\nانتقلت القهوة تدريجيًا إلى شبه الجزيرة العربية، وفي القرن الخامس عشر زُرعت في اليمن، وظهرت المقاهي في مدن مثل مكة والقاهرة، فصارت أماكن للحديث وسماع الموسيقى وتبادل الأخبار. وفي القرن السابع عشر وصلت القهوة إلى أوروبا، وسرعان ما أصبحت مشروبًا رائجًا.",
+        "questions": [
+          {
+            "q": "أين بدأت قصة القهوة؟",
+            "options": ["في اليمن", "في بلاد الحبشة (إثيوبيا)", "في مصر", "في أوروبا"],
+            "answer": 1,
+            "explain": "Matn boshida: hikoya Habashistonda (Efiopiya) boshlangan."
+          },
+          {
+            "q": "ماذا لاحظ الراعي كالدي على أغنامه؟",
+            "options": ["أنها نامت كثيرًا", "أنها رفضت الأكل", "أنها أصبحت نشيطة جدًا بعد أكل الثمار", "أنها هربت من الشجرة"],
+            "answer": 2,
+            "explain": "Qo'ylar mevalarni yegach juda tetik bo'lib qolgan."
+          },
+          {
+            "q": "لماذا صنع الراهب المشروب؟",
+            "options": ["ليبقى مستيقظًا أثناء صلوات الليل", "ليبيعه للتجار", "ليطعم الأغنام", "ليصنع دواءً"],
+            "answer": 0,
+            "explain": "Rohib uzoq tungi ibodatlarda uyg'oq turish uchun ichgan."
+          },
+          {
+            "q": "ماذا كانت المقاهي في مكة والقاهرة؟",
+            "options": ["أماكن لزراعة القهوة", "مخازن للتجار", "مدارس دينية", "أماكن للحديث والموسيقى وتبادل الأخبار"],
+            "answer": 3,
+            "explain": "Qahvaxonalar suhbat, musiqa va yangiliklar almashish joyi bo'lgan."
+          }
+        ]
+      },
+      {
+        "title": "النوم والتعلّم",
+        "text": "يعتقد كثير من الطلاب أن السهر لوقت متأخر هو أفضل طريقة للاستعداد للامتحان. لكن العلماء يؤكدون أن النوم يؤدي دورًا مهمًا في حفظ المعلومات. ففي أثناء النوم العميق ينظّم الدماغ ما تعلّمناه خلال النهار وينقله إلى الذاكرة طويلة المدى.\n\nوقد وجد باحثون أن الطلاب الذين ناموا ثماني ساعات بعد الدراسة تذكّروا نحو عشرين في المئة أكثر من الذين بقوا مستيقظين. كما أن قلة النوم تجعل التركيز وحلّ المشكلات أصعب في اليوم التالي. وينصح الخبراء المراهقين بالنوم من ثماني إلى عشر ساعات كل ليلة، وبالابتعاد عن الشاشات قبل النوم بساعة، لأن ضوء الهواتف قد يصعّب النوم.",
+        "questions": [
+          {
+            "q": "ماذا يعتقد كثير من الطلاب؟",
+            "options": ["أن السهر أفضل استعداد للامتحان", "أن النوم مضيعة للوقت", "أن الامتحانات غير مهمة", "أن الدراسة الجماعية أفضل"],
+            "answer": 0,
+            "explain": "Birinchi gap: ko'p talabalar kechgacha o'qishni eng yaxshi usul deb hisoblaydi."
+          },
+          {
+            "q": "ماذا يحدث للدماغ في أثناء النوم العميق؟",
+            "options": ["يتوقف عن العمل", "ينظّم المعلومات وينقلها إلى الذاكرة طويلة المدى", "ينسى المعلومات القديمة", "يزداد طول الجسم"],
+            "answer": 1,
+            "explain": "Chuqur uyquda miya bilimlarni uzoq muddatli xotiraga o'tkazadi."
+          },
+          {
+            "q": "بحسب النص، الطلاب الذين ناموا ثماني ساعات تذكّروا:",
+            "options": ["أقل بنحو عشرة في المئة", "الكمية نفسها", "أكثر بنحو عشرين في المئة", "أكثر بنحو ثمانين في المئة"],
+            "answer": 2,
+            "explain": "8 soat uxlaganlar taxminan 20 foiz ko'proq eslab qolgan."
+          },
+          {
+            "q": "لماذا ينصح الخبراء بالابتعاد عن الشاشات قبل النوم؟",
+            "options": ["لأنها تستهلك الكهرباء", "لأن ضوءها قد يصعّب النوم", "لأنها تعرض محتوى ضارًا", "لأنها تحمرّ العينين"],
+            "answer": 1,
+            "explain": "Telefon yorug'ligi uxlashni qiyinlashtiradi."
+          }
+        ]
+      }
+    ],
+    "listening": [
+      {
+        "title": "إعلان من المكتبة",
+        "script": "مساء الخير جميعًا. هذا إعلان من مكتبة المدينة. ابتداءً من يوم الاثنين القادم ستفتح المكتبة أبوابها في الساعة الثامنة صباحًا بدلًا من التاسعة، وتغلق في السابعة مساءً. وفي أيام السبت ستبقى مفتوحة حتى الساعة الخامسة. ويسعدنا أن نعلن عن افتتاح قاعة قراءة جديدة في الطابق الثاني، وهي مخصّصة للطلاب الذين يحتاجون إلى مكان هادئ للدراسة. كما نذكّركم بأنه يمكنكم الآن استعارة ستة كتب في المرة الواحدة، والاحتفاظ بها لمدة ثلاثة أسابيع. ولتجديد الاستعارة يمكنكم فعل ذلك عبر الإنترنت أو الاتصال بمكتب الاستقبال. شكرًا لكم، ونتمنى لكم قراءة ممتعة.",
+        "questions": [
+          {
+            "q": "متى ستفتح المكتبة أبوابها ابتداءً من الاثنين القادم؟",
+            "options": ["الساعة السابعة صباحًا", "الساعة التاسعة صباحًا", "الساعة العاشرة صباحًا", "الساعة الثامنة صباحًا"],
+            "answer": 3,
+            "explain": "Ochilish vaqti to'qqizdan sakkizga o'zgaradi."
+          },
+          {
+            "q": "إلى أي ساعة ستبقى المكتبة مفتوحة يوم السبت؟",
+            "options": ["حتى الخامسة", "حتى السابعة", "حتى الثالثة", "ستكون مغلقة"],
+            "answer": 0,
+            "explain": "Shanba kunlari soat beshgacha ochiq."
+          },
+          {
+            "q": "أين تقع قاعة القراءة الجديدة؟",
+            "options": ["في الطابق الأول", "في الطابق الثاني", "في القبو", "في الطابق الثالث"],
+            "answer": 1,
+            "explain": "Yangi o'qish xonasi ikkinchi qavatda."
+          },
+          {
+            "q": "كم كتابًا يمكن استعارته في المرة الواحدة؟",
+            "options": ["ثلاثة", "أربعة", "ستة", "عشرة"],
+            "answer": 2,
+            "explain": "Endi bir vaqtda oltita kitob olish mumkin."
+          }
+        ]
+      },
+      {
+        "title": "النشرة الجوية",
+        "script": "إليكم حالة الطقس لنهاية الأسبوع. صباح السبت سيكون الجو غائمًا مع أمطار خفيفة في شمال البلاد. وبعد الظهر ستتوقف الأمطار وتشرق الشمس، وستصل درجات الحرارة إلى ثماني عشرة درجة. أما يوم الأحد فسيكون الجو أبرد بكثير مع رياح قوية، ولن تتجاوز الحرار
