@@ -278,7 +278,6 @@ def menu_kb() -> InlineKeyboardMarkup:
     rows.append([InlineKeyboardButton(text="⬅️ Menyu", callback_data="menu")])
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
-
 # ---------------- Boshlash va menyu ----------------
 @dp.message(CommandStart())
 async def start(message: types.Message, state: FSMContext):
