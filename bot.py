@@ -505,7 +505,7 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
                 break
             await asyncio.sleep(3 * (attempt + 1))  # limit vaqtinchalik bo'lsa, kutib qayta urinadi
     raise RuntimeError("\n".join(errors) or "Gemini javob bermadi")
-            def format_result(ev: dict) -> str:
+ def format_result(ev: dict) -> str:
     mistakes = "\n".join(
         f"• ❌ {esc(m.get('said', ''))}\n  ✅ {esc(m.get('correct', ''))}\n  💡 {esc(m.get('why', ''))}"
         for m in ev.get("mistakes", [])[:5]
