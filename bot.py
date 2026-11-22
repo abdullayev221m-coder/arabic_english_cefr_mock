@@ -2,6 +2,7 @@ import asyncio
 import html
 import io
 import json
+import logging
 import os
 import random
 from pathlib import Path
@@ -25,11 +26,19 @@ gemini = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 # Birinchisi eng tez (flash-lite), ikkinchisi zaxira (sifatliroq).
 GEMINI_MODELS = [
     m.strip()
-    for m in os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite,gemini-3.6-flash").split(",")
+    for m in os.environ.get(
+        "GEMINI_MODEL", "gemini-3.5-flash-lite,gemini-3.6-flash,gemini-3.8-flash"
+    ).split(",")
     if m.strip()
 ]
 # Thinking darajasi: minimal (eng tez) | low | medium | high
+# Eng tez: "minimal". Tahlil chuqurroq kerak bo'lsa GEMINI_THINKING=low qiling (sekinroq).
 THINKING = os.environ.get("GEMINI_THINKING", "minimal")
+# Bir vaqtda ketadigan Gemini so'rovlari soni (daqiqalik limitga urilmaslik uchun navbat).
+GEMINI_SEM = asyncio.Semaphore(int(os.environ.get("GEMINI_CONCURRENCY", "4")))
+# Limit/band xatosida necha marta (kutib) qayta urinish.
+RETRY_ROUNDS = 3
+log = logging.getLogger("bot")
 
 CONTENT = json.loads((Path(__file__).parent / "content.json").read_text(encoding="utf-8"))
 
@@ -46,19 +55,25 @@ Score on a 0-75 scale. You receive an AUDIO recording of a candidate answering a
 First transcribe exactly what the candidate said (verbatim, in {language}), then evaluate strictly and fairly on:
 fluency & coherence, lexical resource, grammatical range & accuracy (for Arabic include word forms, agreement and
 case endings where audible), pronunciation & intonation (you can hear the audio), and task achievement.
-Answer ONLY with JSON:
+Give a complete but EFFICIENT analysis: specific, no repetition, no filler. Quote the candidate's actual words
+when pointing out problems. Answer ONLY with JSON:
 {
  "transcript": "verbatim transcript of the answer",
  "score": <0-75 integer>,
  "level": "<A2|B1|B2|C1>",
  "fluency": <0-9 number>, "vocabulary": <0-9>, "grammar": <0-9>, "pronunciation": <0-9>, "task": <0-9>,
- "strengths": ["...", "..."],
- "mistakes": [{"said": "...", "correct": "...", "why": "..."}],
- "advice": ["...", "..."],
- "improved_answer": "a short model answer at the candidate's target level"
+ "summary": "3-4 sentence overall assessment",
+ "criteria_notes": {"fluency": "1-2 sentences", "vocabulary": "1-2 sentences", "grammar": "1-2 sentences",
+                    "pronunciation": "1-2 sentences", "task": "1-2 sentences"},
+ "strengths": ["3 specific points"],
+ "mistakes": [{"said": "...", "correct": "...", "why": "one short sentence"}],
+ "advice": ["4 concrete, actionable steps"],
+ "useful_phrases": ["3-4 useful expressions in {language} the candidate could have used"],
+ "improved_answer": "a model answer at the candidate's target level (Part 1: ~4 sentences; Parts 2-3: ~8 sentences)"
 }
-Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct' and
-'improved_answer' in {language}. Be concise. If the audio is silent, unclear or very short, give a low score and say so."""
+List the most important mistakes (up to 8). Write 'summary', 'criteria_notes', 'strengths', 'advice' and 'why'
+in Uzbek (Latin script). Keep 'transcript', 'said', 'correct', 'useful_phrases' and 'improved_answer' in
+{language}. If the audio is silent, unclear or very short, give a low score and say so."""
 
 
 class Exam(StatesGroup):
@@ -248,6 +263,11 @@ async def pick_mock(cb: types.CallbackQuery, state: FSMContext):
     await ask_question(cb.message.chat.id, state, "p1", ["p2", "p3"])
 
 
+def is_quota_error(e: Exception) -> bool:
+    s = str(e)
+    return any(t in s for t in ("429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"))
+
+
 def _parse_json(text: str) -> dict:
     text = (text or "").strip()
     text = text[text.find("{"): text.rfind("}") + 1]
@@ -261,42 +281,77 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
         f"Part: {PART_NAMES[part]}\nQuestion: {question}\n\nEvaluate the candidate's audio answer.",
         gtypes.Part.from_bytes(data=audio, mime_type=mime),
     ]
-    last_err: Exception | None = None
-    for model in GEMINI_MODELS:
-        try:
-            # Yangi modellarda temperature/top_p/top_k olib tashlangan — yubormaymiz.
-            resp = await gemini.aio.models.generate_content(
-                model=model,
-                contents=contents,
-                config=gtypes.GenerateContentConfig(
-                    system_instruction=system,
-                    response_mime_type="application/json",
-                    thinking_config=gtypes.ThinkingConfig(thinking_level=THINKING),
-                ),
-            )
-            return _parse_json(resp.text)
-        except Exception as e:  # noqa: BLE001
-            last_err = e
-    raise last_err or RuntimeError("Gemini javob bermadi")
+    # Yangi modellarda temperature/top_p/top_k olib tashlangan — yubormaymiz.
+    base = dict(system_instruction=system, response_mime_type="application/json")
+    configs = []
+    try:  # eski SDK'da thinking_level bo'lmasa, shu variant o'tkazib yuboriladi
+        configs.append(gtypes.GenerateContentConfig(
+            **base, thinking_config=gtypes.ThinkingConfig(thinking_level=THINKING.upper())
+        ))
+    except Exception as e:  # noqa: BLE001
+        log.warning("thinking_level ishlamadi (google-genai ni yangilang): %s", e)
+    configs.append(gtypes.GenerateContentConfig(**base))  # thinking'siz zaxira variant
+
+    errors: list[str] = []
+    async with GEMINI_SEM:  # so'rovlar navbat bilan ketadi, birdan ko'p yuborilmaydi
+        for attempt in range(RETRY_ROUNDS):
+            quota_hit = False
+            for model in GEMINI_MODELS:  # har bir modelning limiti alohida
+                for cfg in configs:
+                    try:
+                        resp = await gemini.aio.models.generate_content(
+                            model=model, contents=contents, config=cfg
+                        )
+                        return _parse_json(resp.text)
+                    except Exception as e:  # noqa: BLE001
+                        log.warning("Gemini xatosi (%s): %s", model, e)
+                        msg = f"{model}: {str(e)[:250]}"
+                        if msg not in errors:
+                            errors.append(msg)
+                        if is_quota_error(e):
+                            quota_hit = True
+                            break  # bu modelda limit — keyingi modelga o'tamiz
+            if not quota_hit:
+                break
+            await asyncio.sleep(3 * (attempt + 1))  # limit vaqtinchalik bo'lsa, kutib qayta urinadi
+    raise RuntimeError("\n".join(errors) or "Gemini javob bermadi")
 
 
 def format_result(ev: dict) -> str:
     mistakes = "\n".join(
         f"• ❌ {esc(m.get('said', ''))}\n  ✅ {esc(m.get('correct', ''))}\n  💡 {esc(m.get('why', ''))}"
-        for m in ev.get("mistakes", [])[:5]
+        for m in ev.get("mistakes", [])[:10]
     ) or "—"
     strengths = "\n".join(f"• {esc(s)}" for s in ev.get("strengths", []))
     advice = "\n".join(f"• {esc(a)}" for a in ev.get("advice", []))
-    return (
+    phrases = "\n".join(f"• {esc(p)}" for p in ev.get("useful_phrases", []))
+
+    notes = ev.get("criteria_notes")
+    notes = notes if isinstance(notes, dict) else {}
+    labels = [("fluency", "Fluency"), ("vocabulary", "Vocabulary"), ("grammar", "Grammar"),
+              ("pronunciation", "Pronunciation"), ("task", "Task")]
+    notes_txt = "\n".join(
+        f"• <b>{lab}</b> ({esc(ev.get(key, '?'))}/9): {esc(notes[key])}"
+        for key, lab in labels if notes.get(key)
+    )
+
+    parts = [
         f"📊 <b>Natija: {esc(ev.get('score', '?'))}/75 ({esc(ev.get('level', '?'))})</b>\n"
         f"Fluency {esc(ev.get('fluency', '?'))} · Vocabulary {esc(ev.get('vocabulary', '?'))} · "
         f"Grammar {esc(ev.get('grammar', '?'))} · Pronunciation {esc(ev.get('pronunciation', '?'))} · "
-        f"Task {esc(ev.get('task', '?'))}\n\n"
-        f"👍 <b>Kuchli tomonlar</b>\n{strengths}\n\n"
-        f"🛠 <b>Xatolar</b>\n{mistakes}\n\n"
-        f"📈 <b>Maslahat</b>\n{advice}\n\n"
-        f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}"
-    )
+        f"Task {esc(ev.get('task', '?'))}"
+    ]
+    if ev.get("summary"):
+        parts.append(f"📋 <b>Umumiy xulosa</b>\n{esc(ev['summary'])}")
+    if notes_txt:
+        parts.append(f"🔎 <b>Mezonlar bo'yicha tahlil</b>\n{notes_txt}")
+    parts.append(f"👍 <b>Kuchli tomonlar</b>\n{strengths}")
+    parts.append(f"🛠 <b>Xatolar</b>\n{mistakes}")
+    parts.append(f"📈 <b>Maslahat</b>\n{advice}")
+    if phrases:
+        parts.append(f"💬 <b>Foydali iboralar</b>\n{phrases}")
+    parts.append(f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}")
+    return "\n\n".join(parts)
 
 
 @dp.message(Exam.waiting_voice, F.voice | F.audio)
@@ -313,12 +368,15 @@ async def got_voice(message: types.Message, state: FSMContext):
         await bot.download(file_obj, destination=buf)
         ev = await evaluate_audio(lang, part, question, buf.getvalue(), mime)
     except Exception as e:  # noqa: BLE001
-        await note.edit_text(f"❌ Xatolik: {esc(e)}\nBiroz kutib, qayta yuborib ko'ring.")
+        if is_quota_error(e):
+            await note.edit_text("⏳ Hozir server band (limit). 1 daqiqadan keyin qayta yuborib ko'ring.")
+        else:
+            await note.edit_text(f"❌ Xatolik: {esc(e)}\nBiroz kutib, qayta yuborib ko'ring.")
         return
 
     await note.delete()
-    await message.answer(f"📝 <b>Siz aytganingiz:</b>\n<i>{esc(ev.get('transcript', ''))}</i>")
-    await send_long(message.chat.id, format_result(ev))
+    transcript = f"📝 <b>Siz aytganingiz:</b>\n<i>{esc(ev.get('transcript', ''))}</i>"
+    await send_long(message.chat.id, transcript + "\n\n" + format_result(ev))
     results.append(ev.get("score", 0))
 
     if queue:
@@ -435,50 +493,4 @@ async def on_answer(cb: types.CallbackQuery, state: FSMContext):
     try:
         await cb.message.edit_reply_markup(reply_markup=None)
     except Exception:  # noqa: BLE001
-        pass
-
-    item = CONTENT[d["lang"]][d["kind"]][d["idx"]]
-    q = item["questions"][d["qi"]]
-    choice = int(cb.data.split(":")[1])
-    correct = q["answer"]
-    ok = choice == correct
-    score = d["score"] + (1 if ok else 0)
-
-    if ok:
-        fb = "✅ To'g'ri!"
-    else:
-        fb = f"❌ Noto'g'ri. To'g'ri javob: {LET[correct]}) {esc(q['options'][correct])}"
-    if q.get("explain"):
-        fb += f"\n💡 {esc(q['explain'])}"
-    await bot.send_message(chat_id, fb)
-
-    qi = d["qi"] + 1
-    await state.update_data(qi=qi, score=score)
-    if qi < len(item["questions"]):
-        await send_question(chat_id, state)
-        return
-
-    total = len(item["questions"])
-    pct = round(100 * score / total)
-    text = (
-        f"🏁 <b>Natija: {score}/{total} ({pct}%)</b>\n"
-        f"Taxminiy daraja: <b>{level_from_pct(pct)}</b> (yo'naltiruvchi baho)"
-    )
-    if d["kind"] == "listening" and item.get("script"):
-        text += f"\n\n📜 <b>Matn (transcript):</b>\n<tg-spoiler>{esc(item['script'])}</tg-spoiler>"
-    await send_long(chat_id, text)
-    await state.clear()
-    await bot.send_message(chat_id, "Yana mashq qilamizmi?", reply_markup=menu_kb())
-
-
-@dp.message()
-async def fallback(message: types.Message):
-    await message.answer("Boshlash uchun /start yoki /menu bosing.")
-
-
-async def main():
-    await dp.start_polling(bot)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+     
