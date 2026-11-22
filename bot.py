@@ -10,8 +10,7 @@ from pathlib import Path
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
-from aiogram.filters import Command, CommandObject, CommandStart
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -23,7 +22,7 @@ from gtts import gTTS
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 gemini = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 # Bir nechta model vergul bilan yozilishi mumkin: biri xato bersa yoki limiti tugasa, keyingisi sinaladi.
-# Birinchisi eng tez (flash-lite), ikkinchisi zaxira (sifatliroq).
+# Birinchisi eng tez (flash-lite), keyingilari zaxira.
 GEMINI_MODELS = [
     m.strip()
     for m in os.environ.get(
@@ -32,7 +31,6 @@ GEMINI_MODELS = [
     if m.strip()
 ]
 # Thinking darajasi: minimal (eng tez) | low | medium | high
-# Eng tez: "minimal". Tahlil chuqurroq kerak bo'lsa GEMINI_THINKING=low qiling (sekinroq).
 THINKING = os.environ.get("GEMINI_THINKING", "minimal")
 # Bir vaqtda ketadigan Gemini so'rovlari soni (daqiqalik limitga urilmaslik uchun navbat).
 GEMINI_SEM = asyncio.Semaphore(int(os.environ.get("GEMINI_CONCURRENCY", "4")))
@@ -55,25 +53,19 @@ Score on a 0-75 scale. You receive an AUDIO recording of a candidate answering a
 First transcribe exactly what the candidate said (verbatim, in {language}), then evaluate strictly and fairly on:
 fluency & coherence, lexical resource, grammatical range & accuracy (for Arabic include word forms, agreement and
 case endings where audible), pronunciation & intonation (you can hear the audio), and task achievement.
-Give a complete but EFFICIENT analysis: specific, no repetition, no filler. Quote the candidate's actual words
-when pointing out problems. Answer ONLY with JSON:
+Answer ONLY with JSON:
 {
  "transcript": "verbatim transcript of the answer",
  "score": <0-75 integer>,
  "level": "<A2|B1|B2|C1>",
  "fluency": <0-9 number>, "vocabulary": <0-9>, "grammar": <0-9>, "pronunciation": <0-9>, "task": <0-9>,
- "summary": "3-4 sentence overall assessment",
- "criteria_notes": {"fluency": "1-2 sentences", "vocabulary": "1-2 sentences", "grammar": "1-2 sentences",
-                    "pronunciation": "1-2 sentences", "task": "1-2 sentences"},
- "strengths": ["3 specific points"],
- "mistakes": [{"said": "...", "correct": "...", "why": "one short sentence"}],
- "advice": ["4 concrete, actionable steps"],
- "useful_phrases": ["3-4 useful expressions in {language} the candidate could have used"],
- "improved_answer": "a model answer at the candidate's target level (Part 1: ~4 sentences; Parts 2-3: ~8 sentences)"
+ "strengths": ["...", "..."],
+ "mistakes": [{"said": "...", "correct": "...", "why": "..."}],
+ "advice": ["...", "..."],
+ "improved_answer": "a short model answer at the candidate's target level"
 }
-List the most important mistakes (up to 8). Write 'summary', 'criteria_notes', 'strengths', 'advice' and 'why'
-in Uzbek (Latin script). Keep 'transcript', 'said', 'correct', 'useful_phrases' and 'improved_answer' in
-{language}. If the audio is silent, unclear or very short, give a low score and say so."""
+Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct' and
+'improved_answer' in {language}. Be concise. If the audio is silent, unclear or very short, give a low score and say so."""
 
 
 class Exam(StatesGroup):
@@ -86,24 +78,6 @@ dp = Dispatcher(storage=MemoryStorage())
 
 USER_LANG: dict[int, str] = {}
 AUDIO_CACHE: dict[tuple[str, int], str] = {}
-
-# E'lon (broadcast) uchun: admin ID lari (vergul bilan) va foydalanuvchilar ro'yxati.
-ADMIN_IDS = {int(x) for x in os.environ.get("ADMIN_ID", "").split(",") if x.strip()}
-USERS_FILE = Path(os.environ.get("USERS_FILE", Path(__file__).parent / "users.json"))
-try:
-    USERS: set[int] = set(json.loads(USERS_FILE.read_text()))
-except Exception:  # noqa: BLE001
-    USERS = set()
-
-
-def _save_users():
-    USERS_FILE.write_text(json.dumps(sorted(USERS)))
-
-
-def add_user(chat_id: int):
-    if chat_id not in USERS:
-        USERS.add(chat_id)
-        _save_users()
 
 
 def lang_of(chat_id: int) -> str:
@@ -157,7 +131,6 @@ def items_kb(lang: str, kind: str) -> InlineKeyboardMarkup:
 @dp.message(CommandStart())
 async def start(message: types.Message, state: FSMContext):
     await state.clear()
-    add_user(message.chat.id)
     await message.answer(
         "Salom! Men CEFR mock botiman 🎙📖🎧\n\n"
         "Speaking (ovozli javob), Reading va Listening mashqlari bor.\n\nTilni tanlang:",
@@ -168,47 +141,7 @@ async def start(message: types.Message, state: FSMContext):
 @dp.message(Command("menu"))
 async def menu_cmd(message: types.Message, state: FSMContext):
     await state.clear()
-    add_user(message.chat.id)
     await message.answer("Bo'limni tanlang:", reply_markup=menu_kb())
-
-
-async def _send_one(uid: int, src: types.Message | None, text: str):
-    if src:
-        await bot.copy_message(uid, src.chat.id, src.message_id)
-    else:
-        await bot.send_message(uid, text)
-
-
-@dp.message(Command("broadcast"), F.from_user.id.in_(ADMIN_IDS))
-async def broadcast(message: types.Message, command: CommandObject, state: FSMContext):
-    await state.clear()
-    src = message.reply_to_message
-    text = (command.args or "").strip()
-    if not src and not text:
-        await message.answer(
-            "Foydalanish:\n/broadcast <i>matn</i>\n"
-            "yoki biror xabarga (rasm, video ham mumkin) reply qilib /broadcast yozing."
-        )
-        return
-    users = list(USERS)
-    note = await message.answer(f"📢 Yuborilmoqda: {len(users)} ta foydalanuvchi...")
-    ok = fail = 0
-    for uid in users:
-        try:
-            try:
-                await _send_one(uid, src, text)
-            except TelegramRetryAfter as e:
-                await asyncio.sleep(e.retry_after)
-                await _send_one(uid, src, text)
-            ok += 1
-        except TelegramForbiddenError:  # foydalanuvchi botni bloklagan
-            USERS.discard(uid)
-            fail += 1
-        except Exception:  # noqa: BLE001
-            fail += 1
-        await asyncio.sleep(0.05)  # Telegram limiti: ~30 xabar/soniya
-    _save_users()
-    await note.edit_text(f"✅ Yuborildi: {ok}\n❌ Yuborilmadi: {fail}")
 
 
 @dp.callback_query(F.data == "menu")
@@ -231,7 +164,6 @@ async def set_lang(cb: types.CallbackQuery, state: FSMContext):
     await state.clear()
     lang = cb.data.split(":")[1]
     USER_LANG[cb.message.chat.id] = lang
-    add_user(cb.message.chat.id)
     await cb.message.answer(f"Til: {LANGS[lang]['label']}\nBo'limni tanlang:", reply_markup=menu_kb())
 
 
@@ -320,38 +252,20 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
 def format_result(ev: dict) -> str:
     mistakes = "\n".join(
         f"• ❌ {esc(m.get('said', ''))}\n  ✅ {esc(m.get('correct', ''))}\n  💡 {esc(m.get('why', ''))}"
-        for m in ev.get("mistakes", [])[:10]
+        for m in ev.get("mistakes", [])[:5]
     ) or "—"
     strengths = "\n".join(f"• {esc(s)}" for s in ev.get("strengths", []))
     advice = "\n".join(f"• {esc(a)}" for a in ev.get("advice", []))
-    phrases = "\n".join(f"• {esc(p)}" for p in ev.get("useful_phrases", []))
-
-    notes = ev.get("criteria_notes")
-    notes = notes if isinstance(notes, dict) else {}
-    labels = [("fluency", "Fluency"), ("vocabulary", "Vocabulary"), ("grammar", "Grammar"),
-              ("pronunciation", "Pronunciation"), ("task", "Task")]
-    notes_txt = "\n".join(
-        f"• <b>{lab}</b> ({esc(ev.get(key, '?'))}/9): {esc(notes[key])}"
-        for key, lab in labels if notes.get(key)
-    )
-
-    parts = [
+    return (
         f"📊 <b>Natija: {esc(ev.get('score', '?'))}/75 ({esc(ev.get('level', '?'))})</b>\n"
         f"Fluency {esc(ev.get('fluency', '?'))} · Vocabulary {esc(ev.get('vocabulary', '?'))} · "
         f"Grammar {esc(ev.get('grammar', '?'))} · Pronunciation {esc(ev.get('pronunciation', '?'))} · "
-        f"Task {esc(ev.get('task', '?'))}"
-    ]
-    if ev.get("summary"):
-        parts.append(f"📋 <b>Umumiy xulosa</b>\n{esc(ev['summary'])}")
-    if notes_txt:
-        parts.append(f"🔎 <b>Mezonlar bo'yicha tahlil</b>\n{notes_txt}")
-    parts.append(f"👍 <b>Kuchli tomonlar</b>\n{strengths}")
-    parts.append(f"🛠 <b>Xatolar</b>\n{mistakes}")
-    parts.append(f"📈 <b>Maslahat</b>\n{advice}")
-    if phrases:
-        parts.append(f"💬 <b>Foydali iboralar</b>\n{phrases}")
-    parts.append(f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}")
-    return "\n\n".join(parts)
+        f"Task {esc(ev.get('task', '?'))}\n\n"
+        f"👍 <b>Kuchli tomonlar</b>\n{strengths}\n\n"
+        f"🛠 <b>Xatolar</b>\n{mistakes}\n\n"
+        f"📈 <b>Maslahat</b>\n{advice}\n\n"
+        f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}"
+    )
 
 
 @dp.message(Exam.waiting_voice, F.voice | F.audio)
@@ -492,4 +406,51 @@ async def on_answer(cb: types.CallbackQuery, state: FSMContext):
     chat_id = cb.message.chat.id
     try:
         await cb.message.edit_reply_markup(reply_markup=None)
-    except Exception: pass  # noqa: BLE001,
+    except Exception: pass  # noqa: BLE001,E701
+
+    item = CONTENT[d["lang"]][d["kind"]][d["idx"]]
+    q = item["questions"][d["qi"]]
+    choice = int(cb.data.split(":")[1])
+    correct = q["answer"]
+    ok = choice == correct
+    score = d["score"] + (1 if ok else 0)
+
+    if ok:
+        fb = "✅ To'g'ri!"
+    else:
+        fb = f"❌ Noto'g'ri. To'g'ri javob: {LET[correct]}) {esc(q['options'][correct])}"
+    if q.get("explain"):
+        fb += f"\n💡 {esc(q['explain'])}"
+    await bot.send_message(chat_id, fb)
+
+    qi = d["qi"] + 1
+    await state.update_data(qi=qi, score=score)
+    if qi < len(item["questions"]):
+        await send_question(chat_id, state)
+        return
+
+    total = len(item["questions"])
+    pct = round(100 * score / total)
+    text = (
+        f"🏁 <b>Natija: {score}/{total} ({pct}%)</b>\n"
+        f"Taxminiy daraja: <b>{level_from_pct(pct)}</b> (yo'naltiruvchi baho)"
+    )
+    if d["kind"] == "listening" and item.get("script"):
+        text += f"\n\n📜 <b>Matn (transcript):</b>\n<tg-spoiler>{esc(item['script'])}</tg-spoiler>"
+    await send_long(chat_id, text)
+    await state.clear()
+    await bot.send_message(chat_id, "Yana mashq qilamizmi?", reply_markup=menu_kb())
+
+
+@dp.message()
+async def fallback(message: types.Message):
+    await message.answer("Boshlash uchun /start yoki /menu bosing.")
+
+
+async def main():
+    logging.basicConfig(level=logging.INFO)
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
