@@ -81,7 +81,7 @@ fluency & coherence, lexical resource, grammatical range & accuracy (for Arabic 
 case endings where audible), pronunciation & intonation (you can hear the audio), and task achievement.
 Answer ONLY with JSON:
 {
- "transcript": "verbatim transcript of the answer",
+"transcript": "verbatim transcript of the answer",
  "score": <0-75 integer>,
  "level": "<A2|B1|B2|C1>",
  "fluency": <0-9 number>, "vocabulary": <0-9>, "grammar": <0-9>, "pronunciation": <0-9>, "task": <0-9>,
@@ -130,6 +130,9 @@ CREATE INDEX IF NOT EXISTS idx_results_user ON results(chat_id, ts);
 """)
 db.commit()
 
+TZ = timezone(timedelta(hours=int(os.environ.get("TZ_OFFSET", "5"))))  # O'zbekiston: UTC+5
+MIN_ATTEMPTS = int(os.environ.get("MIN_ATTEMPTS", "3"))  # reytingga kirish uchun haftada kamida shuncha mashq
+_NAMES: dict[int, str] = {}
 TZ = timezone(timedelta(hours=int(os.environ.get("TZ_OFFSET", "5"))))  # O'zbekiston: UTC+5
 MIN_ATTEMPTS = int(os.environ.get("MIN_ATTEMPTS", "3"))  # reytingga kirish uchun haftada kamida shuncha mashq
 _NAMES: dict[int, str] = {}
@@ -208,9 +211,7 @@ def db_week_ranking():
         "GROUP BY r.chat_id HAVING COUNT(*) >= ? ORDER BY avg_pct DESC, n DESC",
         (week_start_ts(), MIN_ATTEMPTS),
     ).fetchall()
-
-
-def db_week_count(uid: int) -> int:
+    def db_week_count(uid: int) -> int:
     return db.execute(
         "SELECT COUNT(*) AS n FROM results WHERE chat_id=? AND ts>=?", (uid, week_start_ts())
     ).fetchone()["n"]
@@ -280,9 +281,7 @@ def items_kb(lang: str, kind: str) -> InlineKeyboardMarkup:
             for i, it in enumerate(CONTENT[lang][kind])]
     rows.append([InlineKeyboardButton(text="⬅️ Menyu", callback_data="menu")])
     return InlineKeyboardMarkup(inline_keyboard=rows)
-
-
-# ---------------- Boshlash va menyu ----------------
+    # ---------------- Boshlash va menyu ----------------
 @dp.message(CommandStart())
 async def start(message: types.Message, state: FSMContext):
     await state.clear()
@@ -360,9 +359,7 @@ def format_top(uid: int) -> str:
         "Ismingiz Telegramdagi ismingiz bilan ko'rinadi, yashirish: /anon</i>",
     ]
     return "\n".join(lines)
-
-
-def top_kb() -> InlineKeyboardMarkup:
+    def top_kb() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="🕶 Ismni yashirish / ko'rsatish", callback_data="anon")],
         [InlineKeyboardButton(text="⬅️ Menyu", callback_data="menu")],
@@ -428,8 +425,6 @@ async def set_lang(cb: types.CallbackQuery, state: FSMContext):
     USER_LANG[cb.message.chat.id] = lang
     db_set_lang(cb.message.chat.id, lang)
     await cb.message.answer(f"Til: {LANGS[lang]['label']}\nBo'limni tanlang:", reply_markup=menu_kb())
-
-
 # ---------------- SPEAKING ----------------
 async def ask_question(chat_id: int, state: FSMContext, part: str, queue: list[str]):
     lang = lang_of(chat_id)
@@ -508,4 +503,219 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
                             break  # bu modelda limit — keyingi modelga o'tamiz
             if not quota_hit:
                 break
-            await asyncio.sleep(3 * (attempt + 1))  # limit
+            await asyncio.sleep(3 * (attempt + 1))  # limit vaqtinchalik bo'lsa, kutib qayta urinadi
+    raise RuntimeError("\n".join(errors) or "Gemini javob bermadi")
+
+
+def format_result(ev: dict) -> str:
+    mistakes = "\n".join(
+        f"• ❌ {esc(m.get('said', ''))}\n  ✅ {esc(m.get('correct', ''))}\n  💡 {esc(m.get('why', ''))}"
+        for m in ev.get("mistakes", [])[:5]
+    ) or "—"
+    strengths = "\n".join(f"• {esc(s)}" for s in ev.get("strengths", []))
+    advice = "\n".join(f"• {esc(a)}" for a in ev.get("advice", []))
+    return (
+        f"📊 <b>Natija: {esc(ev.get('score', '?'))}/75 ({esc(ev.get('level', '?'))})</b>\n"
+        f"Fluency {esc(ev.get('fluency', '?'))} · Vocabulary {esc(ev.get('vocabulary', '?'))} · "
+        f"Grammar {esc(ev.get('grammar', '?'))} · Pronunciation {esc(ev.get('pronunciation', '?'))} · "
+        f"Task {esc(ev.get('task', '?'))}\n\n"
+        f"👍 <b>Kuchli tomonlar</b>\n{strengths}\n\n"
+        f"🛠 <b>Xatolar</b>\n{mistakes}\n\n"
+        f"📈 <b>Maslahat</b>\n{advice}\n\n"
+        f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}"
+    )
+
+
+@dp.message(Exam.waiting_voice, F.voice | F.audio)
+async def got_voice(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    part, question, lang = data["part"], data["question"], data.get("lang", "en")
+    queue, results = data.get("queue", []), data.get("results", [])
+
+    note = await message.answer("⏳ Javobingiz tahlil qilinmoqda...")
+    file_obj = message.voice or message.audio
+    mime = getattr(file_obj, "mime_type", None) or "audio/ogg"
+    try:
+        buf = io.BytesIO()
+        await bot.download(file_obj, destination=buf)
+        ev = await evaluate_audio(lang, part, question, buf.getvalue(), mime)
+    except Exception as e:  # noqa: BLE001
+        if is_quota_error(e):
+            await note.edit_text("⏳ Hozir server band (limit). 1 daqiqadan keyin qayta yuborib ko'ring.")
+        else:
+            await note.edit_text(f"❌ Xatolik: {esc(e)}\nBiroz kutib, qayta yuborib ko'ring.")
+        return
+
+    await note.delete()
+    transcript = f"📝 <b>Siz aytganingiz:</b>\n<i>{esc(ev.get('transcript', ''))}</i>"
+    await send_long(message.chat.id, transcript + "\n\n" + format_result(ev))
+    results.append(ev.get("score", 0))
+    try:
+        sp_pct = max(0.0, min(100.0, float(ev.get("score", 0)) / 75 * 100))
+        db_add_result(message.chat.id, "speaking", part, lang, sp_pct, f"{ev.get('score', 0)}/75")
+    except Exception as e:  # noqa: BLE001
+        log.warning("Natijani saqlab bo'lmadi: %s", e)
+
+    if queue:
+        await state.update_data(results=results)
+        await ask_question(message.chat.id, state, queue[0], queue[1:])
+    else:
+        if len(results) > 1:
+            avg = round(sum(results) / len(results))
+            await message.answer(f"🏁 <b>Mock yakuni: o'rtacha {avg}/75</b>")
+        await state.clear()
+        await message.answer("Yana mashq qilamizmi?", reply_markup=menu_kb())
+
+
+@dp.message(Exam.waiting_voice)
+async def need_voice(message: types.Message):
+    await message.answer("Iltimos, javobni <b>ovozli xabar</b> ko'rinishida yuboring 🎤")
+# ---------------- READING / LISTENING ----------------
+@dp.callback_query(F.data.startswith("list:"))
+async def list_items(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    kind = cb.data.split(":")[1]
+    lang = lang_of(cb.message.chat.id)
+    if not CONTENT[lang].get(kind):
+        await cb.message.answer("Bu til uchun hozircha mashq yo'q.", reply_markup=menu_kb())
+        return
+    title = "📖 Reading" if kind == "reading" else "🎧 Listening"
+    await cb.message.answer(f"{title} ({LANGS[lang]['label']}). Mashqni tanlang:", reply_markup=items_kb(lang, kind))
+
+
+def _tts_bytes(text: str, lang_code: str) -> bytes:
+    buf = io.BytesIO()
+    gTTS(text=text, lang=lang_code).write_to_fp(buf)
+    return buf.getvalue()
+
+
+async def send_listening_audio(chat_id: int, lang: str, idx: int, item: dict):
+    key = (lang, idx)
+    if key in AUDIO_CACHE:
+        await bot.send_audio(chat_id, AUDIO_CACHE[key], title=item["title"])
+        return
+    audio_path = item.get("audio_file")
+    if audio_path and (Path(__file__).parent / audio_path).exists():
+        data = (Path(__file__).parent / audio_path).read_bytes()
+    else:
+        data = await asyncio.to_thread(_tts_bytes, item["script"], LANGS[lang]["tts"])
+    msg = await bot.send_audio(
+        chat_id, BufferedInputFile(data, filename="listening.mp3"), title=item["title"]
+    )
+    AUDIO_CACHE[key] = msg.audio.file_id
+
+
+@dp.callback_query(F.data.startswith("item:"))
+async def pick_item(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    await state.clear()
+    _, kind, idx = cb.data.split(":")
+    idx = int(idx)
+    chat_id = cb.message.chat.id
+    lang = lang_of(chat_id)
+    item = CONTENT[lang][kind][idx]
+
+    if kind == "reading":
+        await send_long(chat_id, f"<b>{esc(item['title'])}</b>\n\n{esc(item['text'])}")
+    else:
+        note = await bot.send_message(chat_id, "🎧 Audio tayyorlanmoqda...")
+        try:
+            await send_listening_audio(chat_id, lang, idx, item)
+        except Exception as e:  # noqa: BLE001
+            await note.edit_text(f"❌ Audio xatosi: {esc(e)}")
+            return
+        await note.delete()
+        await bot.send_message(chat_id, "Audioni tinglang (qayta tinglash mumkin), so'ng savollarga javob bering.")
+
+    await state.set_state(Exam.quiz)
+    await state.update_data(lang=lang, kind=kind, idx=idx, qi=0, score=0)
+    await send_question(chat_id, state)
+
+
+async def send_question(chat_id: int, state: FSMContext):
+    d = await state.get_data()
+    item = CONTENT[d["lang"]][d["kind"]][d["idx"]]
+    qs = item["questions"]
+    qi = d["qi"]
+    q = qs[qi]
+    lines = [f"<b>Savol {qi + 1}/{len(qs)}</b>", esc(q["q"]), ""]
+    for i, o in enumerate(q["options"]):
+        lines.append(f"{LET[i]}) {esc(o)}")
+    kb = InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text=LET[i], callback_data=f"ans:{i}") for i in range(len(q["options"]))
+    ]])
+    await bot.send_message(chat_id, "\n".join(lines), reply_markup=kb)
+
+
+def level_from_pct(pct: int) -> str:
+    if pct >= 85:
+        return "C1"
+    if pct >= 70:
+        return "B2"
+    if pct >= 50:
+        return "B1"
+    if pct >= 30:
+        return "A2"
+    return "A1"
+
+
+@dp.callback_query(Exam.quiz, F.data.startswith("ans:"))
+async def on_answer(cb: types.CallbackQuery, state: FSMContext):
+    await cb.answer()
+    d = await state.get_data()
+    chat_id = cb.message.chat.id
+    try:
+        await cb.message.edit_reply_markup(reply_markup=None)
+    except Exception: pass  # noqa: BLE001,E701
+
+    item = CONTENT[d["lang"]][d["kind"]][d["idx"]]
+    q = item["questions"][d["qi"]]
+    choice = int(cb.data.split(":")[1])
+    correct = q["answer"]
+    ok = choice == correct
+    score = d["score"] + (1 if ok else 0)
+
+    if ok:
+        fb = "✅ To'g'ri!"
+    else:
+        fb = f"❌ Noto'g'ri. To'g'ri javob: {LET[correct]}) {esc(q['options'][correct])}"
+    if q.get("explain"):
+        fb += f"\n💡 {esc(q['explain'])}"
+    await bot.send_message(chat_id, fb)
+
+    qi = d["qi"] + 1
+    await state.update_data(qi=qi, score=score)
+    if qi < len(item["questions"]):
+        await send_question(chat_id, state)
+        return
+
+    total = len(item["questions"])
+    pct = round(100 * score / total)
+    try:
+        db_add_result(chat_id, d["kind"], "", d["lang"], pct, f"{score}/{total}")
+    except Exception as e:  # noqa: BLE001
+        log.warning("Natijani saqlab bo'lmadi: %s", e)
+    text = (
+        f"🏁 <b>Natija: {score}/{total} ({pct}%)</b>\n"
+        f"Taxminiy daraja: <b>{level_from_pct(pct)}</b> (yo'naltiruvchi baho)"
+    )
+    if d["kind"] == "listening" and item.get("script"):
+        text += f"\n\n📜 <b>Matn (transcript):</b>\n<tg-spoiler>{esc(item['script'])}</tg-spoiler>"
+    await send_long(chat_id, text)
+    await state.clear()
+    await bot.send_message(chat_id, "Yana mashq qilamizmi?", reply_markup=menu_kb())
+
+
+@dp.message()
+async def fallback(message: types.Message):
+    await message.answer("Boshlash uchun /start yoki /menu bosing.")
+
+
+async def main():
+    logging.basicConfig(level=logging.INFO)
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
