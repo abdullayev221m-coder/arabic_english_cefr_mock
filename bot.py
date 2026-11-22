@@ -9,7 +9,8 @@ from pathlib import Path
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import Command, CommandStart
+from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
+from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -21,7 +22,14 @@ from gtts import gTTS
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 gemini = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 # Bir nechta model vergul bilan yozilishi mumkin: biri xato bersa yoki limiti tugasa, keyingisi sinaladi.
-GEMINI_MODELS = [m.strip() for m in os.environ.get("GEMINI_MODEL", "gemini-3.8-flash").split(",") if m.strip()]
+# Birinchisi eng tez (flash-lite), ikkinchisi zaxira (sifatliroq).
+GEMINI_MODELS = [
+    m.strip()
+    for m in os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite,gemini-3.6-flash").split(",")
+    if m.strip()
+]
+# Thinking darajasi: minimal (eng tez) | low | medium | high
+THINKING = os.environ.get("GEMINI_THINKING", "minimal")
 
 CONTENT = json.loads((Path(__file__).parent / "content.json").read_text(encoding="utf-8"))
 
@@ -33,39 +41,24 @@ PART_NAMES = {"p1": "Part 1", "p2": "Part 2", "p3": "Part 3"}
 PART_TIME = {"p1": 30, "p2": 120, "p3": 120}
 LET = "ABCDEF"
 
-SYSTEM_PROMPT = """You are a strict, certified {language} speaking examiner for the CEFR multi-level exam, scored on the national 0-75 scale.
-You receive an AUDIO recording of a candidate answering a speaking question in {language}.
-First transcribe exactly what the candidate said (verbatim, in {language}).
-
-Score EACH criterion on the 0-75 scale (NOT 0-9, NOT 0-100):
-- fluency: speed, pauses, hesitations, fillers, coherence and linking of ideas
-- vocabulary: range, precision, collocations, repetition of the same words
-- grammar: range and accuracy of structures (for Arabic: verb forms, gender and number agreement, idafa,
-  particles, case endings where audible)
-- pronunciation: clarity, stress, intonation, unclear or wrong sounds you can hear in the audio
-- task: does the answer fully address the question, develop ideas with reasons and examples, appropriate length
-Scale guide: 0-37 = below B1 (A2 or lower); 38-50 = B1; 51-64 = B2; 65-75 = C1.
-Be strict and realistic. Do not give 65 or more unless the answer is clearly C1 level.
-
-ERROR ANALYSIS IS MANDATORY. List every distinct language error you find (up to 8), most important first.
-For each: the exact words the candidate said ('said'), the corrected version ('correct'),
-the error type ('type': grammar | vocabulary | pronunciation | fluency | other) and a short explanation
-in Uzbek ('why'). If there are fewer than 3 errors, still list them and add minor improvements.
-Also give 'corrected_transcript': the whole answer rewritten correctly.
-
+SYSTEM_PROMPT = """You are a certified {language} speaking examiner using the CEFR scale (A2-C1 range).
+Score on a 0-75 scale. You receive an AUDIO recording of a candidate answering a speaking question in {language}.
+First transcribe exactly what the candidate said (verbatim, in {language}), then evaluate strictly and fairly on:
+fluency & coherence, lexical resource, grammatical range & accuracy (for Arabic include word forms, agreement and
+case endings where audible), pronunciation & intonation (you can hear the audio), and task achievement.
 Answer ONLY with JSON:
 {
- "transcript": "verbatim transcript",
- "fluency": <0-75>, "vocabulary": <0-75>, "grammar": <0-75>, "pronunciation": <0-75>, "task": <0-75>,
+ "transcript": "verbatim transcript of the answer",
+ "score": <0-75 integer>,
+ "level": "<A2|B1|B2|C1>",
+ "fluency": <0-9 number>, "vocabulary": <0-9>, "grammar": <0-9>, "pronunciation": <0-9>, "task": <0-9>,
  "strengths": ["...", "..."],
- "mistakes": [{"said": "...", "correct": "...", "type": "grammar", "why": "..."}],
- "corrected_transcript": "...",
- "advice": ["...", "...", "..."],
- "improved_answer": "a model answer at the next higher level"
+ "mistakes": [{"said": "...", "correct": "...", "why": "..."}],
+ "advice": ["...", "..."],
+ "improved_answer": "a short model answer at the candidate's target level"
 }
-Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct',
-'corrected_transcript' and 'improved_answer' in {language}. If the audio is silent, unclear or very short,
-give very low scores and say so in 'advice'."""
+Write 'strengths', 'advice' and 'why' in Uzbek (Latin script). Keep 'transcript', 'said', 'correct' and
+'improved_answer' in {language}. Be concise. If the audio is silent, unclear or very short, give a low score and say so."""
 
 
 class Exam(StatesGroup):
@@ -78,6 +71,24 @@ dp = Dispatcher(storage=MemoryStorage())
 
 USER_LANG: dict[int, str] = {}
 AUDIO_CACHE: dict[tuple[str, int], str] = {}
+
+# E'lon (broadcast) uchun: admin ID lari (vergul bilan) va foydalanuvchilar ro'yxati.
+ADMIN_IDS = {int(x) for x in os.environ.get("ADMIN_ID", "").split(",") if x.strip()}
+USERS_FILE = Path(os.environ.get("USERS_FILE", Path(__file__).parent / "users.json"))
+try:
+    USERS: set[int] = set(json.loads(USERS_FILE.read_text()))
+except Exception:  # noqa: BLE001
+    USERS = set()
+
+
+def _save_users():
+    USERS_FILE.write_text(json.dumps(sorted(USERS)))
+
+
+def add_user(chat_id: int):
+    if chat_id not in USERS:
+        USERS.add(chat_id)
+        _save_users()
 
 
 def lang_of(chat_id: int) -> str:
@@ -131,6 +142,7 @@ def items_kb(lang: str, kind: str) -> InlineKeyboardMarkup:
 @dp.message(CommandStart())
 async def start(message: types.Message, state: FSMContext):
     await state.clear()
+    add_user(message.chat.id)
     await message.answer(
         "Salom! Men CEFR mock botiman 🎙📖🎧\n\n"
         "Speaking (ovozli javob), Reading va Listening mashqlari bor.\n\nTilni tanlang:",
@@ -141,7 +153,47 @@ async def start(message: types.Message, state: FSMContext):
 @dp.message(Command("menu"))
 async def menu_cmd(message: types.Message, state: FSMContext):
     await state.clear()
+    add_user(message.chat.id)
     await message.answer("Bo'limni tanlang:", reply_markup=menu_kb())
+
+
+async def _send_one(uid: int, src: types.Message | None, text: str):
+    if src:
+        await bot.copy_message(uid, src.chat.id, src.message_id)
+    else:
+        await bot.send_message(uid, text)
+
+
+@dp.message(Command("broadcast"), F.from_user.id.in_(ADMIN_IDS))
+async def broadcast(message: types.Message, command: CommandObject, state: FSMContext):
+    await state.clear()
+    src = message.reply_to_message
+    text = (command.args or "").strip()
+    if not src and not text:
+        await message.answer(
+            "Foydalanish:\n/broadcast <i>matn</i>\n"
+            "yoki biror xabarga (rasm, video ham mumkin) reply qilib /broadcast yozing."
+        )
+        return
+    users = list(USERS)
+    note = await message.answer(f"📢 Yuborilmoqda: {len(users)} ta foydalanuvchi...")
+    ok = fail = 0
+    for uid in users:
+        try:
+            try:
+                await _send_one(uid, src, text)
+            except TelegramRetryAfter as e:
+                await asyncio.sleep(e.retry_after)
+                await _send_one(uid, src, text)
+            ok += 1
+        except TelegramForbiddenError:  # foydalanuvchi botni bloklagan
+            USERS.discard(uid)
+            fail += 1
+        except Exception:  # noqa: BLE001
+            fail += 1
+        await asyncio.sleep(0.05)  # Telegram limiti: ~30 xabar/soniya
+    _save_users()
+    await note.edit_text(f"✅ Yuborildi: {ok}\n❌ Yuborilmadi: {fail}")
 
 
 @dp.callback_query(F.data == "menu")
@@ -164,6 +216,7 @@ async def set_lang(cb: types.CallbackQuery, state: FSMContext):
     await state.clear()
     lang = cb.data.split(":")[1]
     USER_LANG[cb.message.chat.id] = lang
+    add_user(cb.message.chat.id)
     await cb.message.answer(f"Til: {LANGS[lang]['label']}\nBo'limni tanlang:", reply_markup=menu_kb())
 
 
@@ -208,81 +261,39 @@ async def evaluate_audio(lang: str, part: str, question: str, audio: bytes, mime
         f"Part: {PART_NAMES[part]}\nQuestion: {question}\n\nEvaluate the candidate's audio answer.",
         gtypes.Part.from_bytes(data=audio, mime_type=mime),
     ]
-    transient = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED", "500", "INTERNAL", "overloaded", "high demand")
     last_err: Exception | None = None
-    for attempt in range(4):  # band bo'lsa 4 marta urinadi: 0, 3, 6, 10 soniya kutish bilan
-        retry = False
-        for model in GEMINI_MODELS:
-            try:
-                resp = await gemini.aio.models.generate_content(
-                    model=model,
-                    contents=contents,
-                    config=gtypes.GenerateContentConfig(
-                        system_instruction=system,
-                        response_mime_type="application/json",
-                        temperature=0.2,
-                    ),
-                )
-                return _parse_json(resp.text)
-            except Exception as e:  # noqa: BLE001
-                last_err = e
-                if any(t in str(e) for t in transient):
-                    retry = True
-        if not retry or attempt == 3:
-            break
-        await asyncio.sleep((3, 3, 4)[attempt])
+    for model in GEMINI_MODELS:
+        try:
+            # Yangi modellarda temperature/top_p/top_k olib tashlangan — yubormaymiz.
+            resp = await gemini.aio.models.generate_content(
+                model=model,
+                contents=contents,
+                config=gtypes.GenerateContentConfig(
+                    system_instruction=system,
+                    response_mime_type="application/json",
+                    thinking_config=gtypes.ThinkingConfig(thinking_level=THINKING),
+                ),
+            )
+            return _parse_json(resp.text)
+        except Exception as e:  # noqa: BLE001
+            last_err = e
     raise last_err or RuntimeError("Gemini javob bermadi")
 
 
-CRITERIA = ["fluency", "vocabulary", "grammar", "pronunciation", "task"]
-
-
-def level_from_score(score: int) -> str:
-    if score >= 65:
-        return "C1"
-    if score >= 51:
-        return "B2"
-    if score >= 38:
-        return "B1"
-    return "A2 yoki past (B1 dan quyi)"
-
-
-def finalize(ev: dict) -> dict:
-    """Mezon ballari 0-75 ga keltiriladi, umumiy ball va daraja kod bilan hisoblanadi."""
-    vals = []
-    for k in CRITERIA:
-        try:
-            v = float(ev.get(k, 0))
-        except (TypeError, ValueError):
-            v = 0.0
-        vals.append(max(0.0, v))
-    if vals and max(vals) <= 9:  # model 0-9 shkalada yozib yuborgan bo'lsa
-        vals = [v * 75 / 9 for v in vals]
-    vals = [min(75.0, v) for v in vals]
-    for k, v in zip(CRITERIA, vals):
-        ev[k] = round(v)
-    ev["score"] = round(sum(vals) / len(vals))
-    ev["level"] = level_from_score(ev["score"])
-    return ev
-
-
 def format_result(ev: dict) -> str:
-    mistakes = "\n\n".join(
-        f"{i}. [{esc(m.get('type', ''))}]\n❌ {esc(m.get('said', ''))}\n✅ {esc(m.get('correct', ''))}\n💡 {esc(m.get('why', ''))}"
-        for i, m in enumerate(ev.get("mistakes", [])[:8], 1)
+    mistakes = "\n".join(
+        f"• ❌ {esc(m.get('said', ''))}\n  ✅ {esc(m.get('correct', ''))}\n  💡 {esc(m.get('why', ''))}"
+        for m in ev.get("mistakes", [])[:5]
     ) or "—"
     strengths = "\n".join(f"• {esc(s)}" for s in ev.get("strengths", []))
     advice = "\n".join(f"• {esc(a)}" for a in ev.get("advice", []))
     return (
-        f"📊 <b>Natija: {ev['score']}/75 — {esc(ev['level'])}</b>\n\n"
-        f"• Fluency (ravonlik): {ev['fluency']}/75\n"
-        f"• Vocabulary (lug'at): {ev['vocabulary']}/75\n"
-        f"• Grammar (grammatika): {ev['grammar']}/75\n"
-        f"• Pronunciation (talaffuz): {ev['pronunciation']}/75\n"
-        f"• Task (vazifa): {ev['task']}/75\n\n"
+        f"📊 <b>Natija: {esc(ev.get('score', '?'))}/75 ({esc(ev.get('level', '?'))})</b>\n"
+        f"Fluency {esc(ev.get('fluency', '?'))} · Vocabulary {esc(ev.get('vocabulary', '?'))} · "
+        f"Grammar {esc(ev.get('grammar', '?'))} · Pronunciation {esc(ev.get('pronunciation', '?'))} · "
+        f"Task {esc(ev.get('task', '?'))}\n\n"
         f"👍 <b>Kuchli tomonlar</b>\n{strengths}\n\n"
-        f"🛠 <b>Xatolar tahlili</b>\n{mistakes}\n\n"
-        f"✏️ <b>To'g'rilangan variant</b>\n{esc(ev.get('corrected_transcript', ''))}\n\n"
+        f"🛠 <b>Xatolar</b>\n{mistakes}\n\n"
         f"📈 <b>Maslahat</b>\n{advice}\n\n"
         f"🗣 <b>Namunaviy javob</b>\n{esc(ev.get('improved_answer', ''))}"
     )
@@ -300,7 +311,7 @@ async def got_voice(message: types.Message, state: FSMContext):
     try:
         buf = io.BytesIO()
         await bot.download(file_obj, destination=buf)
-        ev = finalize(await evaluate_audio(lang, part, question, buf.getvalue(), mime))
+        ev = await evaluate_audio(lang, part, question, buf.getvalue(), mime)
     except Exception as e:  # noqa: BLE001
         await note.edit_text(f"❌ Xatolik: {esc(e)}\nBiroz kutib, qayta yuborib ko'ring.")
         return
@@ -308,7 +319,7 @@ async def got_voice(message: types.Message, state: FSMContext):
     await note.delete()
     await message.answer(f"📝 <b>Siz aytganingiz:</b>\n<i>{esc(ev.get('transcript', ''))}</i>")
     await send_long(message.chat.id, format_result(ev))
-    results.append(ev["score"])
+    results.append(ev.get("score", 0))
 
     if queue:
         await state.update_data(results=results)
@@ -471,4 +482,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-         
