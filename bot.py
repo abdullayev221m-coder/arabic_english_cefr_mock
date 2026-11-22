@@ -492,5 +492,4 @@ async def on_answer(cb: types.CallbackQuery, state: FSMContext):
     chat_id = cb.message.chat.id
     try:
         await cb.message.edit_reply_markup(reply_markup=None)
-    except Exception:  # noqa: BLE001
-     
+    except Exception: pass  # noqa: BLE001,
