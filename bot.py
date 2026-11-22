@@ -40,6 +40,29 @@ log = logging.getLogger("bot")
 
 CONTENT = json.loads((Path(__file__).parent / "content.json").read_text(encoding="utf-8"))
 
+
+def _merge_extra() -> None:
+    """content_extra.json dagi qo'shimcha savollarni CONTENT ga qo'shadi (eskilari o'zgarmaydi)."""
+    p = Path(__file__).parent / "content_extra.json"
+    if not p.exists():
+        return
+    extra = json.loads(p.read_text(encoding="utf-8"))
+    for lang, sections in extra.items():
+        base = CONTENT.setdefault(lang, {})
+        for kind, val in sections.items():
+            if kind == "speaking":
+                sp = base.setdefault("speaking", {})
+                for part, qs in val.items():
+                    cur = sp.setdefault(part, [])
+                    cur += [q for q in qs if q not in cur]
+            else:  # reading / listening
+                lst = base.setdefault(kind, [])
+                titles = {it.get("title") for it in lst}
+                lst += [it for it in val if it.get("title") not in titles]
+
+
+_merge_extra()
+
 LANGS = {
     "en": {"label": "🇬🇧 English", "exam": "English", "tts": "en"},
     "ar": {"label": "🇸🇦 العربية", "exam": "Arabic", "tts": "ar"},
