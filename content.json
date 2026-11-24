@@ -43,25 +43,45 @@
         "questions": [
           {
             "q": "Where did the story of coffee begin?",
-            "options": ["In Yemen", "In Ethiopia", "In Egypt", "In Europe"],
+            "options": [
+              "In Yemen",
+              "In Ethiopia",
+              "In Egypt",
+              "In Europe"
+            ],
             "answer": 1,
             "explain": "Matn boshida: hikoya Efiopiyada boshlangan."
           },
           {
             "q": "What did Kaldi notice about his goats?",
-            "options": ["They slept more than usual", "They refused to eat the berries", "They became very energetic after eating berries", "They ran away from the tree"],
+            "options": [
+              "They slept more than usual",
+              "They refused to eat the berries",
+              "They became very energetic after eating berries",
+              "They ran away from the tree"
+            ],
             "answer": 2,
             "explain": "Qo'ylar rezavorlarni yegach juda tetik bo'lib qolgan."
           },
           {
             "q": "Why did the monk make a drink from the berries?",
-            "options": ["To stay awake during long evening prayers", "To sell it to travellers", "To feed his goats", "To make medicine"],
+            "options": [
+              "To stay awake during long evening prayers",
+              "To sell it to travellers",
+              "To feed his goats",
+              "To make medicine"
+            ],
             "answer": 0,
             "explain": "Rohib uzoq kechki ibodatlarda uyg'oq turish uchun ichgan."
           },
           {
             "q": "What were the coffee houses in Mecca and Cairo used for?",
-            "options": ["Growing coffee plants", "Storing goods for traders", "Teaching religious lessons", "Meeting places for conversation, music and news"],
+            "options": [
+              "Growing coffee plants",
+              "Storing goods for traders",
+              "Teaching religious lessons",
+              "Meeting places for conversation, music and news"
+            ],
             "answer": 3,
             "explain": "Qahvaxonalar suhbat, musiqa va yangiliklar markazi bo'lgan."
           }
@@ -73,25 +93,45 @@
         "questions": [
           {
             "q": "What do many students believe?",
-            "options": ["Studying late at night is the best preparation", "Sleeping is a waste of time", "Exams are not important", "Group study is the best method"],
+            "options": [
+              "Studying late at night is the best preparation",
+              "Sleeping is a waste of time",
+              "Exams are not important",
+              "Group study is the best method"
+            ],
             "answer": 0,
             "explain": "Birinchi gap: ko'p talabalar kechgacha o'qishni eng yaxshi usul deb hisoblaydi."
           },
           {
             "q": "What happens during deep sleep?",
-            "options": ["The brain stops working", "The brain organises what we learned and stores it in long-term memory", "The brain forgets old information", "The body grows taller"],
+            "options": [
+              "The brain stops working",
+              "The brain organises what we learned and stores it in long-term memory",
+              "The brain forgets old information",
+              "The body grows taller"
+            ],
             "answer": 1,
             "explain": "Chuqur uyquda miya bilimlarni uzoq muddatli xotiraga o'tkazadi."
           },
           {
             "q": "Students who slept for eight hours after studying remembered...",
-            "options": ["about 10 per cent less", "the same amount", "about 20 per cent more", "about 80 per cent more"],
+            "options": [
+              "about 10 per cent less",
+              "the same amount",
+              "about 20 per cent more",
+              "about 80 per cent more"
+            ],
             "answer": 2,
             "explain": "8 soat uxlaganlar taxminan 20 foiz ko'proq eslab qolgan."
           },
           {
             "q": "Why do experts advise avoiding screens before bed?",
-            "options": ["They use too much electricity", "Their light can make it harder to fall asleep", "They show unhealthy content", "They make the eyes red"],
+            "options": [
+              "They use too much electricity",
+              "Their light can make it harder to fall asleep",
+              "They show unhealthy content",
+              "They make the eyes red"
+            ],
             "answer": 1,
             "explain": "Telefon va planshet yorug'ligi uxlashni qiyinlashtiradi."
           }
@@ -105,25 +145,45 @@
         "questions": [
           {
             "q": "What time will the library open from next Monday?",
-            "options": ["7:00 a.m.", "9:00 a.m.", "10:00 a.m.", "8:00 a.m."],
+            "options": [
+              "7:00 a.m.",
+              "9:00 a.m.",
+              "10:00 a.m.",
+              "8:00 a.m."
+            ],
             "answer": 3,
             "explain": "Ochilish vaqti to'qqizdan sakkizga o'zgaradi."
           },
           {
             "q": "Until what time will the library be open on Saturdays?",
-            "options": ["Until 5 p.m.", "Until 7 p.m.", "Until 3 p.m.", "It will be closed"],
+            "options": [
+              "Until 5 p.m.",
+              "Until 7 p.m.",
+              "Until 3 p.m.",
+              "It will be closed"
+            ],
             "answer": 0,
             "explain": "Shanba kunlari soat beshgacha ochiq."
           },
           {
             "q": "Where is the new reading room?",
-            "options": ["On the first floor", "On the second floor", "In the basement", "On the third floor"],
+            "options": [
+              "On the first floor",
+              "On the second floor",
+              "In the basement",
+              "On the third floor"
+            ],
             "answer": 1,
             "explain": "Yangi o'qish xonasi ikkinchi qavatda."
           },
           {
             "q": "How many books can you borrow at a time?",
-            "options": ["Three", "Four", "Six", "Ten"],
+            "options": [
+              "Three",
+              "Four",
+              "Six",
+              "Ten"
+            ],
             "answer": 2,
             "explain": "Endi bir vaqtda oltita kitob olish mumkin."
           }
@@ -135,125 +195,205 @@
         "questions": [
           {
             "q": "What will the weather be like on Saturday morning?",
-            "options": ["Sunny and hot", "Cloudy with light rain in the north", "Snowy", "Windy and cold"],
+            "options": [
+              "Sunny and hot",
+              "Cloudy with light rain in the north",
+              "Snowy",
+              "Windy and cold"
+            ],
             "answer": 1,
             "explain": "Shanba ertalab bulutli, shimolda yengil yomg'ir."
           },
           {
             "q": "What will the temperature be on Saturday afternoon?",
-            "options": ["Nine degrees", "Twelve degrees", "Eighteen degrees", "Twenty-five degrees"],
+            "options": [
+              "Nine degrees",
+              "Twelve degrees",
+              "Eighteen degrees",
+              "Twenty-five degrees"
+            ],
             "answer": 2,
             "explain": "Tushdan keyin harorat 18 darajaga yetadi."
           },
           {
             "q": "What will the weather be like on Sunday?",
-            "options": ["Much colder with strong winds", "Warm and sunny", "Rainy but warm", "Foggy"],
+            "options": [
+              "Much colder with strong winds",
+              "Warm and sunny",
+              "Rainy but warm",
+              "Foggy"
+            ],
             "answer": 0,
             "explain": "Yakshanba ancha sovuq va kuchli shamolli bo'ladi."
           },
           {
             "q": "When is the best time for a picnic?",
-            "options": ["Saturday morning", "Sunday morning", "Sunday evening", "Saturday afternoon"],
+            "options": [
+              "Saturday morning",
+              "Sunday morning",
+              "Sunday evening",
+              "Saturday afternoon"
+            ],
             "answer": 3,
             "explain": "Piknik uchun eng yaxshi vaqt shanba kuni tushdan keyin."
           }
         ]
       }
-    ]
+    ],
+    "writing": {
+      "w1": [
+        "You received an email from your English-speaking friend Tom, who is coming to visit your city next month. He asks what to see and what to pack. Write an email to Tom (about 50 words).",
+        "Your friend Anna has just passed her driving test. Write her an email to congratulate her, ask about the test and suggest a way to celebrate (about 50 words).",
+        "Your cousin is planning to start learning a new language and asks for your advice. Write an email giving advice and sharing your own experience (about 50 words).",
+        "You missed your friend's birthday party because you were ill. Write an email to apologise, explain what happened and suggest meeting soon (about 50 words)."
+      ],
+      "w2": [
+        "You bought a pair of headphones online, but they stopped working after one week. Write a formal letter to the shop manager. Explain the problem, say what you want them to do, and ask for a reply (about 120 words).",
+        "You are interested in a part-time job advertised at a local bookshop. Write a letter to the manager. Introduce yourself, explain why you are suitable and ask about working hours and pay (about 120 words).",
+        "The street near your home is very noisy and dirty because of construction work. Write a letter to the city council describing the problems and suggesting solutions (about 120 words).",
+        "You want to join an English language summer course. Write a letter to the course organiser asking about dates, prices and accommodation, and explain what level you are (about 120 words)."
+      ],
+      "w3": [
+        "Some people think that students should wear school uniforms, while others believe they should wear what they like. Discuss both views and give your own opinion (about 200 words).",
+        "Many people now prefer to buy things online instead of going to shops. What are the advantages and disadvantages of online shopping? (about 200 words)",
+        "Some people believe that it is better to live in a big city, others prefer the countryside. Discuss both sides and say which you prefer (about 200 words).",
+        "Technology has changed the way people communicate. Do you think this change is mostly positive or mostly negative? Give reasons and examples (about 200 words)."
+      ]
+    }
   },
   "ar": {
     "speaking": {
       "p1": [
-        "ماذا تفعل عادةً في عطلة نهاية الأسبوع؟",
-        "حدّثني عن أعزّ أصدقائك.",
-        "ما نوع الطعام الذي تحبّه، ولماذا؟",
-        "هل تفضّل العيش في المدينة أم في الريف؟ لماذا؟",
-        "كيف تذهب عادةً إلى العمل أو الجامعة؟",
-        "ما هو فصلك المفضّل من فصول السنة، ولماذا؟",
-        "صِف روتينك اليومي في الصباح.",
-        "ما هي هواياتك في أوقات الفراغ؟",
-        "هل تحبّ قراءة الكتب؟ ما آخر كتاب قرأته؟",
-        "كم مرّة تستخدم مواقع التواصل الاجتماعي، ولأيّ غرض؟",
-        "حدّثني عن المدينة أو القرية التي نشأتَ فيها.",
-        "هل تحبّ الطبخ؟ لماذا أو لماذا لا؟"
+        "\u0645\u0627\u0630\u0627 \u062a\u0641\u0639\u0644 \u0639\u0627\u062f\u0629\u064b \u0641\u064a \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064a\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\u061f",
+        "\u062d\u062f\u0651\u062b\u0646\u064a \u0639\u0646 \u0623\u0639\u0632\u0651 \u0623\u0635\u062f\u0642\u0627\u0626\u0643.",
+        "\u0645\u0627 \u0646\u0648\u0639 \u0627\u0644\u0637\u0639\u0627\u0645 \u0627\u0644\u0630\u064a \u062a\u062d\u0628\u0651\u0647\u060c \u0648\u0644\u0645\u0627\u0630\u0627\u061f",
+        "\u0647\u0644 \u062a\u0641\u0636\u0651\u0644 \u0627\u0644\u0639\u064a\u0634 \u0641\u064a \u0627\u0644\u0645\u062f\u064a\u0646\u0629 \u0623\u0645 \u0641\u064a \u0627\u0644\u0631\u064a\u0641\u061f \u0644\u0645\u0627\u0630\u0627\u061f",
+        "\u0643\u064a\u0641 \u062a\u0630\u0647\u0628 \u0639\u0627\u062f\u0629\u064b \u0625\u0644\u0649 \u0627\u0644\u0639\u0645\u0644 \u0623\u0648 \u0627\u0644\u062c\u0627\u0645\u0639\u0629\u061f",
+        "\u0645\u0627 \u0647\u0648 \u0641\u0635\u0644\u0643 \u0627\u0644\u0645\u0641\u0636\u0651\u0644 \u0645\u0646 \u0641\u0635\u0648\u0644 \u0627\u0644\u0633\u0646\u0629\u060c \u0648\u0644\u0645\u0627\u0630\u0627\u061f",
+        "\u0635\u0650\u0641 \u0631\u0648\u062a\u064a\u0646\u0643 \u0627\u0644\u064a\u0648\u0645\u064a \u0641\u064a \u0627\u0644\u0635\u0628\u0627\u062d.",
+        "\u0645\u0627 \u0647\u064a \u0647\u0648\u0627\u064a\u0627\u062a\u0643 \u0641\u064a \u0623\u0648\u0642\u0627\u062a \u0627\u0644\u0641\u0631\u0627\u063a\u061f",
+        "\u0647\u0644 \u062a\u062d\u0628\u0651 \u0642\u0631\u0627\u0621\u0629 \u0627\u0644\u0643\u062a\u0628\u061f \u0645\u0627 \u0622\u062e\u0631 \u0643\u062a\u0627\u0628 \u0642\u0631\u0623\u062a\u0647\u061f",
+        "\u0643\u0645 \u0645\u0631\u0651\u0629 \u062a\u0633\u062a\u062e\u062f\u0645 \u0645\u0648\u0627\u0642\u0639 \u0627\u0644\u062a\u0648\u0627\u0635\u0644 \u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u064a\u060c \u0648\u0644\u0623\u064a\u0651 \u063a\u0631\u0636\u061f",
+        "\u062d\u062f\u0651\u062b\u0646\u064a \u0639\u0646 \u0627\u0644\u0645\u062f\u064a\u0646\u0629 \u0623\u0648 \u0627\u0644\u0642\u0631\u064a\u0629 \u0627\u0644\u062a\u064a \u0646\u0634\u0623\u062a\u064e \u0641\u064a\u0647\u0627.",
+        "\u0647\u0644 \u062a\u062d\u0628\u0651 \u0627\u0644\u0637\u0628\u062e\u061f \u0644\u0645\u0627\u0630\u0627 \u0623\u0648 \u0644\u0645\u0627\u0630\u0627 \u0644\u0627\u061f"
       ],
       "p2": [
-        "صِف رحلة لا تُنسى قمتَ بها.\nيجب أن تذكر:\n- إلى أين ذهبت\n- مع مَن ذهبت\n- ماذا فعلتَ هناك\nواشرح لماذا كانت لا تُنسى.",
-        "صِف شخصًا كان له تأثير كبير في حياتك.\nيجب أن تذكر:\n- مَن هو هذا الشخص\n- كيف تعرفه\n- ماذا فعل من أجلك\nواشرح لماذا هو مهم بالنسبة إليك.",
-        "صِف مكانك المفضّل للاسترخاء.\nيجب أن تذكر:\n- أين يقع\n- كم مرّة تذهب إليه\n- ماذا تفعل هناك\nواشرح لماذا يساعدك على الاسترخاء.",
-        "صِف مهارة تودّ أن تتعلّمها.\nيجب أن تذكر:\n- ما هذه المهارة\n- لماذا تريد تعلّمها\n- كيف ستتعلّمها\nواشرح كيف يمكن أن تفيدك في حياتك.",
-        "صِف موقفًا ساعدتَ فيه شخصًا ما.\nيجب أن تذكر:\n- مَن الذي ساعدته\n- ما المشكلة\n- كيف ساعدته\nواشرح بماذا شعرتَ بعد ذلك.",
-        "صِف كتابًا أو فيلمًا ترك فيك أثرًا كبيرًا.\nيجب أن تذكر:\n- ما هو\n- عن ماذا يتحدّث\n- متى قرأتَه أو شاهدتَه\nواشرح لماذا ترك فيك هذا الأثر.",
-        "صِف مناسبة أو عيدًا يُحتفل به في بلدك.\nيجب أن تذكر:\n- ما هذه المناسبة\n- متى تقام\n- ماذا يفعل الناس فيها\nواشرح لماذا هي مهمة للناس.",
-        "صِف جهازًا تقنيًا تستخدمه كل يوم.\nيجب أن تذكر:\n- ما هو\n- منذ متى تملكه\n- لأيّ غرض تستخدمه\nواشرح كيف ستتغيّر حياتك من دونه."
+        "\u0635\u0650\u0641 \u0631\u062d\u0644\u0629 \u0644\u0627 \u062a\u064f\u0646\u0633\u0649 \u0642\u0645\u062a\u064e \u0628\u0647\u0627.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0625\u0644\u0649 \u0623\u064a\u0646 \u0630\u0647\u0628\u062a\n- \u0645\u0639 \u0645\u064e\u0646 \u0630\u0647\u0628\u062a\n- \u0645\u0627\u0630\u0627 \u0641\u0639\u0644\u062a\u064e \u0647\u0646\u0627\u0643\n\u0648\u0627\u0634\u0631\u062d \u0644\u0645\u0627\u0630\u0627 \u0643\u0627\u0646\u062a \u0644\u0627 \u062a\u064f\u0646\u0633\u0649.",
+        "\u0635\u0650\u0641 \u0634\u062e\u0635\u064b\u0627 \u0643\u0627\u0646 \u0644\u0647 \u062a\u0623\u062b\u064a\u0631 \u0643\u0628\u064a\u0631 \u0641\u064a \u062d\u064a\u0627\u062a\u0643.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0645\u064e\u0646 \u0647\u0648 \u0647\u0630\u0627 \u0627\u0644\u0634\u062e\u0635\n- \u0643\u064a\u0641 \u062a\u0639\u0631\u0641\u0647\n- \u0645\u0627\u0630\u0627 \u0641\u0639\u0644 \u0645\u0646 \u0623\u062c\u0644\u0643\n\u0648\u0627\u0634\u0631\u062d \u0644\u0645\u0627\u0630\u0627 \u0647\u0648 \u0645\u0647\u0645 \u0628\u0627\u0644\u0646\u0633\u0628\u0629 \u0625\u0644\u064a\u0643.",
+        "\u0635\u0650\u0641 \u0645\u0643\u0627\u0646\u0643 \u0627\u0644\u0645\u0641\u0636\u0651\u0644 \u0644\u0644\u0627\u0633\u062a\u0631\u062e\u0627\u0621.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0623\u064a\u0646 \u064a\u0642\u0639\n- \u0643\u0645 \u0645\u0631\u0651\u0629 \u062a\u0630\u0647\u0628 \u0625\u0644\u064a\u0647\n- \u0645\u0627\u0630\u0627 \u062a\u0641\u0639\u0644 \u0647\u0646\u0627\u0643\n\u0648\u0627\u0634\u0631\u062d \u0644\u0645\u0627\u0630\u0627 \u064a\u0633\u0627\u0639\u062f\u0643 \u0639\u0644\u0649 \u0627\u0644\u0627\u0633\u062a\u0631\u062e\u0627\u0621.",
+        "\u0635\u0650\u0641 \u0645\u0647\u0627\u0631\u0629 \u062a\u0648\u062f\u0651 \u0623\u0646 \u062a\u062a\u0639\u0644\u0651\u0645\u0647\u0627.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0645\u0627 \u0647\u0630\u0647 \u0627\u0644\u0645\u0647\u0627\u0631\u0629\n- \u0644\u0645\u0627\u0630\u0627 \u062a\u0631\u064a\u062f \u062a\u0639\u0644\u0651\u0645\u0647\u0627\n- \u0643\u064a\u0641 \u0633\u062a\u062a\u0639\u0644\u0651\u0645\u0647\u0627\n\u0648\u0627\u0634\u0631\u062d \u0643\u064a\u0641 \u064a\u0645\u0643\u0646 \u0623\u0646 \u062a\u0641\u064a\u062f\u0643 \u0641\u064a \u062d\u064a\u0627\u062a\u0643.",
+        "\u0635\u0650\u0641 \u0645\u0648\u0642\u0641\u064b\u0627 \u0633\u0627\u0639\u062f\u062a\u064e \u0641\u064a\u0647 \u0634\u062e\u0635\u064b\u0627 \u0645\u0627.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0645\u064e\u0646 \u0627\u0644\u0630\u064a \u0633\u0627\u0639\u062f\u062a\u0647\n- \u0645\u0627 \u0627\u0644\u0645\u0634\u0643\u0644\u0629\n- \u0643\u064a\u0641 \u0633\u0627\u0639\u062f\u062a\u0647\n\u0648\u0627\u0634\u0631\u062d \u0628\u0645\u0627\u0630\u0627 \u0634\u0639\u0631\u062a\u064e \u0628\u0639\u062f \u0630\u0644\u0643.",
+        "\u0635\u0650\u0641 \u0643\u062a\u0627\u0628\u064b\u0627 \u0623\u0648 \u0641\u064a\u0644\u0645\u064b\u0627 \u062a\u0631\u0643 \u0641\u064a\u0643 \u0623\u062b\u0631\u064b\u0627 \u0643\u0628\u064a\u0631\u064b\u0627.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0645\u0627 \u0647\u0648\n- \u0639\u0646 \u0645\u0627\u0630\u0627 \u064a\u062a\u062d\u062f\u0651\u062b\n- \u0645\u062a\u0649 \u0642\u0631\u0623\u062a\u064e\u0647 \u0623\u0648 \u0634\u0627\u0647\u062f\u062a\u064e\u0647\n\u0648\u0627\u0634\u0631\u062d \u0644\u0645\u0627\u0630\u0627 \u062a\u0631\u0643 \u0641\u064a\u0643 \u0647\u0630\u0627 \u0627\u0644\u0623\u062b\u0631.",
+        "\u0635\u0650\u0641 \u0645\u0646\u0627\u0633\u0628\u0629 \u0623\u0648 \u0639\u064a\u062f\u064b\u0627 \u064a\u064f\u062d\u062a\u0641\u0644 \u0628\u0647 \u0641\u064a \u0628\u0644\u062f\u0643.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0645\u0627 \u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0629\n- \u0645\u062a\u0649 \u062a\u0642\u0627\u0645\n- \u0645\u0627\u0630\u0627 \u064a\u0641\u0639\u0644 \u0627\u0644\u0646\u0627\u0633 \u0641\u064a\u0647\u0627\n\u0648\u0627\u0634\u0631\u062d \u0644\u0645\u0627\u0630\u0627 \u0647\u064a \u0645\u0647\u0645\u0629 \u0644\u0644\u0646\u0627\u0633.",
+        "\u0635\u0650\u0641 \u062c\u0647\u0627\u0632\u064b\u0627 \u062a\u0642\u0646\u064a\u064b\u0627 \u062a\u0633\u062a\u062e\u062f\u0645\u0647 \u0643\u0644 \u064a\u0648\u0645.\n\u064a\u062c\u0628 \u0623\u0646 \u062a\u0630\u0643\u0631:\n- \u0645\u0627 \u0647\u0648\n- \u0645\u0646\u0630 \u0645\u062a\u0649 \u062a\u0645\u0644\u0643\u0647\n- \u0644\u0623\u064a\u0651 \u063a\u0631\u0636 \u062a\u0633\u062a\u062e\u062f\u0645\u0647\n\u0648\u0627\u0634\u0631\u062d \u0643\u064a\u0641 \u0633\u062a\u062a\u063a\u064a\u0651\u0631 \u062d\u064a\u0627\u062a\u0643 \u0645\u0646 \u062f\u0648\u0646\u0647."
       ],
       "p3": [
-        "يرى بعض الناس أن التعلّم عبر الإنترنت أفضل من الدراسة في الصف، بينما يخالفهم آخرون. ناقش الرأيين ثم اذكر رأيك.",
-        "هل يجب أن يمتلك الأطفال هواتف ذكية؟ ناقش الإيجابيات والسلبيات واذكر رأيك.",
-        "يفضّل بعض الناس العمل من المنزل، ويفضّل آخرون العمل في المكتب. ناقش الجانبين واذكر رأيك.",
-        "هل العيش في مدينة كبيرة أفضل أم العيش في بلدة صغيرة؟ اذكر حججًا للطرفين واشرح وجهة نظرك.",
-        "هل يقضي الناس وقتًا طويلًا جدًا على مواقع التواصل الاجتماعي؟ ناقش تأثير ذلك في الشباب وفي المجتمع.",
-        "هل ينبغي أن يكون التعليم الجامعي مجانيًا للجميع؟ اعرض الحجج المؤيدة والمعارضة.",
-        "أيّهما أهمّ: ادّخار المال للمستقبل أم الاستمتاع به الآن؟ ناقش الرأيين واذكر رأيك.",
-        "قد تجلب السياحة فوائد ومشكلات للمجتمعات المحلية. ناقش الجانبين واذكر رأيك."
+        "\u064a\u0631\u0649 \u0628\u0639\u0636 \u0627\u0644\u0646\u0627\u0633 \u0623\u0646 \u0627\u0644\u062a\u0639\u0644\u0651\u0645 \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062a\u0631\u0646\u062a \u0623\u0641\u0636\u0644 \u0645\u0646 \u0627\u0644\u062f\u0631\u0627\u0633\u0629 \u0641\u064a \u0627\u0644\u0635\u0641\u060c \u0628\u064a\u0646\u0645\u0627 \u064a\u062e\u0627\u0644\u0641\u0647\u0645 \u0622\u062e\u0631\u0648\u0646. \u0646\u0627\u0642\u0634 \u0627\u0644\u0631\u0623\u064a\u064a\u0646 \u062b\u0645 \u0627\u0630\u0643\u0631 \u0631\u0623\u064a\u0643.",
+        "\u0647\u0644 \u064a\u062c\u0628 \u0623\u0646 \u064a\u0645\u062a\u0644\u0643 \u0627\u0644\u0623\u0637\u0641\u0627\u0644 \u0647\u0648\u0627\u062a\u0641 \u0630\u0643\u064a\u0629\u061f \u0646\u0627\u0642\u0634 \u0627\u0644\u0625\u064a\u062c\u0627\u0628\u064a\u0627\u062a \u0648\u0627\u0644\u0633\u0644\u0628\u064a\u0627\u062a \u0648\u0627\u0630\u0643\u0631 \u0631\u0623\u064a\u0643.",
+        "\u064a\u0641\u0636\u0651\u0644 \u0628\u0639\u0636 \u0627\u0644\u0646\u0627\u0633 \u0627\u0644\u0639\u0645\u0644 \u0645\u0646 \u0627\u0644\u0645\u0646\u0632\u0644\u060c \u0648\u064a\u0641\u0636\u0651\u0644 \u0622\u062e\u0631\u0648\u0646 \u0627\u0644\u0639\u0645\u0644 \u0641\u064a \u0627\u0644\u0645\u0643\u062a\u0628. \u0646\u0627\u0642\u0634 \u0627\u0644\u062c\u0627\u0646\u0628\u064a\u0646 \u0648\u0627\u0630\u0643\u0631 \u0631\u0623\u064a\u0643.",
+        "\u0647\u0644 \u0627\u0644\u0639\u064a\u0634 \u0641\u064a \u0645\u062f\u064a\u0646\u0629 \u0643\u0628\u064a\u0631\u0629 \u0623\u0641\u0636\u0644 \u0623\u0645 \u0627\u0644\u0639\u064a\u0634 \u0641\u064a \u0628\u0644\u062f\u0629 \u0635\u063a\u064a\u0631\u0629\u061f \u0627\u0630\u0643\u0631 \u062d\u062c\u062c\u064b\u0627 \u0644\u0644\u0637\u0631\u0641\u064a\u0646 \u0648\u0627\u0634\u0631\u062d \u0648\u062c\u0647\u0629 \u0646\u0638\u0631\u0643.",
+        "\u0647\u0644 \u064a\u0642\u0636\u064a \u0627\u0644\u0646\u0627\u0633 \u0648\u0642\u062a\u064b\u0627 \u0637\u0648\u064a\u0644\u064b\u0627 \u062c\u062f\u064b\u0627 \u0639\u0644\u0649 \u0645\u0648\u0627\u0642\u0639 \u0627\u0644\u062a\u0648\u0627\u0635\u0644 \u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u064a\u061f \u0646\u0627\u0642\u0634 \u062a\u0623\u062b\u064a\u0631 \u0630\u0644\u0643 \u0641\u064a \u0627\u0644\u0634\u0628\u0627\u0628 \u0648\u0641\u064a \u0627\u0644\u0645\u062c\u062a\u0645\u0639.",
+        "\u0647\u0644 \u064a\u0646\u0628\u063a\u064a \u0623\u0646 \u064a\u0643\u0648\u0646 \u0627\u0644\u062a\u0639\u0644\u064a\u0645 \u0627\u0644\u062c\u0627\u0645\u0639\u064a \u0645\u062c\u0627\u0646\u064a\u064b\u0627 \u0644\u0644\u062c\u0645\u064a\u0639\u061f \u0627\u0639\u0631\u0636 \u0627\u0644\u062d\u062c\u062c \u0627\u0644\u0645\u0624\u064a\u062f\u0629 \u0648\u0627\u0644\u0645\u0639\u0627\u0631\u0636\u0629.",
+        "\u0623\u064a\u0651\u0647\u0645\u0627 \u0623\u0647\u0645\u0651: \u0627\u062f\u0651\u062e\u0627\u0631 \u0627\u0644\u0645\u0627\u0644 \u0644\u0644\u0645\u0633\u062a\u0642\u0628\u0644 \u0623\u0645 \u0627\u0644\u0627\u0633\u062a\u0645\u062a\u0627\u0639 \u0628\u0647 \u0627\u0644\u0622\u0646\u061f \u0646\u0627\u0642\u0634 \u0627\u0644\u0631\u0623\u064a\u064a\u0646 \u0648\u0627\u0630\u0643\u0631 \u0631\u0623\u064a\u0643.",
+        "\u0642\u062f \u062a\u062c\u0644\u0628 \u0627\u0644\u0633\u064a\u0627\u062d\u0629 \u0641\u0648\u0627\u0626\u062f \u0648\u0645\u0634\u0643\u0644\u0627\u062a \u0644\u0644\u0645\u062c\u062a\u0645\u0639\u0627\u062a \u0627\u0644\u0645\u062d\u0644\u064a\u0629. \u0646\u0627\u0642\u0634 \u0627\u0644\u062c\u0627\u0646\u0628\u064a\u0646 \u0648\u0627\u0630\u0643\u0631 \u0631\u0623\u064a\u0643."
       ]
     },
     "reading": [
       {
-        "title": "قصة القهوة",
-        "text": "تُعدّ القهوة من أشهر المشروبات في العالم، وتبدأ قصتها في بلاد الحبشة (إثيوبيا) منذ قرون طويلة. تقول الأسطورة إن راعيًا يُدعى كالدي لاحظ أن أغنامه تصبح نشيطة جدًا بعد أكل ثمار شجرة معيّنة. أخبر الراعي أحد الرهبان بذلك، فصنع الراهب مشروبًا من تلك الثمار، ووجد أنه يساعده على البقاء مستيقظًا أثناء صلوات الليل الطويلة.\n\nانتقلت القهوة تدريجيًا إلى شبه الجزيرة العربية، وفي القرن الخامس عشر زُرعت في اليمن، وظهرت المقاهي في مدن مثل مكة والقاهرة، فصارت أماكن للحديث وسماع الموسيقى وتبادل الأخبار. وفي القرن السابع عشر وصلت القهوة إلى أوروبا، وسرعان ما أصبحت مشروبًا رائجًا.",
+        "title": "\u0642\u0635\u0629 \u0627\u0644\u0642\u0647\u0648\u0629",
+        "text": "\u062a\u064f\u0639\u062f\u0651 \u0627\u0644\u0642\u0647\u0648\u0629 \u0645\u0646 \u0623\u0634\u0647\u0631 \u0627\u0644\u0645\u0634\u0631\u0648\u0628\u0627\u062a \u0641\u064a \u0627\u0644\u0639\u0627\u0644\u0645\u060c \u0648\u062a\u0628\u062f\u0623 \u0642\u0635\u062a\u0647\u0627 \u0641\u064a \u0628\u0644\u0627\u062f \u0627\u0644\u062d\u0628\u0634\u0629 (\u0625\u062b\u064a\u0648\u0628\u064a\u0627) \u0645\u0646\u0630 \u0642\u0631\u0648\u0646 \u0637\u0648\u064a\u0644\u0629. \u062a\u0642\u0648\u0644 \u0627\u0644\u0623\u0633\u0637\u0648\u0631\u0629 \u0625\u0646 \u0631\u0627\u0639\u064a\u064b\u0627 \u064a\u064f\u062f\u0639\u0649 \u0643\u0627\u0644\u062f\u064a \u0644\u0627\u062d\u0638 \u0623\u0646 \u0623\u063a\u0646\u0627\u0645\u0647 \u062a\u0635\u0628\u062d \u0646\u0634\u064a\u0637\u0629 \u062c\u062f\u064b\u0627 \u0628\u0639\u062f \u0623\u0643\u0644 \u062b\u0645\u0627\u0631 \u0634\u062c\u0631\u0629 \u0645\u0639\u064a\u0651\u0646\u0629. \u0623\u062e\u0628\u0631 \u0627\u0644\u0631\u0627\u0639\u064a \u0623\u062d\u062f \u0627\u0644\u0631\u0647\u0628\u0627\u0646 \u0628\u0630\u0644\u0643\u060c \u0641\u0635\u0646\u0639 \u0627\u0644\u0631\u0627\u0647\u0628 \u0645\u0634\u0631\u0648\u0628\u064b\u0627 \u0645\u0646 \u062a\u0644\u0643 \u0627\u0644\u062b\u0645\u0627\u0631\u060c \u0648\u0648\u062c\u062f \u0623\u0646\u0647 \u064a\u0633\u0627\u0639\u062f\u0647 \u0639\u0644\u0649 \u0627\u0644\u0628\u0642\u0627\u0621 \u0645\u0633\u062a\u064a\u0642\u0638\u064b\u0627 \u0623\u062b\u0646\u0627\u0621 \u0635\u0644\u0648\u0627\u062a \u0627\u0644\u0644\u064a\u0644 \u0627\u0644\u0637\u0648\u064a\u0644\u0629.\n\n\u0627\u0646\u062a\u0642\u0644\u062a \u0627\u0644\u0642\u0647\u0648\u0629 \u062a\u062f\u0631\u064a\u062c\u064a\u064b\u0627 \u0625\u0644\u0649 \u0634\u0628\u0647 \u0627\u0644\u062c\u0632\u064a\u0631\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629\u060c \u0648\u0641\u064a \u0627\u0644\u0642\u0631\u0646 \u0627\u0644\u062e\u0627\u0645\u0633 \u0639\u0634\u0631 \u0632\u064f\u0631\u0639\u062a \u0641\u064a \u0627\u0644\u064a\u0645\u0646\u060c \u0648\u0638\u0647\u0631\u062a \u0627\u0644\u0645\u0642\u0627\u0647\u064a \u0641\u064a \u0645\u062f\u0646 \u0645\u062b\u0644 \u0645\u0643\u0629 \u0648\u0627\u0644\u0642\u0627\u0647\u0631\u0629\u060c \u0641\u0635\u0627\u0631\u062a \u0623\u0645\u0627\u0643\u0646 \u0644\u0644\u062d\u062f\u064a\u062b \u0648\u0633\u0645\u0627\u0639 \u0627\u0644\u0645\u0648\u0633\u064a\u0642\u0649 \u0648\u062a\u0628\u0627\u062f\u0644 \u0627\u0644\u0623\u062e\u0628\u0627\u0631. \u0648\u0641\u064a \u0627\u0644\u0642\u0631\u0646 \u0627\u0644\u0633\u0627\u0628\u0639 \u0639\u0634\u0631 \u0648\u0635\u0644\u062a \u0627\u0644\u0642\u0647\u0648\u0629 \u0625\u0644\u0649 \u0623\u0648\u0631\u0648\u0628\u0627\u060c \u0648\u0633\u0631\u0639\u0627\u0646 \u0645\u0627 \u0623\u0635\u0628\u062d\u062a \u0645\u0634\u0631\u0648\u0628\u064b\u0627 \u0631\u0627\u0626\u062c\u064b\u0627.",
         "questions": [
           {
-            "q": "أين بدأت قصة القهوة؟",
-            "options": ["في اليمن", "في بلاد الحبشة (إثيوبيا)", "في مصر", "في أوروبا"],
+            "q": "\u0623\u064a\u0646 \u0628\u062f\u0623\u062a \u0642\u0635\u0629 \u0627\u0644\u0642\u0647\u0648\u0629\u061f",
+            "options": [
+              "\u0641\u064a \u0627\u0644\u064a\u0645\u0646",
+              "\u0641\u064a \u0628\u0644\u0627\u062f \u0627\u0644\u062d\u0628\u0634\u0629 (\u0625\u062b\u064a\u0648\u0628\u064a\u0627)",
+              "\u0641\u064a \u0645\u0635\u0631",
+              "\u0641\u064a \u0623\u0648\u0631\u0648\u0628\u0627"
+            ],
             "answer": 1,
             "explain": "Matn boshida: hikoya Habashistonda (Efiopiya) boshlangan."
           },
           {
-            "q": "ماذا لاحظ الراعي كالدي على أغنامه؟",
-            "options": ["أنها نامت كثيرًا", "أنها رفضت الأكل", "أنها أصبحت نشيطة جدًا بعد أكل الثمار", "أنها هربت من الشجرة"],
+            "q": "\u0645\u0627\u0630\u0627 \u0644\u0627\u062d\u0638 \u0627\u0644\u0631\u0627\u0639\u064a \u0643\u0627\u0644\u062f\u064a \u0639\u0644\u0649 \u0623\u063a\u0646\u0627\u0645\u0647\u061f",
+            "options": [
+              "\u0623\u0646\u0647\u0627 \u0646\u0627\u0645\u062a \u0643\u062b\u064a\u0631\u064b\u0627",
+              "\u0623\u0646\u0647\u0627 \u0631\u0641\u0636\u062a \u0627\u0644\u0623\u0643\u0644",
+              "\u0623\u0646\u0647\u0627 \u0623\u0635\u0628\u062d\u062a \u0646\u0634\u064a\u0637\u0629 \u062c\u062f\u064b\u0627 \u0628\u0639\u062f \u0623\u0643\u0644 \u0627\u0644\u062b\u0645\u0627\u0631",
+              "\u0623\u0646\u0647\u0627 \u0647\u0631\u0628\u062a \u0645\u0646 \u0627\u0644\u0634\u062c\u0631\u0629"
+            ],
             "answer": 2,
             "explain": "Qo'ylar mevalarni yegach juda tetik bo'lib qolgan."
           },
           {
-            "q": "لماذا صنع الراهب المشروب؟",
-            "options": ["ليبقى مستيقظًا أثناء صلوات الليل", "ليبيعه للتجار", "ليطعم الأغنام", "ليصنع دواءً"],
+            "q": "\u0644\u0645\u0627\u0630\u0627 \u0635\u0646\u0639 \u0627\u0644\u0631\u0627\u0647\u0628 \u0627\u0644\u0645\u0634\u0631\u0648\u0628\u061f",
+            "options": [
+              "\u0644\u064a\u0628\u0642\u0649 \u0645\u0633\u062a\u064a\u0642\u0638\u064b\u0627 \u0623\u062b\u0646\u0627\u0621 \u0635\u0644\u0648\u0627\u062a \u0627\u0644\u0644\u064a\u0644",
+              "\u0644\u064a\u0628\u064a\u0639\u0647 \u0644\u0644\u062a\u062c\u0627\u0631",
+              "\u0644\u064a\u0637\u0639\u0645 \u0627\u0644\u0623\u063a\u0646\u0627\u0645",
+              "\u0644\u064a\u0635\u0646\u0639 \u062f\u0648\u0627\u0621\u064b"
+            ],
             "answer": 0,
             "explain": "Rohib uzoq tungi ibodatlarda uyg'oq turish uchun ichgan."
           },
           {
-            "q": "ماذا كانت المقاهي في مكة والقاهرة؟",
-            "options": ["أماكن لزراعة القهوة", "مخازن للتجار", "مدارس دينية", "أماكن للحديث والموسيقى وتبادل الأخبار"],
+            "q": "\u0645\u0627\u0630\u0627 \u0643\u0627\u0646\u062a \u0627\u0644\u0645\u0642\u0627\u0647\u064a \u0641\u064a \u0645\u0643\u0629 \u0648\u0627\u0644\u0642\u0627\u0647\u0631\u0629\u061f",
+            "options": [
+              "\u0623\u0645\u0627\u0643\u0646 \u0644\u0632\u0631\u0627\u0639\u0629 \u0627\u0644\u0642\u0647\u0648\u0629",
+              "\u0645\u062e\u0627\u0632\u0646 \u0644\u0644\u062a\u062c\u0627\u0631",
+              "\u0645\u062f\u0627\u0631\u0633 \u062f\u064a\u0646\u064a\u0629",
+              "\u0623\u0645\u0627\u0643\u0646 \u0644\u0644\u062d\u062f\u064a\u062b \u0648\u0627\u0644\u0645\u0648\u0633\u064a\u0642\u0649 \u0648\u062a\u0628\u0627\u062f\u0644 \u0627\u0644\u0623\u062e\u0628\u0627\u0631"
+            ],
             "answer": 3,
             "explain": "Qahvaxonalar suhbat, musiqa va yangiliklar almashish joyi bo'lgan."
           }
         ]
       },
       {
-        "title": "النوم والتعلّم",
-        "text": "يعتقد كثير من الطلاب أن السهر لوقت متأخر هو أفضل طريقة للاستعداد للامتحان. لكن العلماء يؤكدون أن النوم يؤدي دورًا مهمًا في حفظ المعلومات. ففي أثناء النوم العميق ينظّم الدماغ ما تعلّمناه خلال النهار وينقله إلى الذاكرة طويلة المدى.\n\nوقد وجد باحثون أن الطلاب الذين ناموا ثماني ساعات بعد الدراسة تذكّروا نحو عشرين في المئة أكثر من الذين بقوا مستيقظين. كما أن قلة النوم تجعل التركيز وحلّ المشكلات أصعب في اليوم التالي. وينصح الخبراء المراهقين بالنوم من ثماني إلى عشر ساعات كل ليلة، وبالابتعاد عن الشاشات قبل النوم بساعة، لأن ضوء الهواتف قد يصعّب النوم.",
+        "title": "\u0627\u0644\u0646\u0648\u0645 \u0648\u0627\u0644\u062a\u0639\u0644\u0651\u0645",
+        "text": "\u064a\u0639\u062a\u0642\u062f \u0643\u062b\u064a\u0631 \u0645\u0646 \u0627\u0644\u0637\u0644\u0627\u0628 \u0623\u0646 \u0627\u0644\u0633\u0647\u0631 \u0644\u0648\u0642\u062a \u0645\u062a\u0623\u062e\u0631 \u0647\u0648 \u0623\u0641\u0636\u0644 \u0637\u0631\u064a\u0642\u0629 \u0644\u0644\u0627\u0633\u062a\u0639\u062f\u0627\u062f \u0644\u0644\u0627\u0645\u062a\u062d\u0627\u0646. \u0644\u0643\u0646 \u0627\u0644\u0639\u0644\u0645\u0627\u0621 \u064a\u0624\u0643\u062f\u0648\u0646 \u0623\u0646 \u0627\u0644\u0646\u0648\u0645 \u064a\u0624\u062f\u064a \u062f\u0648\u0631\u064b\u0627 \u0645\u0647\u0645\u064b\u0627 \u0641\u064a \u062d\u0641\u0638 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a. \u0641\u0641\u064a \u0623\u062b\u0646\u0627\u0621 \u0627\u0644\u0646\u0648\u0645 \u0627\u0644\u0639\u0645\u064a\u0642 \u064a\u0646\u0638\u0651\u0645 \u0627\u0644\u062f\u0645\u0627\u063a \u0645\u0627 \u062a\u0639\u0644\u0651\u0645\u0646\u0627\u0647 \u062e\u0644\u0627\u0644 \u0627\u0644\u0646\u0647\u0627\u0631 \u0648\u064a\u0646\u0642\u0644\u0647 \u0625\u0644\u0649 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0637\u0648\u064a\u0644\u0629 \u0627\u0644\u0645\u062f\u0649.\n\n\u0648\u0642\u062f \u0648\u062c\u062f \u0628\u0627\u062d\u062b\u0648\u0646 \u0623\u0646 \u0627\u0644\u0637\u0644\u0627\u0628 \u0627\u0644\u0630\u064a\u0646 \u0646\u0627\u0645\u0648\u0627 \u062b\u0645\u0627\u0646\u064a \u0633\u0627\u0639\u0627\u062a \u0628\u0639\u062f \u0627\u0644\u062f\u0631\u0627\u0633\u0629 \u062a\u0630\u0643\u0651\u0631\u0648\u0627 \u0646\u062d\u0648 \u0639\u0634\u0631\u064a\u0646 \u0641\u064a \u0627\u0644\u0645\u0626\u0629 \u0623\u0643\u062b\u0631 \u0645\u0646 \u0627\u0644\u0630\u064a\u0646 \u0628\u0642\u0648\u0627 \u0645\u0633\u062a\u064a\u0642\u0638\u064a\u0646. \u0643\u0645\u0627 \u0623\u0646 \u0642\u0644\u0629 \u0627\u0644\u0646\u0648\u0645 \u062a\u062c\u0639\u0644 \u0627\u0644\u062a\u0631\u0643\u064a\u0632 \u0648\u062d\u0644\u0651 \u0627\u0644\u0645\u0634\u0643\u0644\u0627\u062a \u0623\u0635\u0639\u0628 \u0641\u064a \u0627\u0644\u064a\u0648\u0645 \u0627\u0644\u062a\u0627\u0644\u064a. \u0648\u064a\u0646\u0635\u062d \u0627\u0644\u062e\u0628\u0631\u0627\u0621 \u0627\u0644\u0645\u0631\u0627\u0647\u0642\u064a\u0646 \u0628\u0627\u0644\u0646\u0648\u0645 \u0645\u0646 \u062b\u0645\u0627\u0646\u064a \u0625\u0644\u0649 \u0639\u0634\u0631 \u0633\u0627\u0639\u0627\u062a \u0643\u0644 \u0644\u064a\u0644\u0629\u060c \u0648\u0628\u0627\u0644\u0627\u0628\u062a\u0639\u0627\u062f \u0639\u0646 \u0627\u0644\u0634\u0627\u0634\u0627\u062a \u0642\u0628\u0644 \u0627\u0644\u0646\u0648\u0645 \u0628\u0633\u0627\u0639\u0629\u060c \u0644\u0623\u0646 \u0636\u0648\u0621 \u0627\u0644\u0647\u0648\u0627\u062a\u0641 \u0642\u062f \u064a\u0635\u0639\u0651\u0628 \u0627\u0644\u0646\u0648\u0645.",
         "questions": [
           {
-            "q": "ماذا يعتقد كثير من الطلاب؟",
-            "options": ["أن السهر أفضل استعداد للامتحان", "أن النوم مضيعة للوقت", "أن الامتحانات غير مهمة", "أن الدراسة الجماعية أفضل"],
+            "q": "\u0645\u0627\u0630\u0627 \u064a\u0639\u062a\u0642\u062f \u0643\u062b\u064a\u0631 \u0645\u0646 \u0627\u0644\u0637\u0644\u0627\u0628\u061f",
+            "options": [
+              "\u0623\u0646 \u0627\u0644\u0633\u0647\u0631 \u0623\u0641\u0636\u0644 \u0627\u0633\u062a\u0639\u062f\u0627\u062f \u0644\u0644\u0627\u0645\u062a\u062d\u0627\u0646",
+              "\u0623\u0646 \u0627\u0644\u0646\u0648\u0645 \u0645\u0636\u064a\u0639\u0629 \u0644\u0644\u0648\u0642\u062a",
+              "\u0623\u0646 \u0627\u0644\u0627\u0645\u062a\u062d\u0627\u0646\u0627\u062a \u063a\u064a\u0631 \u0645\u0647\u0645\u0629",
+              "\u0623\u0646 \u0627\u0644\u062f\u0631\u0627\u0633\u0629 \u0627\u0644\u062c\u0645\u0627\u0639\u064a\u0629 \u0623\u0641\u0636\u0644"
+            ],
             "answer": 0,
             "explain": "Birinchi gap: ko'p talabalar kechgacha o'qishni eng yaxshi usul deb hisoblaydi."
           },
           {
-            "q": "ماذا يحدث للدماغ في أثناء النوم العميق؟",
-            "options": ["يتوقف عن العمل", "ينظّم المعلومات وينقلها إلى الذاكرة طويلة المدى", "ينسى المعلومات القديمة", "يزداد طول الجسم"],
+            "q": "\u0645\u0627\u0630\u0627 \u064a\u062d\u062f\u062b \u0644\u0644\u062f\u0645\u0627\u063a \u0641\u064a \u0623\u062b\u0646\u0627\u0621 \u0627\u0644\u0646\u0648\u0645 \u0627\u0644\u0639\u0645\u064a\u0642\u061f",
+            "options": [
+              "\u064a\u062a\u0648\u0642\u0641 \u0639\u0646 \u0627\u0644\u0639\u0645\u0644",
+              "\u064a\u0646\u0638\u0651\u0645 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0648\u064a\u0646\u0642\u0644\u0647\u0627 \u0625\u0644\u0649 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0637\u0648\u064a\u0644\u0629 \u0627\u0644\u0645\u062f\u0649",
+              "\u064a\u0646\u0633\u0649 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0627\u0644\u0642\u062f\u064a\u0645\u0629",
+              "\u064a\u0632\u062f\u0627\u062f \u0637\u0648\u0644 \u0627\u0644\u062c\u0633\u0645"
+            ],
             "answer": 1,
             "explain": "Chuqur uyquda miya bilimlarni uzoq muddatli xotiraga o'tkazadi."
           },
           {
-            "q": "بحسب النص، الطلاب الذين ناموا ثماني ساعات تذكّروا:",
-            "options": ["أقل بنحو عشرة في المئة", "الكمية نفسها", "أكثر بنحو عشرين في المئة", "أكثر بنحو ثمانين في المئة"],
+            "q": "\u0628\u062d\u0633\u0628 \u0627\u0644\u0646\u0635\u060c \u0627\u0644\u0637\u0644\u0627\u0628 \u0627\u0644\u0630\u064a\u0646 \u0646\u0627\u0645\u0648\u0627 \u062b\u0645\u0627\u0646\u064a \u0633\u0627\u0639\u0627\u062a \u062a\u0630\u0643\u0651\u0631\u0648\u0627:",
+            "options": [
+              "\u0623\u0642\u0644 \u0628\u0646\u062d\u0648 \u0639\u0634\u0631\u0629 \u0641\u064a \u0627\u0644\u0645\u0626\u0629",
+              "\u0627\u0644\u0643\u0645\u064a\u0629 \u0646\u0641\u0633\u0647\u0627",
+              "\u0623\u0643\u062b\u0631 \u0628\u0646\u062d\u0648 \u0639\u0634\u0631\u064a\u0646 \u0641\u064a \u0627\u0644\u0645\u0626\u0629",
+              "\u0623\u0643\u062b\u0631 \u0628\u0646\u062d\u0648 \u062b\u0645\u0627\u0646\u064a\u0646 \u0641\u064a \u0627\u0644\u0645\u0626\u0629"
+            ],
             "answer": 2,
             "explain": "8 soat uxlaganlar taxminan 20 foiz ko'proq eslab qolgan."
           },
           {
-            "q": "لماذا ينصح الخبراء بالابتعاد عن الشاشات قبل النوم؟",
-            "options": ["لأنها تستهلك الكهرباء", "لأن ضوءها قد يصعّب النوم", "لأنها تعرض محتوى ضارًا", "لأنها تحمرّ العينين"],
+            "q": "\u0644\u0645\u0627\u0630\u0627 \u064a\u0646\u0635\u062d \u0627\u0644\u062e\u0628\u0631\u0627\u0621 \u0628\u0627\u0644\u0627\u0628\u062a\u0639\u0627\u062f \u0639\u0646 \u0627\u0644\u0634\u0627\u0634\u0627\u062a \u0642\u0628\u0644 \u0627\u0644\u0646\u0648\u0645\u061f",
+            "options": [
+              "\u0644\u0623\u0646\u0647\u0627 \u062a\u0633\u062a\u0647\u0644\u0643 \u0627\u0644\u0643\u0647\u0631\u0628\u0627\u0621",
+              "\u0644\u0623\u0646 \u0636\u0648\u0621\u0647\u0627 \u0642\u062f \u064a\u0635\u0639\u0651\u0628 \u0627\u0644\u0646\u0648\u0645",
+              "\u0644\u0623\u0646\u0647\u0627 \u062a\u0639\u0631\u0636 \u0645\u062d\u062a\u0648\u0649 \u0636\u0627\u0631\u064b\u0627",
+              "\u0644\u0623\u0646\u0647\u0627 \u062a\u062d\u0645\u0631\u0651 \u0627\u0644\u0639\u064a\u0646\u064a\u0646"
+            ],
             "answer": 1,
             "explain": "Telefon yorug'ligi uxlashni qiyinlashtiradi."
           }
@@ -262,65 +402,427 @@
     ],
     "listening": [
       {
-        "title": "إعلان من المكتبة",
-        "script": "مساء الخير جميعًا. هذا إعلان من مكتبة المدينة. ابتداءً من يوم الاثنين القادم ستفتح المكتبة أبوابها في الساعة الثامنة صباحًا بدلًا من التاسعة، وتغلق في السابعة مساءً. وفي أيام السبت ستبقى مفتوحة حتى الساعة الخامسة. ويسعدنا أن نعلن عن افتتاح قاعة قراءة جديدة في الطابق الثاني، وهي مخصّصة للطلاب الذين يحتاجون إلى مكان هادئ للدراسة. كما نذكّركم بأنه يمكنكم الآن استعارة ستة كتب في المرة الواحدة، والاحتفاظ بها لمدة ثلاثة أسابيع. ولتجديد الاستعارة يمكنكم فعل ذلك عبر الإنترنت أو الاتصال بمكتب الاستقبال. شكرًا لكم، ونتمنى لكم قراءة ممتعة.",
+        "title": "\u0625\u0639\u0644\u0627\u0646 \u0645\u0646 \u0627\u0644\u0645\u0643\u062a\u0628\u0629",
+        "script": "\u0645\u0633\u0627\u0621 \u0627\u0644\u062e\u064a\u0631 \u062c\u0645\u064a\u0639\u064b\u0627. \u0647\u0630\u0627 \u0625\u0639\u0644\u0627\u0646 \u0645\u0646 \u0645\u0643\u062a\u0628\u0629 \u0627\u0644\u0645\u062f\u064a\u0646\u0629. \u0627\u0628\u062a\u062f\u0627\u0621\u064b \u0645\u0646 \u064a\u0648\u0645 \u0627\u0644\u0627\u062b\u0646\u064a\u0646 \u0627\u0644\u0642\u0627\u062f\u0645 \u0633\u062a\u0641\u062a\u062d \u0627\u0644\u0645\u0643\u062a\u0628\u0629 \u0623\u0628\u0648\u0627\u0628\u0647\u0627 \u0641\u064a \u0627\u0644\u0633\u0627\u0639\u0629 \u0627\u0644\u062b\u0627\u0645\u0646\u0629 \u0635\u0628\u0627\u062d\u064b\u0627 \u0628\u062f\u0644\u064b\u0627 \u0645\u0646 \u0627\u0644\u062a\u0627\u0633\u0639\u0629\u060c \u0648\u062a\u063a\u0644\u0642 \u0641\u064a \u0627\u0644\u0633\u0627\u0628\u0639\u0629 \u0645\u0633\u0627\u0621\u064b. \u0648\u0641\u064a \u0623\u064a\u0627\u0645 \u0627\u0644\u0633\u0628\u062a \u0633\u062a\u0628\u0642\u0649 \u0645\u0641\u062a\u0648\u062d\u0629 \u062d\u062a\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 \u0627\u0644\u062e\u0627\u0645\u0633\u0629. \u0648\u064a\u0633\u0639\u062f\u0646\u0627 \u0623\u0646 \u0646\u0639\u0644\u0646 \u0639\u0646 \u0627\u0641\u062a\u062a\u0627\u062d \u0642\u0627\u0639\u0629 \u0642\u0631\u0627\u0621\u0629 \u062c\u062f\u064a\u062f\u0629 \u0641\u064a \u0627\u0644\u0637\u0627\u0628\u0642 \u0627\u0644\u062b\u0627\u0646\u064a\u060c \u0648\u0647\u064a \u0645\u062e\u0635\u0651\u0635\u0629 \u0644\u0644\u0637\u0644\u0627\u0628 \u0627\u0644\u0630\u064a\u0646 \u064a\u062d\u062a\u0627\u062c\u0648\u0646 \u0625\u0644\u0649 \u0645\u0643\u0627\u0646 \u0647\u0627\u062f\u0626 \u0644\u0644\u062f\u0631\u0627\u0633\u0629. \u0643\u0645\u0627 \u0646\u0630\u0643\u0651\u0631\u0643\u0645 \u0628\u0623\u0646\u0647 \u064a\u0645\u0643\u0646\u0643\u0645 \u0627\u0644\u0622\u0646 \u0627\u0633\u062a\u0639\u0627\u0631\u0629 \u0633\u062a\u0629 \u0643\u062a\u0628 \u0641\u064a \u0627\u0644\u0645\u0631\u0629 \u0627\u0644\u0648\u0627\u062d\u062f\u0629\u060c \u0648\u0627\u0644\u0627\u062d\u062a\u0641\u0627\u0638 \u0628\u0647\u0627 \u0644\u0645\u062f\u0629 \u062b\u0644\u0627\u062b\u0629 \u0623\u0633\u0627\u0628\u064a\u0639. \u0648\u0644\u062a\u062c\u062f\u064a\u062f \u0627\u0644\u0627\u0633\u062a\u0639\u0627\u0631\u0629 \u064a\u0645\u0643\u0646\u0643\u0645 \u0641\u0639\u0644 \u0630\u0644\u0643 \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062a\u0631\u0646\u062a \u0623\u0648 \u0627\u0644\u0627\u062a\u0635\u0627\u0644 \u0628\u0645\u0643\u062a\u0628 \u0627\u0644\u0627\u0633\u062a\u0642\u0628\u0627\u0644. \u0634\u0643\u0631\u064b\u0627 \u0644\u0643\u0645\u060c \u0648\u0646\u062a\u0645\u0646\u0649 \u0644\u0643\u0645 \u0642\u0631\u0627\u0621\u0629 \u0645\u0645\u062a\u0639\u0629.",
         "questions": [
           {
-            "q": "متى ستفتح المكتبة أبوابها ابتداءً من الاثنين القادم؟",
-            "options": ["الساعة السابعة صباحًا", "الساعة التاسعة صباحًا", "الساعة العاشرة صباحًا", "الساعة الثامنة صباحًا"],
+            "q": "\u0645\u062a\u0649 \u0633\u062a\u0641\u062a\u062d \u0627\u0644\u0645\u0643\u062a\u0628\u0629 \u0623\u0628\u0648\u0627\u0628\u0647\u0627 \u0627\u0628\u062a\u062f\u0627\u0621\u064b \u0645\u0646 \u0627\u0644\u0627\u062b\u0646\u064a\u0646 \u0627\u0644\u0642\u0627\u062f\u0645\u061f",
+            "options": [
+              "\u0627\u0644\u0633\u0627\u0639\u0629 \u0627\u0644\u0633\u0627\u0628\u0639\u0629 \u0635\u0628\u0627\u062d\u064b\u0627",
+              "\u0627\u0644\u0633\u0627\u0639\u0629 \u0627\u0644\u062a\u0627\u0633\u0639\u0629 \u0635\u0628\u0627\u062d\u064b\u0627",
+              "\u0627\u0644\u0633\u0627\u0639\u0629 \u0627\u0644\u0639\u0627\u0634\u0631\u0629 \u0635\u0628\u0627\u062d\u064b\u0627",
+              "\u0627\u0644\u0633\u0627\u0639\u0629 \u0627\u0644\u062b\u0627\u0645\u0646\u0629 \u0635\u0628\u0627\u062d\u064b\u0627"
+            ],
             "answer": 3,
             "explain": "Ochilish vaqti to'qqizdan sakkizga o'zgaradi."
           },
           {
-            "q": "إلى أي ساعة ستبقى المكتبة مفتوحة يوم السبت؟",
-            "options": ["حتى الخامسة", "حتى السابعة", "حتى الثالثة", "ستكون مغلقة"],
+            "q": "\u0625\u0644\u0649 \u0623\u064a \u0633\u0627\u0639\u0629 \u0633\u062a\u0628\u0642\u0649 \u0627\u0644\u0645\u0643\u062a\u0628\u0629 \u0645\u0641\u062a\u0648\u062d\u0629 \u064a\u0648\u0645 \u0627\u0644\u0633\u0628\u062a\u061f",
+            "options": [
+              "\u062d\u062a\u0649 \u0627\u0644\u062e\u0627\u0645\u0633\u0629",
+              "\u062d\u062a\u0649 \u0627\u0644\u0633\u0627\u0628\u0639\u0629",
+              "\u062d\u062a\u0649 \u0627\u0644\u062b\u0627\u0644\u062b\u0629",
+              "\u0633\u062a\u0643\u0648\u0646 \u0645\u063a\u0644\u0642\u0629"
+            ],
             "answer": 0,
             "explain": "Shanba kunlari soat beshgacha ochiq."
           },
           {
-            "q": "أين تقع قاعة القراءة الجديدة؟",
-            "options": ["في الطابق الأول", "في الطابق الثاني", "في القبو", "في الطابق الثالث"],
+            "q": "\u0623\u064a\u0646 \u062a\u0642\u0639 \u0642\u0627\u0639\u0629 \u0627\u0644\u0642\u0631\u0627\u0621\u0629 \u0627\u0644\u062c\u062f\u064a\u062f\u0629\u061f",
+            "options": [
+              "\u0641\u064a \u0627\u0644\u0637\u0627\u0628\u0642 \u0627\u0644\u0623\u0648\u0644",
+              "\u0641\u064a \u0627\u0644\u0637\u0627\u0628\u0642 \u0627\u0644\u062b\u0627\u0646\u064a",
+              "\u0641\u064a \u0627\u0644\u0642\u0628\u0648",
+              "\u0641\u064a \u0627\u0644\u0637\u0627\u0628\u0642 \u0627\u0644\u062b\u0627\u0644\u062b"
+            ],
             "answer": 1,
             "explain": "Yangi o'qish xonasi ikkinchi qavatda."
           },
           {
-            "q": "كم كتابًا يمكن استعارته في المرة الواحدة؟",
-            "options": ["ثلاثة", "أربعة", "ستة", "عشرة"],
+            "q": "\u0643\u0645 \u0643\u062a\u0627\u0628\u064b\u0627 \u064a\u0645\u0643\u0646 \u0627\u0633\u062a\u0639\u0627\u0631\u062a\u0647 \u0641\u064a \u0627\u0644\u0645\u0631\u0629 \u0627\u0644\u0648\u0627\u062d\u062f\u0629\u061f",
+            "options": [
+              "\u062b\u0644\u0627\u062b\u0629",
+              "\u0623\u0631\u0628\u0639\u0629",
+              "\u0633\u062a\u0629",
+              "\u0639\u0634\u0631\u0629"
+            ],
             "answer": 2,
             "explain": "Endi bir vaqtda oltita kitob olish mumkin."
           }
         ]
       },
       {
-        "title": "النشرة الجوية",
-        "script": "إليكم حالة الطقس لنهاية الأسبوع. صباح السبت سيكون الجو غائمًا مع أمطار خفيفة في شمال البلاد. وبعد الظهر ستتوقف الأمطار وتشرق الشمس، وستصل درجات الحرارة إلى ثماني عشرة درجة. أما يوم الأحد فسيكون الجو أبرد بكثير مع رياح قوية، ولن تتجاوز الحرار.",
+        "title": "\u0627\u0644\u0646\u0634\u0631\u0629 \u0627\u0644\u062c\u0648\u064a\u0629",
+        "script": "\u0625\u0644\u064a\u0643\u0645 \u062d\u0627\u0644\u0629 \u0627\u0644\u0637\u0642\u0633 \u0644\u0646\u0647\u0627\u064a\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639. \u0635\u0628\u0627\u062d \u0627\u0644\u0633\u0628\u062a \u0633\u064a\u0643\u0648\u0646 \u0627\u0644\u062c\u0648 \u063a\u0627\u0626\u0645\u064b\u0627 \u0645\u0639 \u0623\u0645\u0637\u0627\u0631 \u062e\u0641\u064a\u0641\u0629 \u0641\u064a \u0634\u0645\u0627\u0644 \u0627\u0644\u0628\u0644\u0627\u062f. \u0648\u0628\u0639\u062f \u0627\u0644\u0638\u0647\u0631 \u0633\u062a\u062a\u0648\u0642\u0641 \u0627\u0644\u0623\u0645\u0637\u0627\u0631 \u0648\u062a\u0634\u0631\u0642 \u0627\u0644\u0634\u0645\u0633\u060c \u0648\u0633\u062a\u0635\u0644 \u062f\u0631\u062c\u0627\u062a \u0627\u0644\u062d\u0631\u0627\u0631\u0629 \u0625\u0644\u0649 \u062b\u0645\u0627\u0646\u064a \u0639\u0634\u0631\u0629 \u062f\u0631\u062c\u0629. \u0623\u0645\u0627 \u064a\u0648\u0645 \u0627\u0644\u0623\u062d\u062f \u0641\u0633\u064a\u0643\u0648\u0646 \u0627\u0644\u062c\u0648 \u0623\u0628\u0631\u062f \u0628\u0643\u062b\u064a\u0631 \u0645\u0639 \u0631\u064a\u0627\u062d \u0642\u0648\u064a\u0629\u060c \u0648\u0644\u0646 \u062a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u062d\u0631\u0627\u0631\u0629 \u062a\u0633\u0639 \u062f\u0631\u062c\u0627\u062a. \u0648\u0642\u062f \u062a\u062a\u0633\u0627\u0642\u0637 \u0627\u0644\u062b\u0644\u0648\u062c \u0639\u0644\u0649 \u0627\u0644\u0645\u0631\u062a\u0641\u0639\u0627\u062a \u0641\u064a \u0627\u0644\u0645\u0633\u0627\u0621. \u0648\u0625\u0630\u0627 \u0643\u0646\u062a\u0645 \u062a\u062e\u0637\u0637\u0648\u0646 \u0644\u0646\u0632\u0647\u0629 \u0641\u0623\u0641\u0636\u0644 \u0648\u0642\u062a \u0644\u0647\u0627 \u0647\u0648 \u0628\u0639\u062f \u0638\u0647\u0631 \u064a\u0648\u0645 \u0627\u0644\u0633\u0628\u062a. \u0646\u0646\u0635\u062d\u0643\u0645 \u0628\u0627\u0631\u062a\u062f\u0627\u0621 \u0645\u0644\u0627\u0628\u0633 \u062f\u0627\u0641\u0626\u0629 \u0625\u0646 \u0633\u0627\u0641\u0631\u062a\u0645 \u064a\u0648\u0645 \u0627\u0644\u0623\u062d\u062f.",
         "questions": [
           {
-            "q": "كيف سيكون الطقس صباح السبت؟",
-            "options": ["مشمسًا وحارًا", "غائمًا مع أمطار خفيفة في الشمال", "مثلجًا", "عاصفًا وباردًا"],
+            "q": "\u0643\u064a\u0641 \u0633\u064a\u0643\u0648\u0646 \u0627\u0644\u0637\u0642\u0633 \u0635\u0628\u0627\u062d \u0627\u0644\u0633\u0628\u062a\u061f",
+            "options": [
+              "\u0645\u0634\u0645\u0633\u064b\u0627 \u0648\u062d\u0627\u0631\u064b\u0627",
+              "\u063a\u0627\u0626\u0645\u064b\u0627 \u0645\u0639 \u0623\u0645\u0637\u0627\u0631 \u062e\u0641\u064a\u0641\u0629 \u0641\u064a \u0627\u0644\u0634\u0645\u0627\u0644",
+              "\u0645\u062b\u0644\u062c\u064b\u0627",
+              "\u0639\u0627\u0635\u0641\u064b\u0627 \u0648\u0628\u0627\u0631\u062f\u064b\u0627"
+            ],
             "answer": 1,
             "explain": "Shanba ertalab bulutli, shimolda yengil yomg'ir."
           },
           {
-            "q": "كم ستبلغ درجة الحرارة بعد ظهر السبت؟",
-            "options": ["تسع درجات", "اثنتي عشرة درجة", "ثماني عشرة درجة", "خمسًا وعشرين درجة"],
+            "q": "\u0643\u0645 \u0633\u062a\u0628\u0644\u063a \u062f\u0631\u062c\u0629 \u0627\u0644\u062d\u0631\u0627\u0631\u0629 \u0628\u0639\u062f \u0638\u0647\u0631 \u0627\u0644\u0633\u0628\u062a\u061f",
+            "options": [
+              "\u062a\u0633\u0639 \u062f\u0631\u062c\u0627\u062a",
+              "\u0627\u062b\u0646\u062a\u064a \u0639\u0634\u0631\u0629 \u062f\u0631\u062c\u0629",
+              "\u062b\u0645\u0627\u0646\u064a \u0639\u0634\u0631\u0629 \u062f\u0631\u062c\u0629",
+              "\u062e\u0645\u0633\u064b\u0627 \u0648\u0639\u0634\u0631\u064a\u0646 \u062f\u0631\u062c\u0629"
+            ],
             "answer": 2,
             "explain": "Tushdan keyin harorat 18 darajaga yetadi."
           },
           {
-            "q": "كيف سيكون الطقس يوم الأحد؟",
-            "options": ["أبرد بكثير مع رياح قوية", "دافئًا ومشمسًا", "ماطرًا لكن دافئًا", "ضبابيًا"],
+            "q": "\u0643\u064a\u0641 \u0633\u064a\u0643\u0648\u0646 \u0627\u0644\u0637\u0642\u0633 \u064a\u0648\u0645 \u0627\u0644\u0623\u062d\u062f\u061f",
+            "options": [
+              "\u0623\u0628\u0631\u062f \u0628\u0643\u062b\u064a\u0631 \u0645\u0639 \u0631\u064a\u0627\u062d \u0642\u0648\u064a\u0629",
+              "\u062f\u0627\u0641\u0626\u064b\u0627 \u0648\u0645\u0634\u0645\u0633\u064b\u0627",
+              "\u0645\u0627\u0637\u0631\u064b\u0627 \u0644\u0643\u0646 \u062f\u0627\u0641\u0626\u064b\u0627",
+              "\u0636\u0628\u0627\u0628\u064a\u064b\u0627"
+            ],
             "answer": 0,
             "explain": "Yakshanba ancha sovuq va kuchli shamolli bo'ladi."
           },
           {
-            "q": "متى أفضل وقت للنزهة؟",
-            "options": ["صباح السبت", "صباح الأحد", "مساء الأحد", "بعد ظهر السبت"],
+            "q": "\u0645\u062a\u0649 \u0623\u0641\u0636\u0644 \u0648\u0642\u062a \u0644\u0644\u0646\u0632\u0647\u0629\u061f",
+            "options": [
+              "\u0635\u0628\u0627\u062d \u0627\u0644\u0633\u0628\u062a",
+              "\u0635\u0628\u0627\u062d \u0627\u0644\u0623\u062d\u062f",
+              "\u0645\u0633\u0627\u0621 \u0627\u0644\u0623\u062d\u062f",
+              "\u0628\u0639\u062f \u0638\u0647\u0631 \u0627\u0644\u0633\u0628\u062a"
+            ],
             "answer": 3,
             "explain": "Sayr uchun eng yaxshi vaqt shanba kuni tushdan keyin."
           }
         ]
       }
-    ]
-  }
+    ],
+    "writing": {
+      "w1": [
+        "\u0648\u0635\u0644\u062a\u0643 \u0631\u0633\u0627\u0644\u0629 \u0645\u0646 \u0635\u062f\u064a\u0642\u0643 \u062a\u0648\u0645 \u0627\u0644\u0630\u064a \u0633\u064a\u0632\u0648\u0631 \u0645\u062f\u064a\u0646\u062a\u0643 \u0627\u0644\u0634\u0647\u0631 \u0627\u0644\u0642\u0627\u062f\u0645\u060c \u0648\u064a\u0633\u0623\u0644 \u0639\u0645\u0651\u0627 \u064a\u062c\u0628 \u0623\u0646 \u064a\u0632\u0648\u0631\u0647 \u0648\u0645\u0627 \u0627\u0644\u0630\u064a \u064a\u062d\u0645\u0644\u0647 \u0645\u0639\u0647. \u0627\u0643\u062a\u0628 \u0644\u0647 \u0631\u0633\u0627\u0644\u0629 \u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629 (\u0646\u062d\u0648 50 \u0643\u0644\u0645\u0629).",
+        "\u0646\u062c\u062d\u062a \u0635\u062f\u064a\u0642\u062a\u0643 \u0622\u0646\u0627 \u0644\u0644\u062a\u0648\u0651 \u0641\u064a \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0642\u064a\u0627\u062f\u0629. \u0627\u0643\u062a\u0628 \u0644\u0647\u0627 \u0631\u0633\u0627\u0644\u0629 \u062a\u0647\u0646\u0651\u0626\u0647\u0627 \u0641\u064a\u0647\u0627\u060c \u0648\u0627\u0633\u0623\u0644\u0647\u0627 \u0639\u0646 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631\u060c \u0648\u0627\u0642\u062a\u0631\u062d \u0637\u0631\u064a\u0642\u0629 \u0644\u0644\u0627\u062d\u062a\u0641\u0627\u0644 (\u0646\u062d\u0648 50 \u0643\u0644\u0645\u0629).",
+        "\u064a\u0646\u0648\u064a \u0627\u0628\u0646 \u0639\u0645\u0651\u0643 \u0627\u0644\u0628\u062f\u0621 \u0628\u062a\u0639\u0644\u0651\u0645 \u0644\u063a\u0629 \u062c\u062f\u064a\u062f\u0629 \u0648\u064a\u0637\u0644\u0628 \u0646\u0635\u064a\u062d\u062a\u0643. \u0627\u0643\u062a\u0628 \u0644\u0647 \u0631\u0633\u0627\u0644\u0629 \u062a\u0642\u062f\u0651\u0645 \u0641\u064a\u0647\u0627 \u0646\u0635\u0627\u0626\u062d \u0648\u062a\u0634\u0627\u0631\u0643\u0647 \u062a\u062c\u0631\u0628\u062a\u0643 (\u0646\u062d\u0648 50 \u0643\u0644\u0645\u0629).",
+        "\u0641\u0627\u062a\u0643 \u062d\u0641\u0644 \u0639\u064a\u062f \u0645\u064a\u0644\u0627\u062f \u0635\u062f\u064a\u0642\u0643 \u0644\u0623\u0646\u0643 \u0643\u0646\u062a \u0645\u0631\u064a\u0636\u064b\u0627. \u0627\u0643\u062a\u0628 \u0644\u0647 \u0631\u0633\u0627\u0644\u0629 \u062a\u0639\u062a\u0630\u0631 \u0641\u064a\u0647\u0627\u060c \u0648\u062a\u0634\u0631\u062d \u0645\u0627 \u062d\u062f\u062b\u060c \u0648\u062a\u0642\u062a\u0631\u062d \u0623\u0646 \u062a\u0644\u062a\u0642\u064a\u0627 \u0642\u0631\u064a\u0628\u064b\u0627 (\u0646\u062d\u0648 50 \u0643\u0644\u0645\u0629)."
+      ],
+      "w2": [
+        "\u0627\u0634\u062a\u0631\u064a\u062a\u064e \u0633\u0645\u0651\u0627\u0639\u0627\u062a \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062a\u0631\u0646\u062a \u0644\u0643\u0646\u0647\u0627 \u062a\u0648\u0642\u0641\u062a \u0639\u0646 \u0627\u0644\u0639\u0645\u0644 \u0628\u0639\u062f \u0623\u0633\u0628\u0648\u0639. \u0627\u0643\u062a\u0628 \u0631\u0633\u0627\u0644\u0629 \u0631\u0633\u0645\u064a\u0629 \u0625\u0644\u0649 \u0645\u062f\u064a\u0631 \u0627\u0644\u0645\u062a\u062c\u0631 \u062a\u0634\u0631\u062d \u0641\u064a\u0647\u0627 \u0627\u0644\u0645\u0634\u0643\u0644\u0629 \u0648\u0645\u0627 \u062a\u0637\u0644\u0628\u0647 \u0645\u0646\u0647\u060c \u0648\u062a\u0637\u0644\u0628 \u0627\u0644\u0631\u062f\u0651 (\u0646\u062d\u0648 120 \u0643\u0644\u0645\u0629).",
+        "\u0623\u0646\u062a \u0645\u0647\u062a\u0645 \u0628\u0648\u0638\u064a\u0641\u0629 \u0628\u062f\u0648\u0627\u0645 \u062c\u0632\u0626\u064a \u0623\u064f\u0639\u0644\u0646 \u0639\u0646\u0647\u0627 \u0641\u064a \u0645\u0643\u062a\u0628\u0629 \u0642\u0631\u064a\u0628\u0629. \u0627\u0643\u062a\u0628 \u0631\u0633\u0627\u0644\u0629 \u0625\u0644\u0649 \u0627\u0644\u0645\u062f\u064a\u0631 \u062a\u0639\u0631\u0651\u0641 \u0641\u064a\u0647\u0627 \u0628\u0646\u0641\u0633\u0643\u060c \u0648\u062a\u0634\u0631\u062d \u0644\u0645\u0627\u0630\u0627 \u0623\u0646\u062a \u0645\u0646\u0627\u0633\u0628\u060c \u0648\u062a\u0633\u0623\u0644 \u0639\u0646 \u0633\u0627\u0639\u0627\u062a \u0627\u0644\u0639\u0645\u0644 \u0648\u0627\u0644\u0623\u062c\u0631 (\u0646\u062d\u0648 120 \u0643\u0644\u0645\u0629).",
+        "\u0627\u0644\u0634\u0627\u0631\u0639 \u0627\u0644\u0642\u0631\u064a\u0628 \u0645\u0646 \u0628\u064a\u062a\u0643 \u0645\u0632\u0639\u062c \u0648\u0645\u062a\u0651\u0633\u062e \u0628\u0633\u0628\u0628 \u0623\u0639\u0645\u0627\u0644 \u0627\u0644\u0628\u0646\u0627\u0621. \u0627\u0643\u062a\u0628 \u0631\u0633\u0627\u0644\u0629 \u0625\u0644\u0649 \u0627\u0644\u0628\u0644\u062f\u064a\u0629 \u062a\u0635\u0641 \u0641\u064a\u0647\u0627 \u0627\u0644\u0645\u0634\u0643\u0644\u0627\u062a \u0648\u062a\u0642\u062a\u0631\u062d \u062d\u0644\u0648\u0644\u064b\u0627 (\u0646\u062d\u0648 120 \u0643\u0644\u0645\u0629).",
+        "\u062a\u0631\u064a\u062f \u0627\u0644\u0627\u0644\u062a\u062d\u0627\u0642 \u0628\u062f\u0648\u0631\u0629 \u0635\u064a\u0641\u064a\u0629 \u0644\u062a\u0639\u0644\u0651\u0645 \u0627\u0644\u0644\u063a\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629. \u0627\u0643\u062a\u0628 \u0631\u0633\u0627\u0644\u0629 \u0625\u0644\u0649 \u0645\u0646\u0638\u0651\u0645 \u0627\u0644\u062f\u0648\u0631\u0629 \u062a\u0633\u0623\u0644 \u0641\u064a\u0647\u0627 \u0639\u0646 \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631 \u0648\u0627\u0644\u0633\u0643\u0646\u060c \u0648\u062a\u0630\u0643\u0631 \u0645\u0633\u062a\u0648\u0627\u0643 (\u0646\u062d\u0648 120 \u0643\u0644\u0645\u0629)."
+      ],
+      "w3": [
+        "\u064a\u0631\u0649 \u0628\u0639\u0636 \u0627\u0644\u0646\u0627\u0633 \u0623\u0646 \u0639\u0644\u0649 \u0627\u0644\u0637\u0644\u0627\u0628 \u0627\u0631\u062a\u062f\u0627\u0621 \u0632\u064a\u0651 \u0645\u062f\u0631\u0633\u064a \u0645\u0648\u062d\u0651\u062f\u060c \u0628\u064a\u0646\u0645\u0627 \u064a\u0631\u0649 \u0622\u062e\u0631\u0648\u0646 \u0623\u0646 \u0644\u0647\u0645 \u0623\u0646 \u064a\u0644\u0628\u0633\u0648\u0627 \u0645\u0627 \u064a\u0634\u0627\u0624\u0648\u0646. \u0646\u0627\u0642\u0634 \u0627\u0644\u0631\u0623\u064a\u064a\u0646 \u0648\u0627\u0630\u0643\u0631 \u0631\u0623\u064a\u0643 (\u0646\u062d\u0648 200 \u0643\u0644\u0645\u0629).",
+        "\u064a\u0641\u0636\u0651\u0644 \u0643\u062b\u064a\u0631 \u0645\u0646 \u0627\u0644\u0646\u0627\u0633 \u0627\u0644\u064a\u0648\u0645 \u0627\u0644\u0634\u0631\u0627\u0621 \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062a\u0631\u0646\u062a \u0628\u062f\u0644\u064b\u0627 \u0645\u0646 \u0627\u0644\u0630\u0647\u0627\u0628 \u0625\u0644\u0649 \u0627\u0644\u0645\u062a\u0627\u062c\u0631. \u0645\u0627 \u0645\u0632\u0627\u064a\u0627 \u0627\u0644\u062a\u0633\u0648\u0651\u0642 \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062a\u0631\u0646\u062a \u0648\u0645\u0627 \u0639\u064a\u0648\u0628\u0647\u061f (\u0646\u062d\u0648 200 \u0643\u0644\u0645\u0629)",
+        "\u064a\u0631\u0649 \u0628\u0639\u0636 \u0627\u0644\u0646\u0627\u0633 \u0623\u0646 \u0627\u0644\u0639\u064a\u0634 \u0641\u064a \u0627\u0644\u0645\u062f\u064a\u0646\u0629 \u0627\u0644\u0643\u0628\u064a\u0631\u0629 \u0623\u0641\u0636\u0644\u060c \u0648\u064a\u0641\u0636\u0651\u0644 \u0622\u062e\u0631\u0648\u0646 \u0627\u0644\u0631\u064a\u0641. \u0646\u0627\u0642\u0634 \u0627\u0644\u062c\u0627\u0646\u0628\u064a\u0646 \u0648\u0627\u0630\u0643\u0631 \u0645\u0627 \u062a\u0641\u0636\u0651\u0644\u0647 (\u0646\u062d\u0648 200 \u0643\u0644\u0645\u0629).",
+        "\u063a\u064a\u0651\u0631\u062a \u0627\u0644\u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627 \u0637\u0631\u064a\u0642\u0629 \u062a\u0648\u0627\u0635\u0644 \u0627\u0644\u0646\u0627\u0633. \u0647\u0644 \u062a\u0631\u0649 \u0623\u0646 \u0647\u0630\u0627 \u0627\u0644\u062a\u063a\u064a\u064a\u0631 \u0625\u064a\u062c\u0627\u0628\u064a \u0641\u064a \u0645\u0639\u0638\u0645\u0647 \u0623\u0645 \u0633\u0644\u0628\u064a\u061f \u0627\u0630\u0643\u0631 \u0623\u0633\u0628\u0627\u0628\u064b\u0627 \u0648\u0623\u0645\u062b\u0644\u0629 (\u0646\u062d\u0648 200 \u0643\u0644\u0645\u0629)."
+      ]
+    }
+  },
+  "pictures": [
+    {
+      "id": "p12_01",
+      "prompt": "A family of four having a picnic on a blanket in a green park on a sunny day, with sandwiches, fruit and a basket, children laughing.",
+      "desc": {
+        "en": "A family is having a picnic in a park.",
+        "ar": "\u0639\u0627\u0626\u0644\u0629 \u062a\u0642\u0636\u064a \u0646\u0632\u0647\u0629 \u0641\u064a \u062d\u062f\u064a\u0642\u0629."
+      },
+      "q": {
+        "en": [
+          "Describe what you can see in the picture.",
+          "What are the people eating, and what is the weather like?",
+          "Do you prefer spending free time outdoors or at home? Why?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u062a\u0631\u0627\u0647 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0645\u0627\u0630\u0627 \u064a\u0623\u0643\u0644 \u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0648\u0643\u064a\u0641 \u064a\u0628\u062f\u0648 \u0627\u0644\u0637\u0642\u0633\u061f",
+          "\u0647\u0644 \u062a\u0641\u0636\u0651\u0644 \u0642\u0636\u0627\u0621 \u0648\u0642\u062a \u0627\u0644\u0641\u0631\u0627\u063a \u0641\u064a \u0627\u0644\u0647\u0648\u0627\u0621 \u0627\u0644\u0637\u0644\u0642 \u0623\u0645 \u0641\u064a \u0627\u0644\u0645\u0646\u0632\u0644\u061f \u0644\u0645\u0627\u0630\u0627\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_02",
+      "prompt": "Three university students studying together at a big table in a bright library, with books and laptops, one student pointing at a page.",
+      "desc": {
+        "en": "Students are studying together in a library.",
+        "ar": "\u0637\u0644\u0627\u0628 \u064a\u062f\u0631\u0633\u0648\u0646 \u0645\u0639\u064b\u0627 \u0641\u064a \u0645\u0643\u062a\u0628\u0629."
+      },
+      "q": {
+        "en": [
+          "Describe the picture in as much detail as you can.",
+          "What do you think the students are studying, and how are they feeling?",
+          "How do you usually prepare for exams or study new things?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0635\u0648\u0631\u0629 \u0628\u0623\u0643\u0628\u0631 \u0642\u062f\u0631 \u0645\u0645\u0643\u0646 \u0645\u0646 \u0627\u0644\u062a\u0641\u0635\u064a\u0644.",
+          "\u0645\u0627\u0630\u0627 \u062a\u0638\u0646\u0651 \u0623\u0646 \u0627\u0644\u0637\u0644\u0627\u0628 \u064a\u062f\u0631\u0633\u0648\u0646\u060c \u0648\u0643\u064a\u0641 \u064a\u0634\u0639\u0631\u0648\u0646\u061f",
+          "\u0643\u064a\u0641 \u062a\u0633\u062a\u0639\u062f\u0651 \u0639\u0627\u062f\u0629\u064b \u0644\u0644\u0627\u0645\u062a\u062d\u0627\u0646\u0627\u062a \u0623\u0648 \u0644\u062a\u0639\u0644\u0651\u0645 \u0623\u0634\u064a\u0627\u0621 \u062c\u062f\u064a\u062f\u0629\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_03",
+      "prompt": "A busy open-air street market with colourful stalls selling fruit and vegetables, a seller weighing tomatoes for a customer, people carrying shopping bags.",
+      "desc": {
+        "en": "People are shopping at a busy street market.",
+        "ar": "\u0623\u0634\u062e\u0627\u0635 \u064a\u062a\u0633\u0648\u0651\u0642\u0648\u0646 \u0641\u064a \u0633\u0648\u0642 \u0634\u0639\u0628\u064a \u0645\u0632\u062f\u062d\u0645."
+      },
+      "q": {
+        "en": [
+          "Describe what is happening in the picture.",
+          "What do you think the customer is going to buy, and why?",
+          "Do you prefer shopping at markets or in supermarkets? Why?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u064a\u062d\u062f\u062b \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0645\u0627\u0630\u0627 \u062a\u0638\u0646\u0651 \u0623\u0646 \u0627\u0644\u0632\u0628\u0648\u0646 \u0633\u064a\u0634\u062a\u0631\u064a\u060c \u0648\u0644\u0645\u0627\u0630\u0627\u061f",
+          "\u0647\u0644 \u062a\u0641\u0636\u0651\u0644 \u0627\u0644\u062a\u0633\u0648\u0651\u0642 \u0645\u0646 \u0627\u0644\u0623\u0633\u0648\u0627\u0642 \u0627\u0644\u0634\u0639\u0628\u064a\u0629 \u0623\u0645 \u0645\u0646 \u0627\u0644\u0645\u062a\u0627\u062c\u0631 \u0627\u0644\u0643\u0628\u0631\u0649\u061f \u0644\u0645\u0627\u0630\u0627\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_04",
+      "prompt": "A friendly doctor in a white coat talking with a young child and a parent in a bright clinic room, the child sitting on an examination bed.",
+      "desc": {
+        "en": "A doctor is talking to a child and a parent in a clinic.",
+        "ar": "\u0637\u0628\u064a\u0628 \u064a\u062a\u062d\u062f\u0651\u062b \u0645\u0639 \u0637\u0641\u0644 \u0648\u0648\u0627\u0644\u062f\u0647 \u0641\u064a \u0639\u064a\u0627\u062f\u0629."
+      },
+      "q": {
+        "en": [
+          "Describe the people and the place in the picture.",
+          "How do you think the child is feeling, and why?",
+          "Tell me about a time when you visited a doctor or a hospital."
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0648\u0627\u0644\u0645\u0643\u0627\u0646 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0643\u064a\u0641 \u062a\u0638\u0646\u0651 \u0623\u0646 \u0627\u0644\u0637\u0641\u0644 \u064a\u0634\u0639\u0631\u060c \u0648\u0644\u0645\u0627\u0630\u0627\u061f",
+          "\u062d\u062f\u0651\u062b\u0646\u064a \u0639\u0646 \u0645\u0631\u0629 \u0632\u0631\u062a\u064e \u0641\u064a\u0647\u0627 \u0627\u0644\u0637\u0628\u064a\u0628 \u0623\u0648 \u0627\u0644\u0645\u0633\u062a\u0634\u0641\u0649."
+        ]
+      }
+    },
+    {
+      "id": "p12_05",
+      "prompt": "Several people with umbrellas waiting at a bus stop on a rainy day in a city, wet street, cars passing, one person checking a phone.",
+      "desc": {
+        "en": "People are waiting at a bus stop in the rain.",
+        "ar": "\u0623\u0634\u062e\u0627\u0635 \u064a\u0646\u062a\u0638\u0631\u0648\u0646 \u0627\u0644\u062d\u0627\u0641\u0644\u0629 \u062a\u062d\u062a \u0627\u0644\u0645\u0637\u0631."
+      },
+      "q": {
+        "en": [
+          "Describe what you can see in the picture.",
+          "What problems can bad weather cause for people in a city?",
+          "How do you usually travel around your city, and what do you like or dislike about it?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u062a\u0631\u0627\u0647 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0645\u0627 \u0627\u0644\u0645\u0634\u0643\u0644\u0627\u062a \u0627\u0644\u062a\u064a \u064a\u0633\u0628\u0651\u0628\u0647\u0627 \u0627\u0644\u0637\u0642\u0633 \u0627\u0644\u0633\u064a\u0651\u0626 \u0644\u0644\u0646\u0627\u0633 \u0641\u064a \u0627\u0644\u0645\u062f\u064a\u0646\u0629\u061f",
+          "\u0643\u064a\u0641 \u062a\u062a\u0646\u0642\u0651\u0644 \u0639\u0627\u062f\u0629\u064b \u0641\u064a \u0645\u062f\u064a\u0646\u062a\u0643\u060c \u0648\u0645\u0627 \u0627\u0644\u0630\u064a \u064a\u0639\u062c\u0628\u0643 \u0623\u0648 \u0644\u0627 \u064a\u0639\u062c\u0628\u0643 \u0641\u064a \u0630\u0644\u0643\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_06",
+      "prompt": "A group of friends cooking dinner together in a modern kitchen, one chopping vegetables, another stirring a pot, everyone smiling.",
+      "desc": {
+        "en": "Friends are cooking dinner together.",
+        "ar": "\u0623\u0635\u062f\u0642\u0627\u0621 \u064a\u0637\u0628\u062e\u0648\u0646 \u0627\u0644\u0639\u0634\u0627\u0621 \u0645\u0639\u064b\u0627."
+      },
+      "q": {
+        "en": [
+          "Describe the picture and the people in it.",
+          "What do you think they are preparing, and how are they feeling?",
+          "Do you enjoy cooking with other people? Why or why not?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0635\u0648\u0631\u0629 \u0648\u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0641\u064a\u0647\u0627.",
+          "\u0645\u0627\u0630\u0627 \u062a\u0638\u0646\u0651 \u0623\u0646\u0647\u0645 \u064a\u062d\u0636\u0651\u0631\u0648\u0646\u060c \u0648\u0643\u064a\u0641 \u064a\u0634\u0639\u0631\u0648\u0646\u061f",
+          "\u0647\u0644 \u062a\u0633\u062a\u0645\u062a\u0639 \u0628\u0627\u0644\u0637\u0628\u062e \u0645\u0639 \u0627\u0644\u0622\u062e\u0631\u064a\u0646\u061f \u0644\u0645\u0627\u0630\u0627 \u0623\u0648 \u0644\u0645\u0627\u0630\u0627 \u0644\u0627\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_07",
+      "prompt": "A young man working on a laptop at a table in a cosy cafe, a cup of coffee beside him, large window behind, other customers in the background.",
+      "desc": {
+        "en": "A young man is working on a laptop in a cafe.",
+        "ar": "\u0634\u0627\u0628 \u064a\u0639\u0645\u0644 \u0639\u0644\u0649 \u062d\u0627\u0633\u0648\u0628 \u0645\u062d\u0645\u0648\u0644 \u0641\u064a \u0645\u0642\u0647\u0649."
+      },
+      "q": {
+        "en": [
+          "Describe what you can see in the picture.",
+          "Why do you think he is working in a cafe and not at home or in an office?",
+          "Where do you prefer to study or work, and why?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u062a\u0631\u0627\u0647 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0644\u0645\u0627\u0630\u0627 \u062a\u0638\u0646\u0651 \u0623\u0646\u0647 \u064a\u0639\u0645\u0644 \u0641\u064a \u0645\u0642\u0647\u0649 \u0648\u0644\u064a\u0633 \u0641\u064a \u0627\u0644\u0645\u0646\u0632\u0644 \u0623\u0648 \u0627\u0644\u0645\u0643\u062a\u0628\u061f",
+          "\u0623\u064a\u0646 \u062a\u0641\u0636\u0651\u0644 \u0623\u0646 \u062a\u062f\u0631\u0633 \u0623\u0648 \u062a\u0639\u0645\u0644\u060c \u0648\u0644\u0645\u0627\u0630\u0627\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_08",
+      "prompt": "Children in school uniforms playing football in a school yard during a break, one child about to kick the ball, others running, a teacher watching in the background.",
+      "desc": {
+        "en": "Children are playing football in a school yard.",
+        "ar": "\u0623\u0637\u0641\u0627\u0644 \u064a\u0644\u0639\u0628\u0648\u0646 \u0643\u0631\u0629 \u0627\u0644\u0642\u062f\u0645 \u0641\u064a \u0633\u0627\u062d\u0629 \u0627\u0644\u0645\u062f\u0631\u0633\u0629."
+      },
+      "q": {
+        "en": [
+          "Describe the scene in the picture.",
+          "What are the benefits of playing sports at school?",
+          "What sports or games did you play when you were a child?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0645\u0634\u0647\u062f \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0645\u0627 \u0641\u0648\u0627\u0626\u062f \u0645\u0645\u0627\u0631\u0633\u0629 \u0627\u0644\u0631\u064a\u0627\u0636\u0629 \u0641\u064a \u0627\u0644\u0645\u062f\u0631\u0633\u0629\u061f",
+          "\u0645\u0627 \u0627\u0644\u0631\u064a\u0627\u0636\u0627\u062a \u0623\u0648 \u0627\u0644\u0623\u0644\u0639\u0627\u0628 \u0627\u0644\u062a\u064a \u0643\u0646\u062a \u062a\u0645\u0627\u0631\u0633\u0647\u0627 \u0648\u0623\u0646\u062a \u0637\u0641\u0644\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_09",
+      "prompt": "People in colourful traditional clothes celebrating a festival outdoors, dancing in a circle, musicians playing drums, decorations and a crowd of smiling onlookers.",
+      "desc": {
+        "en": "People are celebrating a festival outdoors.",
+        "ar": "\u0623\u0634\u062e\u0627\u0635 \u064a\u062d\u062a\u0641\u0644\u0648\u0646 \u0628\u0645\u0647\u0631\u062c\u0627\u0646 \u0641\u064a \u0627\u0644\u0647\u0648\u0627\u0621 \u0627\u0644\u0637\u0644\u0642."
+      },
+      "q": {
+        "en": [
+          "Describe what is happening in the picture.",
+          "What kind of celebration do you think this is, and why?",
+          "Tell me about a festival or celebration that is important in your country."
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u064a\u062d\u062f\u062b \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0645\u0627 \u0646\u0648\u0639 \u0647\u0630\u0647 \u0627\u0644\u0627\u062d\u062a\u0641\u0627\u0644\u064a\u0629 \u0641\u064a \u0631\u0623\u064a\u0643\u060c \u0648\u0644\u0645\u0627\u0630\u0627\u061f",
+          "\u062d\u062f\u0651\u062b\u0646\u064a \u0639\u0646 \u0639\u064a\u062f \u0623\u0648 \u0645\u0646\u0627\u0633\u0628\u0629 \u0645\u0647\u0645\u0629 \u0641\u064a \u0628\u0644\u062f\u0643."
+        ]
+      }
+    },
+    {
+      "id": "p12_10",
+      "prompt": "A crowded train station platform in the morning, commuters with bags and coffee cups waiting for a train, a large departure board, a train arriving.",
+      "desc": {
+        "en": "Commuters are waiting for a train at a busy station.",
+        "ar": "\u0631\u0643\u0651\u0627\u0628 \u064a\u0646\u062a\u0638\u0631\u0648\u0646 \u0627\u0644\u0642\u0637\u0627\u0631 \u0641\u064a \u0645\u062d\u0637\u0629 \u0645\u0632\u062f\u062d\u0645\u0629."
+      },
+      "q": {
+        "en": [
+          "Describe the picture in detail.",
+          "What do you think the people are going to do today?",
+          "Do you think public transport is better than using a car? Why?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0635\u0648\u0631\u0629 \u0628\u0627\u0644\u062a\u0641\u0635\u064a\u0644.",
+          "\u0645\u0627\u0630\u0627 \u062a\u0638\u0646\u0651 \u0623\u0646 \u0627\u0644\u0646\u0627\u0633 \u0633\u064a\u0641\u0639\u0644\u0648\u0646 \u0627\u0644\u064a\u0648\u0645\u061f",
+          "\u0647\u0644 \u062a\u0639\u062a\u0642\u062f \u0623\u0646 \u0627\u0644\u0645\u0648\u0627\u0635\u0644\u0627\u062a \u0627\u0644\u0639\u0627\u0645\u0629 \u0623\u0641\u0636\u0644 \u0645\u0646 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0633\u064a\u0627\u0631\u0629\u061f \u0644\u0645\u0627\u0630\u0627\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_11",
+      "prompt": "A woman jogging along a path in a park early in the morning with trees and mist, wearing sportswear and headphones, a few other people walking dogs.",
+      "desc": {
+        "en": "A woman is jogging in a park in the morning.",
+        "ar": "\u0627\u0645\u0631\u0623\u0629 \u062a\u0631\u0643\u0636 \u0641\u064a \u062d\u062f\u064a\u0642\u0629 \u0641\u064a \u0627\u0644\u0635\u0628\u0627\u062d."
+      },
+      "q": {
+        "en": [
+          "Describe what you can see in the picture.",
+          "Why do you think she is exercising in the morning?",
+          "What do you do to stay healthy and fit?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u062a\u0631\u0627\u0647 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0644\u0645\u0627\u0630\u0627 \u062a\u0638\u0646\u0651 \u0623\u0646\u0647\u0627 \u062a\u0645\u0627\u0631\u0633 \u0627\u0644\u0631\u064a\u0627\u0636\u0629 \u0641\u064a \u0627\u0644\u0635\u0628\u0627\u062d\u061f",
+          "\u0645\u0627\u0630\u0627 \u062a\u0641\u0639\u0644 \u0644\u062a\u062d\u0627\u0641\u0638 \u0639\u0644\u0649 \u0635\u062d\u062a\u0643 \u0648\u0644\u064a\u0627\u0642\u062a\u0643\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_12",
+      "prompt": "A shop assistant helping a customer try on a pair of shoes in a bright shoe store, shelves full of shoes behind them, the customer sitting and smiling.",
+      "desc": {
+        "en": "A shop assistant is helping a customer try on shoes.",
+        "ar": "\u0628\u0627\u0626\u0639\u0629 \u062a\u0633\u0627\u0639\u062f \u0632\u0628\u0648\u0646\u064b\u0627 \u0639\u0644\u0649 \u062a\u062c\u0631\u0628\u0629 \u062d\u0630\u0627\u0621."
+      },
+      "q": {
+        "en": [
+          "Describe the picture and the two people in it.",
+          "What do people usually think about when they buy new shoes or clothes?",
+          "Do you like shopping for clothes? Why or why not?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0635\u0648\u0631\u0629 \u0648\u0627\u0644\u0634\u062e\u0635\u064a\u0646 \u0641\u064a\u0647\u0627.",
+          "\u0628\u0645\u0627\u0630\u0627 \u064a\u0641\u0643\u0651\u0631 \u0627\u0644\u0646\u0627\u0633 \u0639\u0627\u062f\u0629\u064b \u0639\u0646\u062f \u0634\u0631\u0627\u0621 \u062d\u0630\u0627\u0621 \u0623\u0648 \u0645\u0644\u0627\u0628\u0633 \u062c\u062f\u064a\u062f\u0629\u061f",
+          "\u0647\u0644 \u062a\u062d\u0628 \u0627\u0644\u062a\u0633\u0648\u0651\u0642 \u0644\u0634\u0631\u0627\u0621 \u0627\u0644\u0645\u0644\u0627\u0628\u0633\u061f \u0644\u0645\u0627\u0630\u0627 \u0623\u0648 \u0644\u0645\u0627\u0630\u0627 \u0644\u0627\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_13",
+      "prompt": "A group of volunteers of different ages planting young trees in a park on a sunny day, holding shovels and watering cans, a pile of soil.",
+      "desc": {
+        "en": "Volunteers are planting trees in a park.",
+        "ar": "\u0645\u062a\u0637\u0648\u0651\u0639\u0648\u0646 \u064a\u0632\u0631\u0639\u0648\u0646 \u0627\u0644\u0623\u0634\u062c\u0627\u0631 \u0641\u064a \u062d\u062f\u064a\u0642\u0629."
+      },
+      "q": {
+        "en": [
+          "Describe what the people in the picture are doing.",
+          "Why is it important to plant trees and protect nature?",
+          "Have you ever taken part in a volunteer activity? Tell me about it."
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0645\u0627 \u064a\u0641\u0639\u0644\u0647 \u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0644\u0645\u0627\u0630\u0627 \u0645\u0646 \u0627\u0644\u0645\u0647\u0645 \u0632\u0631\u0627\u0639\u0629 \u0627\u0644\u0623\u0634\u062c\u0627\u0631 \u0648\u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u0637\u0628\u064a\u0639\u0629\u061f",
+          "\u0647\u0644 \u0634\u0627\u0631\u0643\u062a\u064e \u064a\u0648\u0645\u064b\u0627 \u0641\u064a \u0639\u0645\u0644 \u062a\u0637\u0648\u0651\u0639\u064a\u061f \u062d\u062f\u0651\u062b\u0646\u064a \u0639\u0646\u0647."
+        ]
+      }
+    },
+    {
+      "id": "p12_14",
+      "prompt": "A teacher helping students who are working on computers in a modern classroom, students focused on their screens, one student raising a hand.",
+      "desc": {
+        "en": "A teacher is helping students in a computer classroom.",
+        "ar": "\u0645\u0639\u0644\u0651\u0645\u0629 \u062a\u0633\u0627\u0639\u062f \u0627\u0644\u0637\u0644\u0627\u0628 \u0641\u064a \u0635\u0641 \u0627\u0644\u062d\u0627\u0633\u0648\u0628."
+      },
+      "q": {
+        "en": [
+          "Describe the classroom and the people in the picture.",
+          "How does technology help students to learn?",
+          "What do you think a classroom will look like in the future?"
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0635\u0641 \u0627\u0644\u062f\u0631\u0627\u0633\u064a \u0648\u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0641\u064a \u0627\u0644\u0635\u0648\u0631\u0629.",
+          "\u0643\u064a\u0641 \u062a\u0633\u0627\u0639\u062f \u0627\u0644\u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627 \u0627\u0644\u0637\u0644\u0627\u0628 \u0639\u0644\u0649 \u0627\u0644\u062a\u0639\u0644\u0651\u0645\u061f",
+          "\u0643\u064a\u0641 \u062a\u062a\u062e\u064a\u0651\u0644 \u0634\u0643\u0644 \u0627\u0644\u0635\u0641 \u0627\u0644\u062f\u0631\u0627\u0633\u064a \u0641\u064a \u0627\u0644\u0645\u0633\u062a\u0642\u0628\u0644\u061f"
+        ]
+      }
+    },
+    {
+      "id": "p12_15",
+      "prompt": "Grandparents and grandchildren sitting together at a dining table in a warm home, sharing a meal, the grandmother serving soup, children laughing.",
+      "desc": {
+        "en": "A family is having a meal together at home.",
+        "ar": "\u0639\u0627\u0626\u0644\u0629 \u062a\u062a\u0646\u0627\u0648\u0644 \u0648\u062c\u0628\u0629 \u0645\u0639\u064b\u0627 \u0641\u064a \u0627\u0644\u0645\u0646\u0632\u0644."
+      },
+      "q": {
+        "en": [
+          "Describe the picture and the atmosphere.",
+          "Why is it important for families to spend time together?",
+          "Tell me about your family traditions, for example family meals or holidays."
+        ],
+        "ar": [
+          "\u0635\u0650\u0641 \u0627\u0644\u0635\u0648\u0631\u0629 \u0648\u0627\u0644\u0623\u062c\u0648\u0627\u0621 \u0641\u064a\u0647\u0627.",
+          "\u0644\u0645\u0627\u0630\u0627 \u0645\u0646 \u0627\u0644\u0645\u0647\u0645 \u0623\u0646 \u062a\u0642\u0636\u064a \u0627\u0644\u0639\u0627\u0626\u0644\u0627\u062a \u0648\u0642\u062a\u064b\u0627 \u0645\u0639\u064b\u0627\u061f",
+          "\u062d\u062f\u0651\u062b\u0646\u064a \u0639\u0646 \u0627\u0644\u062a\u0642\u0627\u0644\u064a\u062f \u0627\u0644\u0639\u0627\u0626\u0644\u064a\u0629 \u0639\u0646\u062f\u0643\u0645\u060c \u0645\u062b\u0644 \u0627\u0644\u0648\u062c\u0628\u0627\u062a \u0623\u0648 \u0627\u0644\u0639\u0637\u0644\u0627\u062a \u0627\u0644\u0639\u0627\u0626\u0644\u064a\u0629."
+        ]
+      }
+    }
+  ]
 }
